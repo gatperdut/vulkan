@@ -159,7 +159,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="myvulkan.cpp" />
+    <ClCompile Include="CapabilitiesHandler.cpp" />
+    <ClCompile Include="DevicesHandler.cpp" />
+    <ClCompile Include="image_views.cpp" />
+    <ClCompile Include="InstanceHandler.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="QueuesHandler.cpp" />
+    <ClCompile Include="SwapchainHandler.cpp" />
+    <ClCompile Include="WindowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat" />
@@ -175,6 +182,18 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CapabilitiesHandler.h" />
+    <ClInclude Include="DevicesHandler.h" />
+    <ClInclude Include="Handlers.h" />
+    <ClInclude Include="capabilities.h" />
+    <ClInclude Include="image_views.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="InstanceHandler.h" />
+    <ClInclude Include="QueuesHandler.h" />
+    <ClInclude Include="SwapchainHandler.h" />
+    <ClInclude Include="WindowHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
