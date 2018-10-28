@@ -162,12 +162,6 @@
     <ClCompile Include="myvulkan.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="myvulkan.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="shaders\compile.bat" />
     <None Include="shaders\shader.frag" />
     <None Include="shaders\shader.vert" />
