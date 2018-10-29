@@ -1,8 +1,8 @@
 #include <set>
 
 
-#include "DevicesHandler.h"
 #include "Handlers.h"
+#include "DevicesHandler.h"
 #include "capabilities.h"
 
 DevicesHandler::DevicesHandler() {

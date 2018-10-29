@@ -160,12 +160,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CapabilitiesHandler.cpp" />
+    <ClCompile Include="CommandsHandler.cpp" />
+    <ClCompile Include="DescriptorsHandler.cpp" />
     <ClCompile Include="DevicesHandler.cpp" />
+    <ClCompile Include="images.cpp" />
     <ClCompile Include="image_views.cpp" />
     <ClCompile Include="InstanceHandler.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="memory_types.cpp" />
+    <ClCompile Include="PipelinesHandler.cpp" />
     <ClCompile Include="QueuesHandler.cpp" />
+    <ClCompile Include="read_file.cpp" />
+    <ClCompile Include="RenderPassHandler.cpp" />
+    <ClCompile Include="buffers.cpp" />
+    <ClCompile Include="buffer_to_image.cpp" />
+    <ClCompile Include="ShadersHandler.cpp" />
     <ClCompile Include="SwapchainHandler.cpp" />
+    <ClCompile Include="TexturesHandler.cpp" />
+    <ClCompile Include="UniformsHandler.cpp" />
     <ClCompile Include="WindowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,14 +196,28 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="buffer_to_image.h" />
     <ClInclude Include="CapabilitiesHandler.h" />
+    <ClInclude Include="CommandsHandler.h" />
+    <ClInclude Include="DescriptorsHandler.h" />
     <ClInclude Include="DevicesHandler.h" />
     <ClInclude Include="Handlers.h" />
     <ClInclude Include="capabilities.h" />
+    <ClInclude Include="buffers.h" />
+    <ClInclude Include="ShadersHandler.h" />
+    <ClInclude Include="vertex.h" />
+    <ClInclude Include="PipelinesHandler.h" />
+    <ClInclude Include="read_file.h" />
+    <ClInclude Include="TexturesHandler.h" />
+    <ClInclude Include="UniformsHandler.h" />
+    <ClInclude Include="uniform_buffer_objects.h" />
+    <ClInclude Include="images.h" />
     <ClInclude Include="image_views.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="InstanceHandler.h" />
+    <ClInclude Include="memory_types.h" />
     <ClInclude Include="QueuesHandler.h" />
+    <ClInclude Include="RenderPassHandler.h" />
     <ClInclude Include="SwapchainHandler.h" />
     <ClInclude Include="WindowHandler.h" />
   </ItemGroup>
