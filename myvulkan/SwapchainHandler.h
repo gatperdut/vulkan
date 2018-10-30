@@ -11,6 +11,8 @@ public:
 	~SwapchainHandler();
 
 	void createSwapchain();
+	void recreateSwapChain();
+	void cleanupSwapChain();
 	void createImageViews();
 
 

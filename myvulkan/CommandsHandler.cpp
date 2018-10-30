@@ -8,7 +8,7 @@ CommandsHandler::CommandsHandler() {
 
 
 CommandsHandler::~CommandsHandler() {
-
+	vkDestroyCommandPool(devicesHandler->device, commandPool, nullptr);
 }
 
 

@@ -10,7 +10,8 @@ DescriptorsHandler::DescriptorsHandler() {
 
 
 DescriptorsHandler::~DescriptorsHandler() {
-
+	vkDestroyDescriptorPool(devicesHandler->device, descriptorPool, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
 }
 
 

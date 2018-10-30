@@ -16,7 +16,10 @@ UniformsHandler::UniformsHandler() {
 
 
 UniformsHandler::~UniformsHandler() {
-
+	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+		vkDestroyBuffer(devicesHandler->device, uniformsHandler->uniformBuffers[i], nullptr);
+		vkFreeMemory(devicesHandler->device, uniformsHandler->uniformBuffersMemory[i], nullptr);
+	}
 }
 
 

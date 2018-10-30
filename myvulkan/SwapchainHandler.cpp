@@ -12,7 +12,7 @@ SwapchainHandler::SwapchainHandler() {
 
 
 SwapchainHandler::~SwapchainHandler() {
-
+	cleanupSwapChain();
 }
 
 
@@ -67,6 +67,48 @@ void SwapchainHandler::createSwapchain() {
 	vkGetSwapchainImagesKHR(devicesHandler->device, swapchain, &imageCount, nullptr);
 	images.resize(imageCount);
 	vkGetSwapchainImagesKHR(devicesHandler->device, swapchain, &imageCount, images.data());
+}
+
+void SwapchainHandler::recreateSwapChain() {
+	int width = 0, height = 0;
+	while (width == 0 || height == 0) {
+		glfwGetFramebufferSize(windowHandler->window, &width, &height);
+		glfwWaitEvents();
+	}
+
+	vkDeviceWaitIdle(devicesHandler->device);
+
+	cleanupSwapChain();
+
+	createSwapchain();
+	createImageViews();
+	renderPassHandler->createRenderPass();
+	pipelinesHandler->createGraphicsPipeline();
+	renderPassHandler->createDepthResources();
+	framebuffersHandler->createFramebuffers();
+	commandBuffersHandler->createCommandBuffers();
+}
+
+void SwapchainHandler::cleanupSwapChain() {
+	vkDestroyImageView(devicesHandler->device, renderPassHandler->depthImageView, nullptr);
+	vkDestroyImage(devicesHandler->device, renderPassHandler->depthImage, nullptr);
+	vkFreeMemory(devicesHandler->device, renderPassHandler->depthImageMemory, nullptr);
+
+	for (auto framebuffer : framebuffersHandler->swapChainFramebuffers) {
+		vkDestroyFramebuffer(devicesHandler->device, framebuffer, nullptr);
+	}
+
+	vkFreeCommandBuffers(devicesHandler->device, commandsHandler->commandPool, static_cast<uint32_t>(commandBuffersHandler->commandBuffers.size()), commandBuffersHandler->commandBuffers.data());
+
+	vkDestroyPipeline(devicesHandler->device, pipelinesHandler->graphicsPipeline, nullptr);
+	vkDestroyPipelineLayout(devicesHandler->device, pipelinesHandler->pipelineLayout, nullptr);
+	vkDestroyRenderPass(devicesHandler->device, renderPassHandler->renderPass, nullptr);
+
+	for (auto imageView : swapchainHandler->imageViews) {
+		vkDestroyImageView(devicesHandler->device, imageView, nullptr);
+	}
+
+	vkDestroySwapchainKHR(devicesHandler->device, swapchainHandler->swapchain, nullptr);
 }
 
 void SwapchainHandler::createImageViews() {

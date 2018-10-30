@@ -16,7 +16,10 @@ TexturesHandler::TexturesHandler() {
 
 
 TexturesHandler::~TexturesHandler() {
-
+	vkDestroySampler(devicesHandler->device, textureSampler, nullptr);
+	vkDestroyImageView(devicesHandler->device, textureImageView, nullptr);
+	vkDestroyImage(devicesHandler->device, textureImage, nullptr);
+	vkFreeMemory(devicesHandler->device, textureImageMemory, nullptr);
 }
 
 

@@ -159,15 +159,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BuffersHandler.cpp" />
     <ClCompile Include="CapabilitiesHandler.cpp" />
+    <ClCompile Include="CommandBuffersHandler.cpp" />
     <ClCompile Include="CommandsHandler.cpp" />
     <ClCompile Include="DescriptorsHandler.cpp" />
     <ClCompile Include="DevicesHandler.cpp" />
+    <ClCompile Include="DrawHandler.cpp" />
+    <ClCompile Include="FramebuffersHandler.cpp" />
     <ClCompile Include="images.cpp" />
     <ClCompile Include="image_views.cpp" />
     <ClCompile Include="InstanceHandler.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="memory_types.cpp" />
+    <ClCompile Include="ModelsHandler.cpp" />
     <ClCompile Include="PipelinesHandler.cpp" />
     <ClCompile Include="QueuesHandler.cpp" />
     <ClCompile Include="read_file.cpp" />
@@ -176,6 +181,7 @@
     <ClCompile Include="buffer_to_image.cpp" />
     <ClCompile Include="ShadersHandler.cpp" />
     <ClCompile Include="SwapchainHandler.cpp" />
+    <ClCompile Include="SynchrosHandler.cpp" />
     <ClCompile Include="TexturesHandler.cpp" />
     <ClCompile Include="UniformsHandler.cpp" />
     <ClCompile Include="WindowHandler.cpp" />
@@ -196,15 +202,21 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BuffersHandler.h" />
     <ClInclude Include="buffer_to_image.h" />
     <ClInclude Include="CapabilitiesHandler.h" />
+    <ClInclude Include="CommandBuffersHandler.h" />
     <ClInclude Include="CommandsHandler.h" />
     <ClInclude Include="DescriptorsHandler.h" />
     <ClInclude Include="DevicesHandler.h" />
+    <ClInclude Include="DrawHandler.h" />
+    <ClInclude Include="FramebuffersHandler.h" />
     <ClInclude Include="Handlers.h" />
     <ClInclude Include="capabilities.h" />
     <ClInclude Include="buffers.h" />
+    <ClInclude Include="ModelsHandler.h" />
     <ClInclude Include="ShadersHandler.h" />
+    <ClInclude Include="SynchrosHandler.h" />
     <ClInclude Include="vertex.h" />
     <ClInclude Include="PipelinesHandler.h" />
     <ClInclude Include="read_file.h" />

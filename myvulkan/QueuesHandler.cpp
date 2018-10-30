@@ -5,13 +5,13 @@
 #include "Handlers.h"
 
 
-QueuesHandler::QueuesHandler()
-{
+QueuesHandler::QueuesHandler() {
+
 }
 
 
-QueuesHandler::~QueuesHandler()
-{
+QueuesHandler::~QueuesHandler()  {
+
 }
 
 
