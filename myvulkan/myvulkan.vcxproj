@@ -93,7 +93,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\tinyobjloader-1.0.6;C:\VulkanSDK\stb-2.19;C:\VulkanSDK\glfw-3.2.1.bin.WIN32\include;C:\VulkanSDK\glm-0.9.9.2;C:\VulkanSDK\1.1.85.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\gatperdut\source\repos\myvulkan\myvulkan\include;C:\VulkanSDK\tinyobjloader-1.0.6;C:\VulkanSDK\stb-2.19;C:\VulkanSDK\glfw-3.2.1.bin.WIN32\include;C:\VulkanSDK\glm-0.9.9.2;C:\VulkanSDK\1.1.85.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -128,7 +128,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\VulkanSDK\tinyobjloader-1.0.6;C:\VulkanSDK\stb-2.19;C:\VulkanSDK\glfw-3.2.1.bin.WIN32\include;C:\VulkanSDK\glm-0.9.9.2;C:\VulkanSDK\1.1.85.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\gatperdut\source\repos\myvulkan\myvulkan\include;C:\VulkanSDK\tinyobjloader-1.0.6;C:\VulkanSDK\stb-2.19;C:\VulkanSDK\glfw-3.2.1.bin.WIN32\include;C:\VulkanSDK\glm-0.9.9.2;C:\VulkanSDK\1.1.85.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -159,34 +159,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BuffersHandler.cpp" />
-    <ClCompile Include="CapabilitiesHandler.cpp" />
-    <ClCompile Include="CommandBuffersHandler.cpp" />
-    <ClCompile Include="CommandsHandler.cpp" />
-    <ClCompile Include="DescriptorsHandler.cpp" />
-    <ClCompile Include="DevicesHandler.cpp" />
-    <ClCompile Include="DrawHandler.cpp" />
-    <ClCompile Include="FramebuffersHandler.cpp" />
-    <ClCompile Include="images.cpp" />
-    <ClCompile Include="image_views.cpp" />
-    <ClCompile Include="InstanceHandler.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="memory_types.cpp" />
-    <ClCompile Include="ModelsHandler.cpp" />
-    <ClCompile Include="PipelinesHandler.cpp" />
-    <ClCompile Include="QueuesHandler.cpp" />
-    <ClCompile Include="read_file.cpp" />
-    <ClCompile Include="RenderPassHandler.cpp" />
-    <ClCompile Include="buffers.cpp" />
-    <ClCompile Include="buffer_to_image.cpp" />
-    <ClCompile Include="ShadersHandler.cpp" />
-    <ClCompile Include="SwapchainHandler.cpp" />
-    <ClCompile Include="SynchrosHandler.cpp" />
-    <ClCompile Include="TexturesHandler.cpp" />
-    <ClCompile Include="UniformsHandler.cpp" />
-    <ClCompile Include="WindowHandler.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="shaders\compile.bat" />
     <None Include="shaders\shader.frag" />
     <None Include="shaders\shader.vert" />
@@ -202,36 +174,70 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BuffersHandler.h" />
-    <ClInclude Include="buffer_to_image.h" />
-    <ClInclude Include="CapabilitiesHandler.h" />
-    <ClInclude Include="CommandBuffersHandler.h" />
-    <ClInclude Include="CommandsHandler.h" />
-    <ClInclude Include="DescriptorsHandler.h" />
-    <ClInclude Include="DevicesHandler.h" />
-    <ClInclude Include="DrawHandler.h" />
-    <ClInclude Include="FramebuffersHandler.h" />
-    <ClInclude Include="Handlers.h" />
-    <ClInclude Include="capabilities.h" />
-    <ClInclude Include="buffers.h" />
-    <ClInclude Include="ModelsHandler.h" />
-    <ClInclude Include="ShadersHandler.h" />
-    <ClInclude Include="SynchrosHandler.h" />
-    <ClInclude Include="vertex.h" />
-    <ClInclude Include="PipelinesHandler.h" />
-    <ClInclude Include="read_file.h" />
-    <ClInclude Include="TexturesHandler.h" />
-    <ClInclude Include="UniformsHandler.h" />
-    <ClInclude Include="uniform_buffer_objects.h" />
-    <ClInclude Include="images.h" />
-    <ClInclude Include="image_views.h" />
-    <ClInclude Include="Main.h" />
-    <ClInclude Include="InstanceHandler.h" />
-    <ClInclude Include="memory_types.h" />
-    <ClInclude Include="QueuesHandler.h" />
-    <ClInclude Include="RenderPassHandler.h" />
-    <ClInclude Include="SwapchainHandler.h" />
-    <ClInclude Include="WindowHandler.h" />
+    <ClInclude Include="include\buffers.h" />
+    <ClInclude Include="include\buffer_to_image.h" />
+    <ClInclude Include="include\capabilities.h" />
+    <ClInclude Include="include\Handlers\BuffersHandler.h" />
+    <ClInclude Include="include\Handlers\CameraHandler.h" />
+    <ClInclude Include="include\Handlers\CapabilitiesHandler.h" />
+    <ClInclude Include="include\Handlers\CommandBuffersHandler.h" />
+    <ClInclude Include="include\Handlers\CommandsHandler.h" />
+    <ClInclude Include="include\Handlers\DescriptorsHandler.h" />
+    <ClInclude Include="include\Handlers\DevicesHandler.h" />
+    <ClInclude Include="include\Handlers\DrawHandler.h" />
+    <ClInclude Include="include\Handlers\FramebuffersHandler.h" />
+    <ClInclude Include="include\Handlers\Handlers.h" />
+    <ClInclude Include="include\Handlers\InputHandler.h" />
+    <ClInclude Include="include\Handlers\InstanceHandler.h" />
+    <ClInclude Include="include\Handlers\ModelsHandler.h" />
+    <ClInclude Include="include\Handlers\PipelinesHandler.h" />
+    <ClInclude Include="include\Handlers\QueuesHandler.h" />
+    <ClInclude Include="include\Handlers\RenderPassHandler.h" />
+    <ClInclude Include="include\Handlers\ShadersHandler.h" />
+    <ClInclude Include="include\Handlers\SwapchainHandler.h" />
+    <ClInclude Include="include\Handlers\SynchrosHandler.h" />
+    <ClInclude Include="include\Handlers\TexturesHandler.h" />
+    <ClInclude Include="include\Handlers\UniformsHandler.h" />
+    <ClInclude Include="include\Handlers\WindowHandler.h" />
+    <ClInclude Include="include\images.h" />
+    <ClInclude Include="include\image_views.h" />
+    <ClInclude Include="include\Main.h" />
+    <ClInclude Include="include\memory_types.h" />
+    <ClInclude Include="include\Model.h" />
+    <ClInclude Include="include\read_file.h" />
+    <ClInclude Include="include\uniform_buffer_objects.h" />
+    <ClInclude Include="include\vertex.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\buffers.cpp" />
+    <ClCompile Include="src\buffer_to_image.cpp" />
+    <ClCompile Include="src\Handlers\BuffersHandler.cpp" />
+    <ClCompile Include="src\Handlers\CameraHandler.cpp" />
+    <ClCompile Include="src\Handlers\CapabilitiesHandler.cpp" />
+    <ClCompile Include="src\Handlers\CommandBuffersHandler.cpp" />
+    <ClCompile Include="src\Handlers\CommandsHandler.cpp" />
+    <ClCompile Include="src\Handlers\DescriptorsHandler.cpp" />
+    <ClCompile Include="src\Handlers\DevicesHandler.cpp" />
+    <ClCompile Include="src\Handlers\DrawHandler.cpp" />
+    <ClCompile Include="src\Handlers\FramebuffersHandler.cpp" />
+    <ClCompile Include="src\Handlers\InputHandler.cpp" />
+    <ClCompile Include="src\Handlers\InstanceHandler.cpp" />
+    <ClCompile Include="src\Handlers\ModelsHandler.cpp" />
+    <ClCompile Include="src\Handlers\PipelinesHandler.cpp" />
+    <ClCompile Include="src\Handlers\QueuesHandler.cpp" />
+    <ClCompile Include="src\Handlers\RenderPassHandler.cpp" />
+    <ClCompile Include="src\Handlers\ShadersHandler.cpp" />
+    <ClCompile Include="src\Handlers\SwapchainHandler.cpp" />
+    <ClCompile Include="src\Handlers\SynchrosHandler.cpp" />
+    <ClCompile Include="src\Handlers\TexturesHandler.cpp" />
+    <ClCompile Include="src\Handlers\UniformsHandler.cpp" />
+    <ClCompile Include="src\Handlers\WindowHandler.cpp" />
+    <ClCompile Include="src\images.cpp" />
+    <ClCompile Include="src\image_views.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\memory_types.cpp" />
+    <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\read_file.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
