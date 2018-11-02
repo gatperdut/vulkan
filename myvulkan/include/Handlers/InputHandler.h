@@ -1,8 +1,8 @@
 #pragma once
-#include "WindowHandler.h"
+#include "windowHandler.h"
 
 void mouseCallbackHelper(GLFWwindow*, double, double);
-
+void keyCallbackHelper(GLFWwindow*, int, int, int, int);
 
 class InputHandler {
 private:
@@ -13,7 +13,8 @@ public:
 	InputHandler();
 	~InputHandler();
 
-	void processKeyboard();
+	void processMovement();
+	void processKey(int, int);
 	void processMouseMovement(float xoffset, float yoffset);
 
 

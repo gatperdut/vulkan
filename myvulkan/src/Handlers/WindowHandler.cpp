@@ -1,5 +1,5 @@
 #include "Handlers/Handlers.h"
-#include "Handlers/WindowHandler.h"
+#include "Handlers/windowHandler.h"
 
 
 WindowHandler::WindowHandler() {
@@ -21,6 +21,7 @@ void WindowHandler::createWindow() {
 
 	window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);
 	glfwSetCursorPosCallback(window, mouseCallbackHelper);
+	glfwSetKeyCallback(window, keyCallbackHelper);
 	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetWindowUserPointer(window, this);
 	glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);

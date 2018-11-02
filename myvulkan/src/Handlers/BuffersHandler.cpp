@@ -17,8 +17,8 @@ BuffersHandler::~BuffersHandler() {
 
 
 void BuffersHandler::createVertexAndIndexBuffer() {
-	VkDeviceSize verticesSize = sizeof(modelsHandler->vertices[0]) * modelsHandler->vertices.size();
-	VkDeviceSize indicesSize = sizeof(modelsHandler->indices[0]) * modelsHandler->indices.size();
+	VkDeviceSize verticesSize = modelsHandler->verticesSize();
+	VkDeviceSize indicesSize = modelsHandler->indicesSize();
 
 	VkDeviceSize bufferSize = verticesSize + indicesSize;
 
@@ -27,13 +27,22 @@ void BuffersHandler::createVertexAndIndexBuffer() {
 	createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory);
 
 	void* data;
-	vkMapMemory(devicesHandler->device, stagingBufferMemory, 0, verticesSize, 0, &data);
-	memcpy(data, modelsHandler->vertices.data(), (size_t)verticesSize);
-	vkUnmapMemory(devicesHandler->device, stagingBufferMemory);
+	VkDeviceSize offset = 0;
+	VkDeviceSize modelVerticesSize, modelIndicesSize;
+	for (auto model : modelsHandler->models) {
+		modelVerticesSize = model->verticesSize();
+		modelIndicesSize = model->indicesSize();
 
-	vkMapMemory(devicesHandler->device, stagingBufferMemory, verticesSize, indicesSize, 0, &data);
-	memcpy(data, modelsHandler->indices.data(), (size_t)indicesSize);
-	vkUnmapMemory(devicesHandler->device, stagingBufferMemory);
+		vkMapMemory(devicesHandler->device, stagingBufferMemory, offset, modelVerticesSize, 0, &data);
+		memcpy(data, model->vertices.data(), (size_t)modelVerticesSize);
+		vkUnmapMemory(devicesHandler->device, stagingBufferMemory);
+
+		vkMapMemory(devicesHandler->device, stagingBufferMemory, offset + modelVerticesSize, modelIndicesSize, 0, &data);
+		memcpy(data, model->indices.data(), (size_t)modelIndicesSize);
+		vkUnmapMemory(devicesHandler->device, stagingBufferMemory);
+
+		offset += modelVerticesSize + modelIndicesSize;
+	}
 
 	createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, vertexAndIndexBuffer, vertexAndIndexBufferMemory);
 	copyBuffer(stagingBuffer, buffersHandler->vertexAndIndexBuffer, bufferSize);

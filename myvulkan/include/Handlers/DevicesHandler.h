@@ -18,6 +18,7 @@ public:
 
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	VkDevice device;
+	VkPhysicalDeviceProperties properties;
 
 private:
 	bool checkDeviceExtensionSupport(VkPhysicalDevice);

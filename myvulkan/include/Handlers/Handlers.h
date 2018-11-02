@@ -2,7 +2,7 @@
 
 
 #include "InstanceHandler.h"
-#include "WindowHandler.h"
+#include "windowHandler.h"
 #include "DevicesHandler.h"
 #include "QueuesHandler.h"
 #include "CapabilitiesHandler.h"

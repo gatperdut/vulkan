@@ -40,13 +40,12 @@ void DevicesHandler::pickPhysicalDevice() {
 
 
 bool DevicesHandler::isDeviceSuitable(VkPhysicalDevice device) {
-	VkPhysicalDeviceProperties deviceProperties;
-	vkGetPhysicalDeviceProperties(device, &deviceProperties);
+	vkGetPhysicalDeviceProperties(device, &properties);
 
 	VkPhysicalDeviceFeatures deviceFeatures;
 	vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
 
-	std::cout << "\t" << deviceProperties.deviceID << " " << deviceProperties.deviceName << std::endl;
+	std::cout << "\t" << properties.deviceID << " " << properties.deviceName << std::endl;
 
 	//return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && deviceFeatures.geometryShader;
 
@@ -82,7 +81,7 @@ bool DevicesHandler::checkDeviceExtensionSupport(VkPhysicalDevice device) {
 
 
 void DevicesHandler::createLogicalDevice() {
-	QueueFamilyIndices indices = queuesHandler->findQueueFamilies(devicesHandler->physicalDevice);
+	QueueFamilyIndices indices = queuesHandler->findQueueFamilies(physicalDevice);
 
 	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 	std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
@@ -119,10 +118,10 @@ void DevicesHandler::createLogicalDevice() {
 		createInfo.enabledLayerCount = 0;
 	}
 
-	if (vkCreateDevice(devicesHandler->physicalDevice, &createInfo, nullptr, &devicesHandler->device) != VK_SUCCESS) {
+	if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create logical device!");
 	}
 
-	vkGetDeviceQueue(devicesHandler->device, indices.graphicsFamily.value(), 0, &queuesHandler->graphicsQueue);
-	vkGetDeviceQueue(devicesHandler->device, indices.presentFamily.value(), 0, &queuesHandler->presentQueue);
+	vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &queuesHandler->graphicsQueue);
+	vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &queuesHandler->presentQueue);
 }

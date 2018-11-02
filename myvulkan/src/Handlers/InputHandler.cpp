@@ -15,9 +15,11 @@ void mouseCallbackHelper(GLFWwindow* window, double xpos, double ypos) {
 	inputHandler->processMouseMovement(xpos, ypos);
 };
 
+void keyCallbackHelper(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	inputHandler->processKey(key, action);
+}
 
-void InputHandler::processKeyboard() {
-	
+void InputHandler::processMovement() {
 	if (glfwGetKey(windowHandler->window, GLFW_KEY_W) == GLFW_PRESS) {
 		cameraHandler->pos += cameraHandler->speed * cameraHandler->front;
 	}
@@ -29,6 +31,16 @@ void InputHandler::processKeyboard() {
 	}
 	if (glfwGetKey(windowHandler->window, GLFW_KEY_D) == GLFW_PRESS) {
 		cameraHandler->pos += glm::normalize(glm::cross(cameraHandler->front, cameraHandler->up)) * cameraHandler->speed;
+	}
+}
+
+void InputHandler::processKey(int key, int action) {
+	if (action != GLFW_PRESS) {
+		return;
+	}
+	if (key == GLFW_KEY_G) {
+		//modelsHandler->load("models/angel.obj", glm::vec3(-5.0f, 0.0f, 0.0f));
+		std::cout << "Add one... but not really." << std::endl;
 	}
 }
 

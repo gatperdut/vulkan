@@ -1,10 +1,4 @@
-#define TINYOBJLOADER_IMPLEMENTATION
-#include <tiny_obj_loader.h>
-
 #include "Handlers/ModelsHandler.h"
-
-
-const std::string MODEL_PATH = "models/angel.obj";
 
 
 ModelsHandler::ModelsHandler() {
@@ -13,11 +7,33 @@ ModelsHandler::ModelsHandler() {
 
 
 ModelsHandler::~ModelsHandler() {
-
+	for (auto model : models) {
+		delete model;
+	}
 }
 
 
-void ModelsHandler::loadModel() {
-
+void ModelsHandler::load(std::string path, glm::vec3 pos) {
+	Model* model = new Model(path, pos);
+	models.push_back(model);
 }
 
+
+VkDeviceSize ModelsHandler::verticesSize() {
+	VkDeviceSize total = 0;
+	for (auto model : models) {
+		total += model->verticesSize();
+	}
+	
+	return total;
+}
+
+
+VkDeviceSize ModelsHandler::indicesSize() {
+	VkDeviceSize total = 0;
+	for (auto model : models) {
+		total += model->indicesSize();
+	}
+
+	return total;
+}

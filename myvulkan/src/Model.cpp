@@ -1,13 +1,18 @@
+#define TINYOBJLOADER_IMPLEMENTATION
+#include <tiny_obj_loader.h>
+
 #include "Model.h"
 
 
 Model::Model(std::string path, glm::vec3 pos) {
+	this->pos = pos;
+
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string err;
 
-	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, MODEL_PATH.c_str())) {
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path.c_str())) {
 		throw std::runtime_error(err);
 	}
 
@@ -43,4 +48,13 @@ Model::Model(std::string path, glm::vec3 pos) {
 
 Model::~Model() {
 
+}
+
+VkDeviceSize Model::verticesSize() {
+	return sizeof(vertices[0]) * vertices.size();
+}
+
+
+VkDeviceSize Model::indicesSize() {
+	return sizeof(indices[0]) * indices.size();
 }

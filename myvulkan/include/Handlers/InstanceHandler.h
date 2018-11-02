@@ -1,11 +1,11 @@
 #pragma once
 
 
-#ifdef NDEBUG
-const bool enableValidationLayers = false;
-#else
+//#ifdef NDEBUG
+//const bool enableValidationLayers = false;
+//#else
 const bool enableValidationLayers = true;
-#endif
+//#endif
 
 
 #define GLFW_INCLUDE_VULKAN
