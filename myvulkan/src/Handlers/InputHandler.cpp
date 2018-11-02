@@ -1,5 +1,8 @@
+#include <cstdlib>
+
 #include "Handlers/Handlers.h"
 #include "Handlers/InputHandler.h"
+#include "buffers.h"
 
 InputHandler::InputHandler() {
 
@@ -12,7 +15,7 @@ InputHandler::~InputHandler() {
 
 
 void mouseCallbackHelper(GLFWwindow* window, double xpos, double ypos) {
-	inputHandler->processMouseMovement(xpos, ypos);
+	inputHandler->processMouseMovement((float)xpos, (float)ypos);
 };
 
 void keyCallbackHelper(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -39,8 +42,13 @@ void InputHandler::processKey(int key, int action) {
 		return;
 	}
 	if (key == GLFW_KEY_G) {
-		//modelsHandler->load("models/angel.obj", glm::vec3(-5.0f, 0.0f, 0.0f));
-		std::cout << "Add one... but not really." << std::endl;
+		modelsHandler->load("models/angel.obj", glm::vec3(std::rand() % 30 - 15, std::rand() % 30 - 15, 0.0f));
+		//modelsHandler->load("models/angel.obj", glm::vec3(0.0f, 0.0f, 0.0f));
+		buffersHandler->createVertexAndIndexBuffer();
+		uniformsHandler->createUniformBuffer();
+		descriptorsHandler->createDescriptorPool();
+		descriptorsHandler->createDescriptorSets();
+		commandBuffersHandler->createCommandBuffers();
 	}
 }
 

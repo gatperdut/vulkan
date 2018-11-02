@@ -24,8 +24,8 @@ UniformsHandler::~UniformsHandler() {
 
 
 void UniformsHandler::computeAlignment() {
-	size_t minUboAlignment = devicesHandler->properties.limits.minUniformBufferOffsetAlignment;
-	alignment = sizeof(UniformBufferObject);
+	VkDeviceSize minUboAlignment = devicesHandler->properties.limits.minUniformBufferOffsetAlignment;
+	alignment = (VkDeviceSize)sizeof(UniformBufferObject);
 	if (minUboAlignment > 0) {
 		alignment = (alignment + minUboAlignment - 1) & ~(minUboAlignment - 1);
 	}
@@ -33,7 +33,6 @@ void UniformsHandler::computeAlignment() {
 
 
 void UniformsHandler::createUniformBuffer() {
-	//VkDeviceSize bufferSize = sizeof(UniformBufferObject) * modelsHandler->models.size();
 	VkDeviceSize bufferSize = modelsHandler->models.size() * alignment;
 
 
@@ -66,7 +65,7 @@ void UniformsHandler::updateUniformBuffer(uint32_t currentImage) {
 		}
 		ubo.model = glm::rotate(ubo.model, turn * 0.03f * time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		ubo.view = cameraHandler->viewMatrix();
-		ubo.proj = glm::perspective(glm::radians(45.0f), swapchainHandler->extent.width / (float)swapchainHandler->extent.height, 0.1f, 30.0f);
+		ubo.proj = glm::perspective(glm::radians(45.0f), swapchainHandler->extent.width / (float)swapchainHandler->extent.height, 0.1f, 100.0f);
 
 		ubo.proj[1][1] *= -1;
 

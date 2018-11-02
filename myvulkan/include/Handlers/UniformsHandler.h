@@ -15,7 +15,7 @@ public:
 	void updateUniformBuffer(uint32_t);
 
 
-	size_t alignment;
+	VkDeviceSize alignment;
 	std::vector<VkBuffer> uniformBuffers;
 	std::vector<VkDeviceMemory> uniformBuffersMemory;
 };
