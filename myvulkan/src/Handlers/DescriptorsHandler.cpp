@@ -33,6 +33,10 @@ void DescriptorsHandler::createDescriptorPool() {
 	}
 }
 
+void DescriptorsHandler::resetDescriptorPool() {
+	vkResetDescriptorPool(devicesHandler->device, descriptorPool, 0);
+}
+
 
 void DescriptorsHandler::createDescriptorSetLayout() {
 	VkDescriptorSetLayoutBinding uboLayoutBinding = {};

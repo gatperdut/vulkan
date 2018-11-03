@@ -11,12 +11,17 @@ BuffersHandler::BuffersHandler() {
 
 
 BuffersHandler::~BuffersHandler() {
+	freeResources();
+}
+
+
+void BuffersHandler::freeResources() {
 	vkDestroyBuffer(devicesHandler->device, vertexAndIndexBuffer, nullptr);
 	vkFreeMemory(devicesHandler->device, vertexAndIndexBufferMemory, nullptr);
 }
 
 
-void BuffersHandler::createVertexAndIndexBuffer() {
+void BuffersHandler::internalCreateVertexAndIndexBuffer(VkBuffer *buffer, VkDeviceMemory *bufferMemory) {
 	VkDeviceSize verticesSize = modelsHandler->verticesSize();
 	VkDeviceSize indicesSize = modelsHandler->indicesSize();
 
@@ -44,11 +49,29 @@ void BuffersHandler::createVertexAndIndexBuffer() {
 		offset += modelVerticesSize + modelIndicesSize;
 	}
 
-	createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, vertexAndIndexBuffer, vertexAndIndexBufferMemory);
-	copyBuffer(stagingBuffer, buffersHandler->vertexAndIndexBuffer, bufferSize);
+	createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, *buffer, *bufferMemory);
+	copyBuffer(stagingBuffer, *buffer, bufferSize);
 
 	vkDestroyBuffer(devicesHandler->device, stagingBuffer, nullptr);
 	vkFreeMemory(devicesHandler->device, stagingBufferMemory, nullptr);
+}
+
+
+void BuffersHandler::createVertexAndIndexBuffer() {
+	if (!vertexAndIndexBufferMemory) {
+		internalCreateVertexAndIndexBuffer(&vertexAndIndexBuffer, &vertexAndIndexBufferMemory);
+	}
+	else {
+		VkBuffer newVertexAndIndexBuffer = 0;
+		VkDeviceMemory newVertexAndIndexBufferMemory = 0;
+
+		internalCreateVertexAndIndexBuffer(&newVertexAndIndexBuffer, &newVertexAndIndexBufferMemory);
+
+		freeResources();
+
+		vertexAndIndexBuffer = newVertexAndIndexBuffer;
+		vertexAndIndexBufferMemory = newVertexAndIndexBufferMemory;
+	}
 }
 
 

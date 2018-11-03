@@ -5,14 +5,18 @@
 
 
 class BuffersHandler {
+private:
+	void internalCreateVertexAndIndexBuffer(VkBuffer*, VkDeviceMemory*);
+
 public:
 	BuffersHandler();
 	~BuffersHandler();
 
+	void freeResources();
 	void createVertexAndIndexBuffer();
 
 
 	VkBuffer vertexAndIndexBuffer;
-	VkDeviceMemory vertexAndIndexBufferMemory;
+	VkDeviceMemory vertexAndIndexBufferMemory = 0;
 };
 

@@ -43,11 +43,16 @@ void InputHandler::processKey(int key, int action) {
 	}
 	if (key == GLFW_KEY_G) {
 		modelsHandler->load("models/angel.obj", glm::vec3(std::rand() % 30 - 15, std::rand() % 30 - 15, 0.0f));
-		//modelsHandler->load("models/angel.obj", glm::vec3(0.0f, 0.0f, 0.0f));
+
 		buffersHandler->createVertexAndIndexBuffer();
+
 		uniformsHandler->createUniformBuffer();
-		descriptorsHandler->createDescriptorPool();
+
+		//descriptorsHandler->createDescriptorPool();
+		descriptorsHandler->resetDescriptorPool();
+
 		descriptorsHandler->createDescriptorSets();
+
 		commandBuffersHandler->createCommandBuffers();
 	}
 }

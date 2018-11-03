@@ -16,12 +16,16 @@ UniformsHandler::UniformsHandler() {
 
 
 UniformsHandler::~UniformsHandler() {
+	freeResources();
+}
+
+
+void UniformsHandler::freeResources() {
 	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
 		vkDestroyBuffer(devicesHandler->device, uniformBuffers[i], nullptr);
 		vkFreeMemory(devicesHandler->device, uniformBuffersMemory[i], nullptr);
 	}
 }
-
 
 void UniformsHandler::computeAlignment() {
 	VkDeviceSize minUboAlignment = devicesHandler->properties.limits.minUniformBufferOffsetAlignment;
@@ -32,14 +36,31 @@ void UniformsHandler::computeAlignment() {
 }
 
 
-void UniformsHandler::createUniformBuffer() {
+void UniformsHandler::internalCreateUniformBuffer(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemory) {
 	VkDeviceSize bufferSize = modelsHandler->models.size() * alignment;
 
-
-	uniformBuffers.resize(swapchainHandler->images.size());
-	uniformBuffersMemory.resize(swapchainHandler->images.size());
+	(*buffers).resize(swapchainHandler->images.size());
+	(*buffersMemory).resize(swapchainHandler->images.size());
 	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
-		createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, uniformBuffers[i], uniformBuffersMemory[i]);
+		createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, (*buffers)[i], (*buffersMemory)[i]);
+	}
+}
+
+void UniformsHandler::createUniformBuffer() {
+	if (!uniformBuffers.size()) {
+		internalCreateUniformBuffer(&uniformBuffers, &uniformBuffersMemory);
+	}
+	else {
+		std::vector<VkBuffer> newUniformBuffers;
+		std::vector<VkDeviceMemory> newUniformBuffersMemory;
+
+		internalCreateUniformBuffer(&newUniformBuffers, &newUniformBuffersMemory);
+
+		freeResources();
+		for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+			uniformBuffers[i] = newUniformBuffers[i];
+			uniformBuffersMemory[i] = newUniformBuffersMemory[i];
+		}
 	}
 }
 

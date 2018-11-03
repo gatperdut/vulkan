@@ -12,6 +12,7 @@ public:
 	~DescriptorsHandler();
 
 	void createDescriptorPool();
+	void resetDescriptorPool();
 	void createDescriptorSetLayout();
 	void createDescriptorSets();
 

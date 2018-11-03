@@ -6,11 +6,15 @@
 
 
 class UniformsHandler {
+private:
+	void internalCreateUniformBuffer(std::vector<VkBuffer>*, std::vector<VkDeviceMemory>*);
+
 public:
 	UniformsHandler();
 	~UniformsHandler();
 
 	void computeAlignment();
+	void freeResources();
 	void createUniformBuffer();
 	void updateUniformBuffer(uint32_t);
 
