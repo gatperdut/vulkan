@@ -164,16 +164,13 @@
     <None Include="shaders\shader.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="textures\chalet.jpg" />
-    <Image Include="textures\statue.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Object Include="models\chalet.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </Object>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Addons\TextureAddon.h" />
     <ClInclude Include="include\buffers.h" />
     <ClInclude Include="include\buffer_to_image.h" />
     <ClInclude Include="include\capabilities.h" />
@@ -196,7 +193,6 @@
     <ClInclude Include="include\Handlers\ShadersHandler.h" />
     <ClInclude Include="include\Handlers\SwapchainHandler.h" />
     <ClInclude Include="include\Handlers\SynchrosHandler.h" />
-    <ClInclude Include="include\Handlers\TexturesHandler.h" />
     <ClInclude Include="include\Handlers\UniformsHandler.h" />
     <ClInclude Include="include\Handlers\WindowHandler.h" />
     <ClInclude Include="include\images.h" />
@@ -209,6 +205,7 @@
     <ClInclude Include="include\vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Addons\TextureAddon.cpp" />
     <ClCompile Include="src\buffers.cpp" />
     <ClCompile Include="src\buffer_to_image.cpp" />
     <ClCompile Include="src\Handlers\BuffersHandler.cpp" />
@@ -229,7 +226,6 @@
     <ClCompile Include="src\Handlers\ShadersHandler.cpp" />
     <ClCompile Include="src\Handlers\SwapchainHandler.cpp" />
     <ClCompile Include="src\Handlers\SynchrosHandler.cpp" />
-    <ClCompile Include="src\Handlers\TexturesHandler.cpp" />
     <ClCompile Include="src\Handlers\UniformsHandler.cpp" />
     <ClCompile Include="src\Handlers\WindowHandler.cpp" />
     <ClCompile Include="src\images.cpp" />
@@ -238,6 +234,9 @@
     <ClCompile Include="src\memory_types.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\read_file.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\angel.jpeg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

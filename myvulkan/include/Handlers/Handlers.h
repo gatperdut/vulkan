@@ -11,7 +11,6 @@
 #include "CommandsHandler.h"
 #include "DescriptorsHandler.h"
 #include "UniformsHandler.h"
-#include "TexturesHandler.h"
 #include "PipelinesHandler.h"
 #include "ShadersHandler.h"
 #include "FramebuffersHandler.h"
@@ -33,7 +32,6 @@ extern RenderPassHandler* renderPassHandler;
 extern CommandsHandler* commandsHandler;
 extern DescriptorsHandler* descriptorsHandler;
 extern UniformsHandler* uniformsHandler;
-extern TexturesHandler* texturesHandler;
 extern PipelinesHandler* pipelinesHandler;
 extern ShadersHandler* shadersHandler;
 extern FramebuffersHandler* framebuffersHandler;

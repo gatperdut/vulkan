@@ -4,7 +4,19 @@
 #include "Model.h"
 
 
-Model::Model(std::string path, glm::vec3 pos) {
+Model::Model(std::string modelPath, std::string texturePath, glm::vec3 pos) {
+	loadTexture(texturePath);
+	loadModel(modelPath, pos);
+
+}
+
+
+Model::~Model() {
+	delete textureAddon;
+}
+
+
+void Model::loadModel(std::string path, glm::vec3 pos) {
 	this->pos = pos;
 
 	tinyobj::attrib_t attrib;
@@ -46,9 +58,14 @@ Model::Model(std::string path, glm::vec3 pos) {
 }
 
 
-Model::~Model() {
+void Model::loadTexture(std::string path) {
+	textureAddon = new TextureAddon(path);
 
+	textureAddon->createTextureImage();
+	textureAddon->createTextureImageView();
+	textureAddon->createTextureSampler();
 }
+
 
 VkDeviceSize Model::verticesSize() {
 	return sizeof(vertices[0]) * vertices.size();

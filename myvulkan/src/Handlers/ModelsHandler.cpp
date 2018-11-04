@@ -13,8 +13,8 @@ ModelsHandler::~ModelsHandler() {
 }
 
 
-void ModelsHandler::load(std::string path, glm::vec3 pos) {
-	Model* model = new Model(path, pos);
+void ModelsHandler::load(std::string modelPath, std::string texturePath, glm::vec3 pos) {
+	Model* model = new Model(modelPath, texturePath, pos);
 	models.push_back(model);
 }
 
