@@ -74,12 +74,16 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\VulkanSDK\glm-0.9.9.2;C:\VulkanSDK\glfw-3.2.1.bin.WIN64\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\VulkanSDK\glfw-3.2.1.bin.WIN64\lib-vc2015;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -95,6 +99,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>C:\Users\gatperdut\source\repos\myvulkan\myvulkan\include;C:\VulkanSDK\tinyobjloader-1.0.6;C:\VulkanSDK\stb-2.19;C:\VulkanSDK\glfw-3.2.1.bin.WIN32\include;C:\VulkanSDK\glm-0.9.9.2;C:\VulkanSDK\1.1.85.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,6 +135,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>C:\Users\gatperdut\source\repos\myvulkan\myvulkan\include;C:\VulkanSDK\tinyobjloader-1.0.6;C:\VulkanSDK\stb-2.19;C:\VulkanSDK\glfw-3.2.1.bin.WIN32\include;C:\VulkanSDK\glm-0.9.9.2;C:\VulkanSDK\1.1.85.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
