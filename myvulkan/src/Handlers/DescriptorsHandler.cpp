@@ -11,22 +11,23 @@ DescriptorsHandler::DescriptorsHandler() {
 
 DescriptorsHandler::~DescriptorsHandler() {
 	vkDestroyDescriptorPool(devicesHandler->device, descriptorPool, nullptr);
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutUB, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutCIS, nullptr);
 }
 
 
 void DescriptorsHandler::createDescriptorPool() {
 	std::array<VkDescriptorPoolSize, 2> poolSizes = {};
 	poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-	poolSizes[0].descriptorCount = static_cast<uint32_t>(swapchainHandler->images.size() * modelsHandler->models.size());
+	poolSizes[0].descriptorCount = static_cast<uint32_t>(swapchainHandler->images.size() * modelsHandler->models.size() * 2);
 	poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	poolSizes[1].descriptorCount = static_cast<uint32_t>(swapchainHandler->images.size() * modelsHandler->models.size());
+	poolSizes[1].descriptorCount = static_cast<uint32_t>(swapchainHandler->images.size() * modelsHandler->models.size() * 2);
 
 	VkDescriptorPoolCreateInfo poolInfo = {};
 	poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
 	poolInfo.pPoolSizes = poolSizes.data();
-	poolInfo.maxSets = static_cast<uint32_t>(swapchainHandler->images.size() * modelsHandler->models.size());
+	poolInfo.maxSets = static_cast<uint32_t>(swapchainHandler->images.size() * modelsHandler->models.size() * 2);
 
 	if (vkCreateDescriptorPool(devicesHandler->device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create descriptor pool!");
@@ -38,6 +39,11 @@ void DescriptorsHandler::resetDescriptorPool() {
 }
 
 
+std::vector<VkDescriptorSetLayout> DescriptorsHandler::descriptorSetlayouts() {
+	std::vector<VkDescriptorSetLayout> layouts = { descriptorSetLayoutUB, descriptorSetLayoutCIS };
+	return layouts;
+}
+
 void DescriptorsHandler::createDescriptorSetLayout() {
 	VkDescriptorSetLayoutBinding uboLayoutBinding = {};
 	uboLayoutBinding.binding = 0;
@@ -46,67 +52,88 @@ void DescriptorsHandler::createDescriptorSetLayout() {
 	uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
 
 	VkDescriptorSetLayoutBinding samplerLayoutBinding = {};
-	samplerLayoutBinding.binding = 1;
+	samplerLayoutBinding.binding = 0;
 	samplerLayoutBinding.descriptorCount = 1;
 	samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 	samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
 
-	std::array<VkDescriptorSetLayoutBinding, 2> bindings = { uboLayoutBinding, samplerLayoutBinding };
+	VkDescriptorSetLayoutCreateInfo layoutInfoUB = {};
+	layoutInfoUB.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfoUB.bindingCount = 1;
+	layoutInfoUB.pBindings = &uboLayoutBinding;
 
-	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = static_cast<uint32_t>(bindings.size());;
-	layoutInfo.pBindings = bindings.data();
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfoUB, nullptr, &descriptorSetLayoutUB) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create UB descriptor set layout!");
+	}
 
-	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayout) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create descriptor set layout!");
+	VkDescriptorSetLayoutCreateInfo layoutInfoCIS = {};
+	layoutInfoCIS.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfoCIS.bindingCount = 1;
+	layoutInfoCIS.pBindings = &samplerLayoutBinding;
+
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfoCIS, nullptr, &descriptorSetLayoutCIS) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create CIS descriptor set layout!");
 	}
 }
 
 void DescriptorsHandler::createDescriptorSets() {
-	std::vector<VkDescriptorSetLayout> layouts(modelsHandler->models.size(), descriptorSetLayout);
+	std::vector<VkDescriptorSetLayout> layoutsUB(1, descriptorSetLayoutUB);
+	std::vector<VkDescriptorSetLayout> layoutsCIS(modelsHandler->models.size(), descriptorSetLayoutCIS);
 
-	VkDescriptorSetAllocateInfo allocInfo = {};
-	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-	allocInfo.descriptorPool = descriptorPool;
-	allocInfo.descriptorSetCount = static_cast<uint32_t>(modelsHandler->models.size());
-	allocInfo.pSetLayouts = layouts.data();
+	VkDescriptorSetAllocateInfo allocInfoUB = {};
+	allocInfoUB.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	allocInfoUB.descriptorPool = descriptorPool;
+	allocInfoUB.descriptorSetCount = 1;
+	allocInfoUB.pSetLayouts = layoutsUB.data();
+
+	VkDescriptorSetAllocateInfo allocInfoCIS = {};
+	allocInfoCIS.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	allocInfoCIS.descriptorPool = descriptorPool;
+	allocInfoCIS.descriptorSetCount = static_cast<uint32_t>(modelsHandler->models.size());
+	allocInfoCIS.pSetLayouts = layoutsCIS.data();
 
 	descriptorSets.resize(swapchainHandler->images.size());
 
 	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
-		descriptorSets[i].resize(modelsHandler->models.size());
-		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, descriptorSets[i].data()) != VK_SUCCESS) {
-			throw std::runtime_error("failed to allocate descriptor sets!");
+		descriptorSets[i].resize(modelsHandler->models.size() + 1);
+		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfoUB, &descriptorSets[i][0]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to allocate UB descriptor set!");
+		}
+		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfoCIS, &descriptorSets[i][1]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to allocate CIS descriptor sets!");
 		}
 		VkDescriptorBufferInfo bufferInfo = {};
 		bufferInfo.buffer = uniformsHandler->uniformBuffers[i];
 		bufferInfo.offset = 0;
 		bufferInfo.range = sizeof(UniformBufferObject);
 
+		VkWriteDescriptorSet descriptorWriteUB = {};
+		descriptorWriteUB.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWriteUB.dstSet = descriptorSets[i][0];
+		descriptorWriteUB.dstBinding = 0;
+		descriptorWriteUB.dstArrayElement = 0;
+		descriptorWriteUB.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+		descriptorWriteUB.descriptorCount = 1;
+		descriptorWriteUB.pBufferInfo = &bufferInfo;
+
+		vkUpdateDescriptorSets(devicesHandler->device, 1, &descriptorWriteUB, 0, nullptr);
+
 		for (size_t j = 0; j < modelsHandler->models.size(); j++) {
 			VkDescriptorImageInfo imageInfo = {};
 			imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 			imageInfo.imageView = modelsHandler->models[j]->textureAddon->textureImageView;
 			imageInfo.sampler = modelsHandler->models[j]->textureAddon->textureSampler;
+			
+			VkWriteDescriptorSet descriptorWriteCIS = {};
+			descriptorWriteCIS.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+			descriptorWriteCIS.dstSet = descriptorSets[i][j + 1];
+			descriptorWriteCIS.dstBinding = 0;
+			descriptorWriteCIS.dstArrayElement = 0;
+			descriptorWriteCIS.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+			descriptorWriteCIS.descriptorCount = 1;
+			descriptorWriteCIS.pImageInfo = &imageInfo;
 
-			std::array<VkWriteDescriptorSet, 2> descriptorWrites = {};
-			descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-			descriptorWrites[0].dstSet = descriptorSets[i][j];
-			descriptorWrites[0].dstBinding = 0;
-			descriptorWrites[0].dstArrayElement = 0;
-			descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-			descriptorWrites[0].descriptorCount = 1;
-			descriptorWrites[0].pBufferInfo = &bufferInfo;
-			descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-			descriptorWrites[1].dstSet = descriptorSets[i][j];
-			descriptorWrites[1].dstBinding = 1;
-			descriptorWrites[1].dstArrayElement = 0;
-			descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-			descriptorWrites[1].descriptorCount = 1;
-			descriptorWrites[1].pImageInfo = &imageInfo;
-
-			vkUpdateDescriptorSets(devicesHandler->device, static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
+			vkUpdateDescriptorSets(devicesHandler->device, 1, &descriptorWriteCIS, 0, nullptr);
 		}
 	}
 }

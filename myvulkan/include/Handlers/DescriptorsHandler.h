@@ -15,9 +15,11 @@ public:
 	void resetDescriptorPool();
 	void createDescriptorSetLayout();
 	void createDescriptorSets();
+	std::vector<VkDescriptorSetLayout> descriptorSetlayouts();
 
 
-	VkDescriptorSetLayout descriptorSetLayout;
+	VkDescriptorSetLayout descriptorSetLayoutUB;
+	VkDescriptorSetLayout descriptorSetLayoutCIS;
 	VkDescriptorPool descriptorPool;
 	std::vector<std::vector<VkDescriptorSet>> descriptorSets;
 };

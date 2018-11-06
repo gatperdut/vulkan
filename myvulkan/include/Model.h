@@ -11,11 +11,11 @@
 
 class Model {
 private:
-	void loadModel(std::string, glm::vec3);
+	void loadModel(std::string, std::string, glm::vec3);
 	void loadTexture(std::string);
 
 public:
-	Model(std::string, std::string, glm::vec3);
+	Model(std::string, std::string, std::string, glm::vec3);
 	~Model();
 
 	VkDeviceSize verticesSize();
