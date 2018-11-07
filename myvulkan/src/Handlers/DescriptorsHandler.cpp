@@ -121,8 +121,8 @@ void DescriptorsHandler::createDescriptorSets() {
 		for (size_t j = 0; j < modelsHandler->models.size(); j++) {
 			VkDescriptorImageInfo imageInfo = {};
 			imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-			imageInfo.imageView = modelsHandler->models[j]->textureAddon->textureImageView;
-			imageInfo.sampler = modelsHandler->models[j]->textureAddon->textureSampler;
+			imageInfo.imageView = modelsHandler->models[j]->texturesHandler->imageViews[0];
+			imageInfo.sampler = modelsHandler->models[j]->texturesHandler->imageSamplers[0];
 			
 			VkWriteDescriptorSet descriptorWriteCIS = {};
 			descriptorWriteCIS.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;

@@ -5,17 +5,17 @@
 #include <vulkan/vulkan.h>
 #include <glm/glm.hpp>
 
-#include "Addons/TextureAddon.h"
+#include "Addons/TexturesHandler.h"
 #include "vertex.h"
 
 
 class Model {
 private:
-	void loadModel(std::string, std::string, glm::vec3);
-	void loadTexture(std::string);
+	void load();
+	void addTexture(std::string);
 
 public:
-	Model(std::string, std::string, std::string, glm::vec3);
+	Model(std::string, std::string, glm::vec3);
 	~Model();
 
 	VkDeviceSize verticesSize();
@@ -23,8 +23,10 @@ public:
 
 
 	glm::vec3 pos;
+	std::string filename;
+	std::string path;
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
-	TextureAddon* textureAddon;
+	TexturesHandler* texturesHandler;
 };
 

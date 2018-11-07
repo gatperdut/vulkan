@@ -176,7 +176,7 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Addons\TextureAddon.h" />
+    <ClInclude Include="include\Addons\TexturesHandler.h" />
     <ClInclude Include="include\buffers.h" />
     <ClInclude Include="include\buffer_to_image.h" />
     <ClInclude Include="include\capabilities.h" />
@@ -211,7 +211,7 @@
     <ClInclude Include="include\vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Addons\TextureAddon.cpp" />
+    <ClCompile Include="src\Addons\TexturesHandler.cpp" />
     <ClCompile Include="src\buffers.cpp" />
     <ClCompile Include="src\buffer_to_image.cpp" />
     <ClCompile Include="src\Handlers\BuffersHandler.cpp" />

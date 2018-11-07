@@ -148,7 +148,7 @@
     <ClInclude Include="include\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Addons\TextureAddon.h">
+    <ClInclude Include="include\Addons\TexturesHandler.h">
       <Filter>Header Files\Addons</Filter>
     </ClInclude>
   </ItemGroup>
@@ -237,7 +237,7 @@
     <ClCompile Include="src\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Addons\TextureAddon.cpp">
+    <ClCompile Include="src\Addons\TexturesHandler.cpp">
       <Filter>Source Files\Addons</Filter>
     </ClCompile>
   </ItemGroup>

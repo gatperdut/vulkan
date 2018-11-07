@@ -25,7 +25,6 @@ void DevicesHandler::pickPhysicalDevice() {
 
 	std::vector<VkPhysicalDevice> devices(deviceCount);
 	vkEnumeratePhysicalDevices(instanceHandler->instance, &deviceCount, devices.data());
-	std::cout << "Physical devices:\n********************" << std::endl;
 	for (const auto& device : devices) {
 		if (isDeviceSuitable(device)) {
 			physicalDevice = device;
@@ -44,8 +43,6 @@ bool DevicesHandler::isDeviceSuitable(VkPhysicalDevice device) {
 
 	VkPhysicalDeviceFeatures deviceFeatures;
 	vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
-
-	std::cout << "\t" << properties.deviceID << " " << properties.deviceName << std::endl;
 
 	//return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && deviceFeatures.geometryShader;
 

@@ -1,32 +1,36 @@
+#include <iostream>
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
 #include "Model.h"
 
 
-Model::Model(std::string modelFilename, std::string mtlPath, std::string textureFilename, glm::vec3 pos) {
-	loadTexture(textureFilename);
-	loadModel(modelFilename, mtlPath, pos);
+Model::Model(std::string path, std::string filename, glm::vec3 pos) {
+	this->path = path;
+	this->filename = filename;
+	this->pos = pos;
 
+	texturesHandler = new TexturesHandler(path);
+
+	load();
 }
 
 
 Model::~Model() {
-	delete textureAddon;
+	delete texturesHandler;
 }
 
 
-void Model::loadModel(std::string file, std::string mtlPath, glm::vec3 pos) {
-	this->pos = pos;
-
+void Model::load() {
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string err;
 
-	if (!tinyobj::LoadObj(&attrib, &shapes, &materials,  &err, file.c_str(), mtlPath.c_str(), true)) {
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials,  &err, (path + filename).c_str(), path.c_str(), true)) {
 		throw std::runtime_error(err);
 	}
+	std::cout << err << std::endl;
 
 	std::unordered_map<Vertex, uint32_t> uniqueVertices = {};
 
@@ -58,12 +62,8 @@ void Model::loadModel(std::string file, std::string mtlPath, glm::vec3 pos) {
 }
 
 
-void Model::loadTexture(std::string path) {
-	textureAddon = new TextureAddon(path);
-
-	textureAddon->createTextureImage();
-	textureAddon->createTextureImageView();
-	textureAddon->createTextureSampler();
+void Model::addTexture(std::string filename) {
+	texturesHandler->addTexture(filename);
 }
 
 
