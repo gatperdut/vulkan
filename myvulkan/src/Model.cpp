@@ -13,6 +13,8 @@ Model::Model(std::string path, std::string filename, glm::vec3 pos) {
 	texturesHandler = new TexturesHandler(path);
 
 	load();
+
+	texturesHandler->createDescriptorSetLayout();
 }
 
 
@@ -32,9 +34,17 @@ void Model::load() {
 	}
 	std::cout << err << std::endl;
 
+	for (tinyobj::material_t material : materials) {
+		if (!texturesHandler->hasTexture(material.ambient_texname)) {
+			std::cout << "Texture used: " << material.ambient_texname << std::endl;
+			texturesHandler->addTexture(material.ambient_texname);
+		};
+	}
+
 	std::unordered_map<Vertex, uint32_t> uniqueVertices = {};
 
 	for (const auto& shape : shapes) {
+		uint32_t indexCount = 0;
 		for (const auto& index : shape.mesh.indices) {
 			Vertex vertex = {};
 
@@ -43,6 +53,8 @@ void Model::load() {
 				attrib.vertices[3 * index.vertex_index + 1],
 				attrib.vertices[3 * index.vertex_index + 2]
 			};
+
+			vertex.materialIndex = texturesHandler->textureIndex(materials[shape.mesh.material_ids[indexCount / 3]].ambient_texname);
 
 			vertex.texCoord = {
 				attrib.texcoords[2 * index.texcoord_index + 0],
@@ -57,6 +69,8 @@ void Model::load() {
 			}
 
 			indices.push_back(uniqueVertices[vertex]);
+
+			indexCount++;
 		}
 	}
 }

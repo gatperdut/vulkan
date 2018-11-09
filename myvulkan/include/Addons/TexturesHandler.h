@@ -17,13 +17,22 @@ public:
 	~TexturesHandler();
 
 	void addTexture(std::string);
+	bool hasTexture(std::string);
+	int32_t textureIndex(std::string);
+
+	void createDescriptorSetLayout();
+	void createDescriptorSets();
 
 
 	std::string path;
+	std::vector<std::string> filenames;
 	std::vector<VkImage> images;
 	std::vector<VkDeviceMemory> imageMemories;
 	std::vector<VkImageView> imageViews;
 	std::vector<VkSampler> imageSamplers;
 	uint32_t mipLevels;
+
+	VkDescriptorSetLayout descriptorSetLayoutCIS;
+	std::vector<VkDescriptorSet> descriptorSets;
 };
 

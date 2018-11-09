@@ -126,7 +126,7 @@ void PipelinesHandler::createGraphicsPipeline() {
 	colorBlending.blendConstants[2] = 0.0f; // Optional
 	colorBlending.blendConstants[3] = 0.0f; // Optional
 
-	std::vector<VkDescriptorSetLayout> layouts = descriptorsHandler->descriptorSetlayouts();
+	std::vector<VkDescriptorSetLayout> layouts = { descriptorsHandler->descriptorSetLayoutUB, modelsHandler->models[0]->texturesHandler->descriptorSetLayoutCIS };
 
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;

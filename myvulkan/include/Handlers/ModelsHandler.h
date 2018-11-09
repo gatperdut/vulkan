@@ -17,6 +17,7 @@ public:
 	void load(std::string, std::string, glm::vec3);
 	VkDeviceSize verticesSize();
 	VkDeviceSize indicesSize();
+	void createDescriptorSets();
 
 
 	std::vector<Model*> models;

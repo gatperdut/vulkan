@@ -37,3 +37,9 @@ VkDeviceSize ModelsHandler::indicesSize() {
 
 	return total;
 }
+
+void ModelsHandler::createDescriptorSets() {
+	for (auto model : models) {
+		model->texturesHandler->createDescriptorSets();
+	}
+}

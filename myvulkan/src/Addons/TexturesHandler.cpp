@@ -28,10 +28,68 @@ TexturesHandler::~TexturesHandler() {
 	for (auto imageMemory : imageMemories) {
 		vkFreeMemory(devicesHandler->device, imageMemory, nullptr);
 	}
+
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutCIS, nullptr);
 }
 
 
+void TexturesHandler::createDescriptorSetLayout() {
+	VkDescriptorSetLayoutBinding samplerLayoutBinding = {};
+	samplerLayoutBinding.binding = 0;
+	samplerLayoutBinding.descriptorCount = filenames.size();
+	samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+
+	VkDescriptorSetLayoutCreateInfo layoutInfoCIS = {};
+	layoutInfoCIS.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfoCIS.bindingCount = 1;
+	layoutInfoCIS.pBindings = &samplerLayoutBinding;
+
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfoCIS, nullptr, &descriptorSetLayoutCIS) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create CIS descriptor set layout!");
+	}
+}
+
+void TexturesHandler::createDescriptorSets() {
+	std::vector<VkDescriptorSetLayout> layoutsCIS(filenames.size(), descriptorSetLayoutCIS);
+
+	VkDescriptorSetAllocateInfo allocInfoCIS = {};
+	allocInfoCIS.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	allocInfoCIS.descriptorPool = descriptorsHandler->descriptorPool;
+	allocInfoCIS.descriptorSetCount = static_cast<uint32_t>(filenames.size());
+	allocInfoCIS.pSetLayouts = layoutsCIS.data();
+
+	descriptorSets.resize(swapchainHandler->images.size());
+
+	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfoCIS, &descriptorSets[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to allocate CIS descriptor sets!");
+		}
+
+		std::vector<VkDescriptorImageInfo> imageInfos;
+		imageInfos.resize(filenames.size());
+		for (size_t j = 0; j < filenames.size(); j++) {
+			imageInfos[j].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+			imageInfos[j].imageView = imageViews[j];
+			imageInfos[j].sampler = imageSamplers[j];
+		}
+
+		VkWriteDescriptorSet descriptorWriteCIS = {};
+		descriptorWriteCIS.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWriteCIS.dstSet = descriptorSets[i];
+		descriptorWriteCIS.dstBinding = 0;
+		descriptorWriteCIS.dstArrayElement = 0;
+		descriptorWriteCIS.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		descriptorWriteCIS.descriptorCount = imageInfos.size();
+		descriptorWriteCIS.pImageInfo = imageInfos.data();
+
+		vkUpdateDescriptorSets(devicesHandler->device, 1, &descriptorWriteCIS, 0, nullptr);
+	}
+}
+
 void TexturesHandler::addTexture(std::string filename) {
+	filenames.push_back(filename);
+
 	VkImage image;
 	VkDeviceMemory imageMemory;
 	VkImageView imageView;
@@ -47,6 +105,22 @@ void TexturesHandler::addTexture(std::string filename) {
 	imageSamplers.push_back(imageSampler);
 }
 
+
+bool TexturesHandler::hasTexture(std::string filename) {
+	return textureIndex(filename) >= 0;
+}
+
+int32_t TexturesHandler::textureIndex(std::string filename) {
+	int32_t index = 0;
+	for (std::string someFilename : filenames) {
+		if (someFilename == filename) {
+			return index;
+		}
+		index++;
+	}
+
+	return -1;
+}
 
 void TexturesHandler::addImage(std::string filename, VkImage* image, VkDeviceMemory* imageMemory) {
 	int texWidth, texHeight, texChannels;

@@ -56,7 +56,7 @@ bool DevicesHandler::isDeviceSuitable(VkPhysicalDevice device) {
 
 	QueueFamilyIndices indices = queuesHandler->findQueueFamilies(device);
 
-	return indices.isComplete() && extensionsSupported && swapChainAdequate && deviceFeatures.samplerAnisotropy;;
+	return indices.isComplete() && extensionsSupported && swapChainAdequate && deviceFeatures.samplerAnisotropy && deviceFeatures.shaderSampledImageArrayDynamicIndexing;
 }
 
 
