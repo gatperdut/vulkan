@@ -4,10 +4,12 @@
 #include "Model.h"
 
 
-Model::Model(std::string modelFilename, std::string mtlPath, std::string textureFilename, glm::vec3 pos) {
-	loadTexture(textureFilename);
-	loadModel(modelFilename, mtlPath, pos);
-
+Model::Model(std::string path, std::string filename, std::string textureFilename, glm::vec3 pos) {
+	this->filename = filename;
+	this->path = path;
+	this->pos = pos;
+	loadTexture(path + textureFilename);
+	loadModel();
 }
 
 
@@ -16,15 +18,13 @@ Model::~Model() {
 }
 
 
-void Model::loadModel(std::string file, std::string mtlPath, glm::vec3 pos) {
-	this->pos = pos;
-
+void Model::loadModel() {
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string err;
 
-	if (!tinyobj::LoadObj(&attrib, &shapes, &materials,  &err, file.c_str(), mtlPath.c_str(), true)) {
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials,  &err, (path + filename).c_str(), path.c_str(), true)) {
 		throw std::runtime_error(err);
 	}
 

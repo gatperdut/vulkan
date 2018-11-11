@@ -11,7 +11,7 @@
 
 class Model {
 private:
-	void loadModel(std::string, std::string, glm::vec3);
+	void loadModel();
 	void loadTexture(std::string);
 
 public:
@@ -23,6 +23,8 @@ public:
 
 
 	glm::vec3 pos;
+	std::string path;
+	std::string filename;
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 	TextureAddon* textureAddon;

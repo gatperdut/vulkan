@@ -42,19 +42,18 @@ void InputHandler::processKey(int key, int action) {
 		return;
 	}
 	if (key == GLFW_KEY_G) {
-		//modelsHandler->load("models/angel.obj", "textures/angel.jpeg", glm::vec3(std::rand() % 30 - 15, std::rand() % 30 - 15, 0.0f));
-		modelsHandler->load("models", "pharao.obj", "textures/pharaoh.jpeg", glm::vec3(-4.0f, -20.0f, -20.0f));
+		//modelsHandler->load("wonderwoman.obj", "models/wonderwoman/", "WW_Cine1_D_Low.png", glm::vec3(-4.0f, -20.0f, -20.0f));
 
-		buffersHandler->createVertexAndIndexBuffer();
+		//buffersHandler->createVertexAndIndexBuffer();
 
-		uniformsHandler->createUniformBuffer();
+		//uniformsHandler->createUniformBuffer();
 
 		//descriptorsHandler->resetDescriptorPool();
-		descriptorsHandler->createDescriptorPool();
+		//descriptorsHandler->createDescriptorPool();
 
-		descriptorsHandler->createDescriptorSets();
+		//descriptorsHandler->createDescriptorSets();
 
-		commandBuffersHandler->createCommandBuffers();
+		//commandBuffersHandler->createCommandBuffers();
 	}
 }
 
