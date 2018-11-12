@@ -177,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Addons\TextureAddon.h" />
+    <ClInclude Include="include\Addons\UboHandler.h" />
     <ClInclude Include="include\buffers.h" />
     <ClInclude Include="include\buffer_to_image.h" />
     <ClInclude Include="include\capabilities.h" />
@@ -199,7 +200,6 @@
     <ClInclude Include="include\Handlers\ShadersHandler.h" />
     <ClInclude Include="include\Handlers\SwapchainHandler.h" />
     <ClInclude Include="include\Handlers\SynchrosHandler.h" />
-    <ClInclude Include="include\Handlers\UniformsHandler.h" />
     <ClInclude Include="include\Handlers\WindowHandler.h" />
     <ClInclude Include="include\images.h" />
     <ClInclude Include="include\image_views.h" />
@@ -212,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Addons\TextureAddon.cpp" />
+    <ClCompile Include="src\Addons\UboHandler.cpp" />
     <ClCompile Include="src\buffers.cpp" />
     <ClCompile Include="src\buffer_to_image.cpp" />
     <ClCompile Include="src\Handlers\BuffersHandler.cpp" />
@@ -232,7 +233,6 @@
     <ClCompile Include="src\Handlers\ShadersHandler.cpp" />
     <ClCompile Include="src\Handlers\SwapchainHandler.cpp" />
     <ClCompile Include="src\Handlers\SynchrosHandler.cpp" />
-    <ClCompile Include="src\Handlers\UniformsHandler.cpp" />
     <ClCompile Include="src\Handlers\WindowHandler.cpp" />
     <ClCompile Include="src\images.cpp" />
     <ClCompile Include="src\image_views.cpp" />

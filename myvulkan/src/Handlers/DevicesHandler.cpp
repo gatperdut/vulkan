@@ -4,6 +4,7 @@
 #include "Handlers/Handlers.h"
 #include "Handlers/DevicesHandler.h"
 #include "capabilities.h"
+#include "uniform_buffer_objects.h"
 
 DevicesHandler::DevicesHandler() {
 
@@ -15,6 +16,14 @@ DevicesHandler::~DevicesHandler() {
 }
 
 
+void DevicesHandler::computeUboAlignment() {
+	VkDeviceSize minUboAlignment = properties.limits.minUniformBufferOffsetAlignment;
+	uboAlignment = (VkDeviceSize)sizeof(UniformBufferObject);
+	if (minUboAlignment > 0) {
+		uboAlignment = (uboAlignment + minUboAlignment - 1) & ~(minUboAlignment - 1);
+	}
+}
+
 void DevicesHandler::pickPhysicalDevice() {
 	uint32_t deviceCount = 0;
 	vkEnumeratePhysicalDevices(instanceHandler->instance, &deviceCount, nullptr);
@@ -25,7 +34,6 @@ void DevicesHandler::pickPhysicalDevice() {
 
 	std::vector<VkPhysicalDevice> devices(deviceCount);
 	vkEnumeratePhysicalDevices(instanceHandler->instance, &deviceCount, devices.data());
-	std::cout << "Physical devices:\n********************" << std::endl;
 	for (const auto& device : devices) {
 		if (isDeviceSuitable(device)) {
 			physicalDevice = device;
@@ -44,10 +52,6 @@ bool DevicesHandler::isDeviceSuitable(VkPhysicalDevice device) {
 
 	VkPhysicalDeviceFeatures deviceFeatures;
 	vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
-
-	std::cout << "\t" << properties.deviceID << " " << properties.deviceName << std::endl;
-
-	//return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && deviceFeatures.geometryShader;
 
 	bool extensionsSupported = checkDeviceExtensionSupport(device);
 

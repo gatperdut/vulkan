@@ -10,7 +10,6 @@
 #include "RenderPassHandler.h"
 #include "CommandsHandler.h"
 #include "DescriptorsHandler.h"
-#include "UniformsHandler.h"
 #include "PipelinesHandler.h"
 #include "ShadersHandler.h"
 #include "FramebuffersHandler.h"
@@ -31,7 +30,6 @@ extern SwapchainHandler* swapchainHandler;
 extern RenderPassHandler* renderPassHandler;
 extern CommandsHandler* commandsHandler;
 extern DescriptorsHandler* descriptorsHandler;
-extern UniformsHandler* uniformsHandler;
 extern PipelinesHandler* pipelinesHandler;
 extern ShadersHandler* shadersHandler;
 extern FramebuffersHandler* framebuffersHandler;

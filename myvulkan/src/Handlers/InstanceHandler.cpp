@@ -67,16 +67,6 @@ std::vector<const char*> InstanceHandler::getRequiredExtensions() {
 	std::vector<VkExtensionProperties> availExtensions(availExtensionCount);
 	vkEnumerateInstanceExtensionProperties(nullptr, &availExtensionCount, availExtensions.data());
 
-	std::cout << "available extensions:\n*********************" << std::endl;
-	for (const auto& extension : availExtensions) {
-		std::cout << "\t" << extension.extensionName << std::endl;
-	}
-
-	std::cout << "required extensions:\n*************************" << std::endl;
-	for (const auto& extension : reqExtensions) {
-		std::cout << "\t" << extension << std::endl;
-	}
-
 	return reqExtensions;
 }
 
@@ -87,16 +77,6 @@ bool InstanceHandler::checkValidationLayerSupport() {
 
 	std::vector<VkLayerProperties> availableLayers(layerCount);
 	vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
-
-	std::cout << "available validation layers:\n*****************************" << std::endl;
-	for (const auto& layer : availableLayers) {
-		std::cout << "\t" << layer.layerName << std::endl;
-	}
-
-	std::cout << "required validation layers:\n*****************************" << std::endl;
-	for (const auto& layer : validationLayers) {
-		std::cout << "\t" << layer << std::endl;
-	}
 
 	for (const char* layerName : validationLayers) {
 		bool layerFound = false;

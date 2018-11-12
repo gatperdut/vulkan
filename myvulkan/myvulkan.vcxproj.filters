@@ -109,9 +109,6 @@
     <ClInclude Include="include\Handlers\SynchrosHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Handlers\UniformsHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
     <ClInclude Include="include\Handlers\WindowHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
@@ -149,6 +146,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Addons\TextureAddon.h">
+      <Filter>Header Files\Addons</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Addons\UboHandler.h">
       <Filter>Header Files\Addons</Filter>
     </ClInclude>
   </ItemGroup>
@@ -207,9 +207,6 @@
     <ClCompile Include="src\Handlers\SynchrosHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\Handlers\UniformsHandler.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
     <ClCompile Include="src\Handlers\WindowHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
@@ -238,6 +235,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Addons\TextureAddon.cpp">
+      <Filter>Source Files\Addons</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Addons\UboHandler.cpp">
       <Filter>Source Files\Addons</Filter>
     </ClCompile>
   </ItemGroup>

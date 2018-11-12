@@ -1,13 +1,17 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
+#include "Handlers/Handlers.h"
 #include "Model.h"
+#include "uniform_buffer_objects.h"
 
 
 Model::Model(std::string path, std::string filename, std::string textureFilename, glm::vec3 pos) {
 	this->filename = filename;
 	this->path = path;
 	this->pos = pos;
+
+	uboHandler = new UboHandler();
 	loadTexture(path + textureFilename);
 	loadModel();
 }
@@ -15,6 +19,7 @@ Model::Model(std::string path, std::string filename, std::string textureFilename
 
 Model::~Model() {
 	delete textureAddon;
+	delete uboHandler;
 }
 
 
@@ -58,6 +63,15 @@ void Model::loadModel() {
 }
 
 
+void Model::createUBOs() {
+	uboHandler->createUniformBuffer(totalSize());
+}
+
+void Model::updateUBOs(uint32_t imageIndex) {
+	uboHandler->updateUniformBuffer(imageIndex, pos);
+}
+
+
 void Model::loadTexture(std::string path) {
 	textureAddon = new TextureAddon(path);
 
@@ -66,7 +80,6 @@ void Model::loadTexture(std::string path) {
 	textureAddon->createTextureSampler();
 }
 
-
 VkDeviceSize Model::verticesSize() {
 	return sizeof(vertices[0]) * vertices.size();
 }
@@ -74,4 +87,57 @@ VkDeviceSize Model::verticesSize() {
 
 VkDeviceSize Model::indicesSize() {
 	return sizeof(indices[0]) * indices.size();
+}
+
+VkDeviceSize Model::totalSize() {
+	return verticesSize() + indicesSize();
+}
+
+
+void Model::createDescriptorSets() {
+	VkDescriptorSetAllocateInfo allocInfo = {};
+	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	allocInfo.descriptorPool = descriptorsHandler->descriptorPool;
+	allocInfo.descriptorSetCount = 1;
+	allocInfo.pSetLayouts = &modelsHandler->descriptorSetLayout;
+
+	descriptorSets.resize(swapchainHandler->images.size());
+
+	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSets[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to allocate UB descriptor set!");
+		}
+
+		VkDescriptorBufferInfo bufferInfo = {};
+		bufferInfo.buffer = uboHandler->buffers[i];
+		bufferInfo.offset = 0;
+		bufferInfo.range = sizeof(UniformBufferObject);
+
+		VkWriteDescriptorSet descriptorWriteUB = {};
+		descriptorWriteUB.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWriteUB.dstSet = descriptorSets[i];
+		descriptorWriteUB.dstBinding = 0;
+		descriptorWriteUB.dstArrayElement = 0;
+		descriptorWriteUB.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+		descriptorWriteUB.descriptorCount = 1;
+		descriptorWriteUB.pBufferInfo = &bufferInfo;
+
+		VkDescriptorImageInfo imageInfo = {};
+		imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		imageInfo.imageView = textureAddon->textureImageView;
+		imageInfo.sampler = textureAddon->textureSampler;
+
+		VkWriteDescriptorSet descriptorWriteCIS = {};
+		descriptorWriteCIS.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWriteCIS.dstSet = descriptorSets[i];
+		descriptorWriteCIS.dstBinding = 1;
+		descriptorWriteCIS.dstArrayElement = 0;
+		descriptorWriteCIS.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		descriptorWriteCIS.descriptorCount = 1;
+		descriptorWriteCIS.pImageInfo = &imageInfo;
+
+		std::vector<VkWriteDescriptorSet> writeDescriptorSets = { descriptorWriteUB, descriptorWriteCIS };
+
+		vkUpdateDescriptorSets(devicesHandler->device, writeDescriptorSets.size(), writeDescriptorSets.data(), 0, nullptr);
+	}
 }

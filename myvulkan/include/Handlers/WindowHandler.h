@@ -1,8 +1,8 @@
 #pragma once
 
 
-const int WIDTH = 800;
-const int HEIGHT = 600;
+const int WIDTH = 1200;
+const int HEIGHT = 900;
 
 
 #define GLFW_INCLUDE_VULKAN

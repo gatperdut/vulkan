@@ -12,7 +12,6 @@ std::vector<char> readFile(const std::string& filename) {
 	}
 
 	size_t fileSize = (size_t)file.tellg();
-	std::cout << fileSize << " bytes" << std::endl;
 	std::vector<char> buffer(fileSize);
 
 	file.seekg(0);

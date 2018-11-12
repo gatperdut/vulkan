@@ -66,10 +66,8 @@ void CommandBuffersHandler::internalCreateCommandBuffers(std::vector<VkCommandBu
 			VkDeviceSize indicesOffset = total + sizeof(model->vertices[0]) * model->vertices.size();
 			vkCmdBindIndexBuffer((*buffers)[i], buffersHandler->vertexAndIndexBuffer, indicesOffset, VK_INDEX_TYPE_UINT32);
 
-			std::vector<VkDescriptorSet> descriptorSets = { descriptorsHandler->descriptorSets[i][0], descriptorsHandler->descriptorSets[i][j + 1] };
-
-			uint32_t dynamicOffset = j * (size_t)uniformsHandler->alignment;
-			vkCmdBindDescriptorSets((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelinesHandler->pipelineLayout, 0, descriptorSets.size(), descriptorSets.data(), 1, &dynamicOffset);
+			uint32_t dynamicOffset = j * (size_t)devicesHandler->uboAlignment;
+			vkCmdBindDescriptorSets((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelinesHandler->pipelineLayout, 0, 1, &model->descriptorSets[i], 1, &dynamicOffset);
 
 			vkCmdDrawIndexed((*buffers)[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
 			//vkCmdDraw((*buffers)[i], static_cast<uint32_t>(vertices.size()), 1, 0, 0);

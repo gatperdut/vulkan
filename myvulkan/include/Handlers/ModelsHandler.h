@@ -10,6 +10,7 @@
 
 
 class ModelsHandler {
+private:
 public:
 	ModelsHandler();
 	~ModelsHandler();
@@ -17,7 +18,11 @@ public:
 	void load(std::string, std::string, std::string, glm::vec3);
 	VkDeviceSize verticesSize();
 	VkDeviceSize indicesSize();
+	void createDescriptorSetLayout();
+	void createDescriptorSets();
+	void createUBOs();
 
+	VkDescriptorSetLayout descriptorSetLayout;
 
 	std::vector<Model*> models;
 };

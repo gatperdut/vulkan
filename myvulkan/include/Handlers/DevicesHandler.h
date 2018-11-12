@@ -14,11 +14,13 @@ public:
 
 	void pickPhysicalDevice();
 	void createLogicalDevice();
-
+	void computeUboAlignment();
 
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	VkDevice device;
 	VkPhysicalDeviceProperties properties;
+
+	VkDeviceSize uboAlignment;
 
 private:
 	bool checkDeviceExtensionSupport(VkPhysicalDevice);
