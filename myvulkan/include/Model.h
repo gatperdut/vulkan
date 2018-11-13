@@ -7,6 +7,7 @@
 
 #include "Addons/TextureAddon.h"
 #include "Addons/UboHandler.h"
+#include "Addons/BufferHandler.h"
 
 
 class Model {
@@ -29,11 +30,12 @@ public:
 	std::vector<uint32_t> indices;
 	glm::vec3 pos;
 
-	UboHandler* uboHandler;
 	std::string path;
 	std::string filename;
 
+	UboHandler* uboHandler;
 	TextureAddon* textureAddon;
+	BufferHandler* bufferHandler;
 
 	std::vector<VkDescriptorSet> descriptorSets;
 };

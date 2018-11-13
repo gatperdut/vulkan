@@ -176,12 +176,12 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Addons\BufferHandler.h" />
     <ClInclude Include="include\Addons\TextureAddon.h" />
     <ClInclude Include="include\Addons\UboHandler.h" />
     <ClInclude Include="include\buffers.h" />
     <ClInclude Include="include\buffer_to_image.h" />
     <ClInclude Include="include\capabilities.h" />
-    <ClInclude Include="include\Handlers\BuffersHandler.h" />
     <ClInclude Include="include\Handlers\CameraHandler.h" />
     <ClInclude Include="include\Handlers\CapabilitiesHandler.h" />
     <ClInclude Include="include\Handlers\CommandBuffersHandler.h" />
@@ -211,11 +211,11 @@
     <ClInclude Include="include\vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Addons\BufferHandler.cpp" />
     <ClCompile Include="src\Addons\TextureAddon.cpp" />
     <ClCompile Include="src\Addons\UboHandler.cpp" />
     <ClCompile Include="src\buffers.cpp" />
     <ClCompile Include="src\buffer_to_image.cpp" />
-    <ClCompile Include="src\Handlers\BuffersHandler.cpp" />
     <ClCompile Include="src\Handlers\CameraHandler.cpp" />
     <ClCompile Include="src\Handlers\CapabilitiesHandler.cpp" />
     <ClCompile Include="src\Handlers\CommandBuffersHandler.cpp" />

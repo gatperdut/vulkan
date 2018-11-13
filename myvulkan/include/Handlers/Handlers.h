@@ -13,7 +13,6 @@
 #include "PipelinesHandler.h"
 #include "ShadersHandler.h"
 #include "FramebuffersHandler.h"
-#include "BuffersHandler.h"
 #include "ModelsHandler.h"
 #include "CommandBuffersHandler.h"
 #include "SynchrosHandler.h"
@@ -33,7 +32,6 @@ extern DescriptorsHandler* descriptorsHandler;
 extern PipelinesHandler* pipelinesHandler;
 extern ShadersHandler* shadersHandler;
 extern FramebuffersHandler* framebuffersHandler;
-extern BuffersHandler* buffersHandler;
 extern ModelsHandler* modelsHandler;
 extern CommandBuffersHandler* commandBuffersHandler;
 extern SynchrosHandler* synchrosHandler;

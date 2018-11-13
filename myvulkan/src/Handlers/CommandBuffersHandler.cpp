@@ -54,25 +54,19 @@ void CommandBuffersHandler::internalCreateCommandBuffers(std::vector<VkCommandBu
 		vkCmdBeginRenderPass((*buffers)[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 		vkCmdBindPipeline((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelinesHandler->graphicsPipeline);
 
-		VkBuffer vertexBuffers[] = { buffersHandler->vertexAndIndexBuffer };
-
-		VkDeviceSize total = 0;
 		Model* model;
 		for (size_t j = 0; j < modelsHandler->models.size(); j++) {
 			model = modelsHandler->models[j];
 
-			VkDeviceSize verticesOffsets[] = { total };
-			vkCmdBindVertexBuffers((*buffers)[i], 0, 1, vertexBuffers, verticesOffsets);
-			VkDeviceSize indicesOffset = total + sizeof(model->vertices[0]) * model->vertices.size();
-			vkCmdBindIndexBuffer((*buffers)[i], buffersHandler->vertexAndIndexBuffer, indicesOffset, VK_INDEX_TYPE_UINT32);
+			std::vector<VkDeviceSize> offsets = { 0 };
+			vkCmdBindVertexBuffers((*buffers)[i], 0, 1, &model->bufferHandler->vertexBuffer, offsets.data());
+			vkCmdBindIndexBuffer((*buffers)[i], model->bufferHandler->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 			uint32_t dynamicOffset = j * (size_t)devicesHandler->uboAlignment;
 			vkCmdBindDescriptorSets((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelinesHandler->pipelineLayout, 0, 1, &model->descriptorSets[i], 1, &dynamicOffset);
 
 			vkCmdDrawIndexed((*buffers)[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
 			//vkCmdDraw((*buffers)[i], static_cast<uint32_t>(vertices.size()), 1, 0, 0);
-
-			total += model->verticesSize() + model->indicesSize();
 		}
 
 		vkCmdEndRenderPass((*buffers)[i]);

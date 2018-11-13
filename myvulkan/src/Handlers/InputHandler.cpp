@@ -44,8 +44,6 @@ void InputHandler::processKey(int key, int action) {
 	if (key == GLFW_KEY_G) {
 		//modelsHandler->load("wonderwoman.obj", "models/wonderwoman/", "WW_Cine1_D_Low.png", glm::vec3(-4.0f, -20.0f, -20.0f));
 
-		//buffersHandler->createVertexAndIndexBuffer();
-
 		//uniformsHandler->createUniformBuffer();
 
 		//descriptorsHandler->resetDescriptorPool();

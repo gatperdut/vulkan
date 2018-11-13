@@ -12,6 +12,7 @@ Model::Model(std::string path, std::string filename, std::string textureFilename
 	this->pos = pos;
 
 	uboHandler = new UboHandler();
+	bufferHandler = new BufferHandler();
 	loadTexture(path + textureFilename);
 	loadModel();
 }
@@ -20,6 +21,7 @@ Model::Model(std::string path, std::string filename, std::string textureFilename
 Model::~Model() {
 	delete textureAddon;
 	delete uboHandler;
+	delete bufferHandler;
 }
 
 
@@ -60,6 +62,8 @@ void Model::loadModel() {
 			indices.push_back(uniqueVertices[vertex]);
 		}
 	}
+
+	bufferHandler->createBuffers(vertices, indices);
 }
 
 
