@@ -31,6 +31,21 @@ TextureAddon::~TextureAddon() {
 }
 
 
+bool TextureAddon::hasTexture(std::string filepath) {
+	return indexByFilepath(filepath) >= 0;
+}
+
+int32_t TextureAddon::indexByFilepath(std::string filepath) {
+	for (size_t i = 0; i < filepaths.size(); i++) {
+		if (filepaths[i] == filepath) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+
 void TextureAddon::addTexture(std::string filepath) {
 	filepaths.push_back(filepath);
 	addImage(filepath);

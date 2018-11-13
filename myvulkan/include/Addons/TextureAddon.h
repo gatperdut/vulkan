@@ -17,6 +17,8 @@ public:
 	~TextureAddon();
 
 	void addTexture(std::string);
+	bool hasTexture(std::string);
+	int32_t indexByFilepath(std::string);
 
 	std::vector<std::string> filepaths;
 	std::vector<VkImage> images;

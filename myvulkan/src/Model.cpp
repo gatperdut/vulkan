@@ -31,15 +31,22 @@ void Model::loadModel() {
 	std::vector<tinyobj::material_t> materials;
 	std::string err;
 
-	if (!tinyobj::LoadObj(&attrib, &shapes, &materials,  &err, (path + filename).c_str(), path.c_str(), true)) {
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, (path + filename).c_str(), path.c_str(), true)) {
 		throw std::runtime_error(err);
 	}
 
-	textureAddon->addTexture(path + "WW_Cine1_D_Low.png");
+
 
 	std::unordered_map<Vertex, uint32_t> uniqueVertices = {};
 
+	for (auto material : materials) {
+		if (!textureAddon->hasTexture(path + material.diffuse_texname)) {
+			textureAddon->addTexture(path + material.diffuse_texname);
+		}
+	}
+
 	for (const auto& shape : shapes) {
+		uint32_t indexCount = 0;
 		for (const auto& index : shape.mesh.indices) {
 			Vertex vertex = {};
 
@@ -56,13 +63,23 @@ void Model::loadModel() {
 
 			vertex.color = { 1.0f, 1.0f, 1.0f };
 
+			int32_t texIndex = textureAddon->indexByFilepath(path + materials[shape.mesh.material_ids[indexCount / 3]].diffuse_texname);
+			if (texIndex < 0) {
+				std::cout << "WHAT IS THIS SORCERY?!" << std::endl;
+				texIndex = 0;
+			}
+			vertex.texIndex = (uint32_t)texIndex;
+
 			if (uniqueVertices.count(vertex) == 0) {
 				uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
 				vertices.push_back(vertex);
 			}
 
 			indices.push_back(uniqueVertices[vertex]);
+
+			indexCount++;
 		}
+		indexCount = 0;
 	}
 
 	bufferHandler->createBuffers(vertices, indices);
@@ -111,31 +128,33 @@ void Model::createDescriptorSets() {
 		bufferInfo.offset = 0;
 		bufferInfo.range = sizeof(UniformBufferObject);
 
-		VkWriteDescriptorSet descriptorWriteUB = {};
-		descriptorWriteUB.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWriteUB.dstSet = descriptorSets[i];
-		descriptorWriteUB.dstBinding = 0;
-		descriptorWriteUB.dstArrayElement = 0;
-		descriptorWriteUB.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-		descriptorWriteUB.descriptorCount = 1;
-		descriptorWriteUB.pBufferInfo = &bufferInfo;
 
-		VkDescriptorImageInfo imageInfo = {};
-		imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-		imageInfo.imageView = textureAddon->imageViews[0];
-		imageInfo.sampler = textureAddon->samplers[0];
+		std::vector<VkWriteDescriptorSet> descriptorWrites;
+		descriptorWrites.resize(2);
 
-		VkWriteDescriptorSet descriptorWriteCIS = {};
-		descriptorWriteCIS.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWriteCIS.dstSet = descriptorSets[i];
-		descriptorWriteCIS.dstBinding = 1;
-		descriptorWriteCIS.dstArrayElement = 0;
-		descriptorWriteCIS.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-		descriptorWriteCIS.descriptorCount = 1;
-		descriptorWriteCIS.pImageInfo = &imageInfo;
+		descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWrites[0].dstSet = descriptorSets[i];
+		descriptorWrites[0].dstBinding = 0;
+		descriptorWrites[0].dstArrayElement = 0;
+		descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+		descriptorWrites[0].descriptorCount = 1;
+		descriptorWrites[0].pBufferInfo = &bufferInfo;
 
-		std::vector<VkWriteDescriptorSet> writeDescriptorSets = { descriptorWriteUB, descriptorWriteCIS };
+		std::vector<VkDescriptorImageInfo> imageInfos;
+		imageInfos.resize(textureAddon->filepaths.size());
+		for (size_t j = 0; j < textureAddon->filepaths.size(); j++) {
+			imageInfos[j].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+			imageInfos[j].imageView = textureAddon->imageViews[j];
+			imageInfos[j].sampler = textureAddon->samplers[j];
+		}
+		descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWrites[1].dstSet = descriptorSets[i];
+		descriptorWrites[1].dstBinding = 1;
+		descriptorWrites[1].dstArrayElement = 0;
+		descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		descriptorWrites[1].descriptorCount = imageInfos.size();
+		descriptorWrites[1].pImageInfo = imageInfos.data();
 
-		vkUpdateDescriptorSets(devicesHandler->device, writeDescriptorSets.size(), writeDescriptorSets.data(), 0, nullptr);
+		vkUpdateDescriptorSets(devicesHandler->device, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr);
 	}
 }

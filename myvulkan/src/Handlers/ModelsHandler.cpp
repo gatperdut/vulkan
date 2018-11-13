@@ -25,7 +25,7 @@ void ModelsHandler::createDescriptorSetLayout() {
 
 	VkDescriptorSetLayoutBinding layoutBindingCIS = {};
 	layoutBindingCIS.binding = 1;
-	layoutBindingCIS.descriptorCount = 1;
+	layoutBindingCIS.descriptorCount = 4;
 	layoutBindingCIS.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 	layoutBindingCIS.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
 
