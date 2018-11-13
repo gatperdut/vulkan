@@ -13,10 +13,9 @@
 class Model {
 private:
 	void loadModel();
-	void loadTexture(std::string);
 
 public:
-	Model(std::string, std::string, std::string, glm::vec3);
+	Model(std::string, std::string, glm::vec3);
 	~Model();
 
 	void createUBOs();

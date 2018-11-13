@@ -6,14 +6,14 @@
 #include "uniform_buffer_objects.h"
 
 
-Model::Model(std::string path, std::string filename, std::string textureFilename, glm::vec3 pos) {
+Model::Model(std::string path, std::string filename, glm::vec3 pos) {
 	this->filename = filename;
 	this->path = path;
 	this->pos = pos;
 
 	uboHandler = new UboHandler();
 	bufferHandler = new BufferHandler();
-	loadTexture(path + textureFilename);
+	textureAddon = new TextureAddon();
 	loadModel();
 }
 
@@ -34,6 +34,8 @@ void Model::loadModel() {
 	if (!tinyobj::LoadObj(&attrib, &shapes, &materials,  &err, (path + filename).c_str(), path.c_str(), true)) {
 		throw std::runtime_error(err);
 	}
+
+	textureAddon->addTexture(path + "WW_Cine1_D_Low.png");
 
 	std::unordered_map<Vertex, uint32_t> uniqueVertices = {};
 
@@ -75,14 +77,6 @@ void Model::updateUBOs(uint32_t imageIndex) {
 	uboHandler->updateUniformBuffer(imageIndex, pos);
 }
 
-
-void Model::loadTexture(std::string path) {
-	textureAddon = new TextureAddon(path);
-
-	textureAddon->createTextureImage();
-	textureAddon->createTextureImageView();
-	textureAddon->createTextureSampler();
-}
 
 VkDeviceSize Model::verticesSize() {
 	return sizeof(vertices[0]) * vertices.size();
@@ -128,8 +122,8 @@ void Model::createDescriptorSets() {
 
 		VkDescriptorImageInfo imageInfo = {};
 		imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-		imageInfo.imageView = textureAddon->textureImageView;
-		imageInfo.sampler = textureAddon->textureSampler;
+		imageInfo.imageView = textureAddon->imageViews[0];
+		imageInfo.sampler = textureAddon->samplers[0];
 
 		VkWriteDescriptorSet descriptorWriteCIS = {};
 		descriptorWriteCIS.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;

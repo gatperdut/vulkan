@@ -49,8 +49,8 @@ void ModelsHandler::createDescriptorSets() {
 }
 
 
-void ModelsHandler::load(std::string path, std::string filename, std::string textureFilename, glm::vec3 pos) {
-	Model* model = new Model(path, filename, textureFilename, pos);
+void ModelsHandler::load(std::string path, std::string filename, glm::vec3 pos) {
+	Model* model = new Model(path, filename, pos);
 	models.push_back(model);
 }
 

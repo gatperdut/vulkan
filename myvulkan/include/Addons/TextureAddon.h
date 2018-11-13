@@ -1,25 +1,28 @@
 #pragma once
 
 
+#include <vector>
 #include <vulkan/vulkan.h>
 
 
 class TextureAddon {
+private:
+	void addImage(std::string);
+	void addMipmaps(VkImage, VkFormat, int32_t, int32_t, uint32_t);
+	void addImageView();
+	void addSampler();
+
 public:
-	TextureAddon(std::string path);
+	TextureAddon();
 	~TextureAddon();
 
-	void createTextureImage();
-	void generateMipmaps(VkImage, VkFormat, int32_t, int32_t, uint32_t);
-	void createTextureImageView();
-	void createTextureSampler();
+	void addTexture(std::string);
 
-
-	std::string path;
-	VkImage textureImage;
-	uint32_t mipLevels;
-	VkDeviceMemory textureImageMemory;
-	VkImageView textureImageView;
-	VkSampler textureSampler;
+	std::vector<std::string> filepaths;
+	std::vector<VkImage> images;
+	std::vector<uint32_t> mipLevels;
+	std::vector<VkDeviceMemory> imageMemories;
+	std::vector<VkImageView> imageViews;
+	std::vector<VkSampler> samplers;
 };
 

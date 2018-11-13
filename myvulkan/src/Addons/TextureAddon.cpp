@@ -10,23 +10,39 @@
 #include "buffer_to_image.h"
 
 
-TextureAddon::TextureAddon(std::string path) {
-	this->path = path;
+TextureAddon::TextureAddon() {
+
 }
 
 
 TextureAddon::~TextureAddon() {
-	vkDestroySampler(devicesHandler->device, textureSampler, nullptr);
-	vkDestroyImageView(devicesHandler->device, textureImageView, nullptr);
-	vkDestroyImage(devicesHandler->device, textureImage, nullptr);
-	vkFreeMemory(devicesHandler->device, textureImageMemory, nullptr);
+	for (auto sampler : samplers) {
+		vkDestroySampler(devicesHandler->device, sampler, nullptr);
+	}
+	for (auto imageView : imageViews) {
+		vkDestroyImageView(devicesHandler->device, imageView, nullptr);
+	}
+	for (auto image : images) {
+		vkDestroyImage(devicesHandler->device, image, nullptr);
+	}
+	for (auto imageMemory : imageMemories) {
+		vkFreeMemory(devicesHandler->device, imageMemory, nullptr);
+	}
 }
 
 
-void TextureAddon::createTextureImage() {
+void TextureAddon::addTexture(std::string filepath) {
+	filepaths.push_back(filepath);
+	addImage(filepath);
+	addImageView();
+	addSampler();
+}
+
+
+void TextureAddon::addImage(std::string filepath) {
 	int texWidth, texHeight, texChannels;
 
-	stbi_uc* pixels = stbi_load(path.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+	stbi_uc* pixels = stbi_load(filepath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 
 	if (!pixels) {
 		throw std::runtime_error("failed to load texture image!");
@@ -34,7 +50,8 @@ void TextureAddon::createTextureImage() {
 
 	VkDeviceSize imageSize = texWidth * texHeight * 4;
 
-	mipLevels = static_cast<uint32_t>(std::floor(std::log2(std::max(texWidth, texHeight)))) + 1;
+	uint32_t currentMipLevels = static_cast<uint32_t>(std::floor(std::log2(std::max(texWidth, texHeight)))) + 1;
+	mipLevels.push_back(currentMipLevels);
 
 	VkBuffer stagingBuffer;
 	VkDeviceMemory stagingBufferMemory;
@@ -49,18 +66,23 @@ void TextureAddon::createTextureImage() {
 
 	VkFormat format = VK_FORMAT_R8G8B8A8_UNORM;
 
-	createImage(texWidth, texHeight, mipLevels, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, textureImage, textureImageMemory);
+	VkImage image;
+	VkDeviceMemory imageMemory;
+	createImage(texWidth, texHeight, currentMipLevels, format, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, image, imageMemory);
 
-	transitionImageLayout(textureImage, format, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mipLevels);
-	copyBufferToImage(stagingBuffer, textureImage, static_cast<uint32_t>(texWidth), static_cast<uint32_t>(texHeight));
+	transitionImageLayout(image, format, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, currentMipLevels);
+	copyBufferToImage(stagingBuffer, image, static_cast<uint32_t>(texWidth), static_cast<uint32_t>(texHeight));
 	//transitionImageLayout(textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, mipLevels);
-	generateMipmaps(textureImage, format, texWidth, texHeight, mipLevels);
+	addMipmaps(image, format, texWidth, texHeight, currentMipLevels);
 
 	vkDestroyBuffer(devicesHandler->device, stagingBuffer, nullptr);
 	vkFreeMemory(devicesHandler->device, stagingBufferMemory, nullptr);
+
+	images.push_back(image);
+	imageMemories.push_back(imageMemory);
 }
 
-void TextureAddon::generateMipmaps(VkImage image, VkFormat imageFormat, int32_t texWidth, int32_t texHeight, uint32_t mipLevels) {
+void TextureAddon::addMipmaps(VkImage image, VkFormat imageFormat, int32_t texWidth, int32_t texHeight, uint32_t mipLevels) {
 	VkFormatProperties formatProperties;
 	vkGetPhysicalDeviceFormatProperties(devicesHandler->physicalDevice, imageFormat, &formatProperties);
 
@@ -155,12 +177,13 @@ void TextureAddon::generateMipmaps(VkImage image, VkFormat imageFormat, int32_t 
 	commandsHandler->endSingleTimeCommands(commandBuffer);
 }
 
-void TextureAddon::createTextureImageView() {
-	textureImageView = createImageView(textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_ASPECT_COLOR_BIT, mipLevels);
+void TextureAddon::addImageView() {
+	VkImageView imageView = createImageView(images.back(), VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_ASPECT_COLOR_BIT, mipLevels.back());
+	imageViews.push_back(imageView);
 };
 
 
-void TextureAddon::createTextureSampler() {
+void TextureAddon::addSampler() {
 	VkSamplerCreateInfo samplerInfo = {};
 	samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
 	samplerInfo.magFilter = VK_FILTER_LINEAR;
@@ -182,10 +205,14 @@ void TextureAddon::createTextureSampler() {
 
 	samplerInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
 	samplerInfo.minLod = 0.0f;
-	samplerInfo.maxLod = static_cast<float>(mipLevels);
+	samplerInfo.maxLod = static_cast<float>(mipLevels.back());
 	samplerInfo.mipLodBias = 0.0f;
 
-	if (vkCreateSampler(devicesHandler->device, &samplerInfo, nullptr, &textureSampler) != VK_SUCCESS) {
+	VkSampler sampler;
+
+	if (vkCreateSampler(devicesHandler->device, &samplerInfo, nullptr, &sampler) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create texture sampler!");
 	}
+
+	samplers.push_back(sampler);
 }
