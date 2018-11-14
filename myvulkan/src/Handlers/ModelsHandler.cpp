@@ -28,8 +28,8 @@ void ModelsHandler::createDescriptorSets() {
 }
 
 
-void ModelsHandler::load(std::string path, std::string filename, glm::vec3 pos) {
-	Model* model = new Model(path, filename, pos);
+void ModelsHandler::load(std::string path, std::string filename, glm::vec3 pos, glm::vec3 scale) {
+	Model* model = new Model(path, filename, pos, scale);
 	models.push_back(model);
 }
 

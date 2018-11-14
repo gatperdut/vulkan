@@ -6,10 +6,11 @@
 #include "uniform_buffer_objects.h"
 
 
-Model::Model(std::string path, std::string filename, glm::vec3 pos) {
+Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 scale) {
 	this->filename = filename;
 	this->path = path;
 	this->pos = pos;
+	this->scale = scale;
 
 	uboHandler = new UboHandler();
 	bufferHandler = new BufferHandler();
@@ -43,6 +44,7 @@ void Model::loadModel() {
 
 	for (auto material : materials) {
 		if (!textureAddon->hasTexture(path + material.diffuse_texname)) {
+			std::cout << "Loading texture " << path + material.diffuse_texname << std::endl;
 			textureAddon->addTexture(path + material.diffuse_texname);
 		}
 	}
@@ -93,7 +95,7 @@ void Model::createUBOs() {
 }
 
 void Model::updateUBOs(uint32_t imageIndex) {
-	uboHandler->updateUniformBuffer(imageIndex, pos);
+	uboHandler->updateUniformBuffer(imageIndex, pos, scale);
 }
 
 

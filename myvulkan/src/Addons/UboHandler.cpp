@@ -51,7 +51,7 @@ void UboHandler::createUniformBuffer(VkDeviceSize size) {
 }
 
 
-void UboHandler::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos) {
+void UboHandler::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos, glm::vec3 scale) {
 	static auto startTime = std::chrono::high_resolution_clock::now();
 
 	auto currentTime = std::chrono::high_resolution_clock::now();
@@ -63,6 +63,7 @@ void UboHandler::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos) {
 	UniformBufferObject ubo = {};
 	ubo.model = glm::translate(glm::mat4(1.0), pos);
 	ubo.model = glm::rotate(ubo.model, 0.03f * time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	ubo.model = glm::scale(ubo.model, scale);
 	ubo.view = cameraHandler->viewMatrix();
 	ubo.proj = glm::perspective(glm::radians(45.0f), swapchainHandler->extent.width / (float)swapchainHandler->extent.height, 0.1f, 100.0f);
 

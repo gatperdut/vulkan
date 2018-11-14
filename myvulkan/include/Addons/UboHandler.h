@@ -20,7 +20,7 @@ public:
 
 	void freeResources();
 	void createUniformBuffer(VkDeviceSize);
-	void updateUniformBuffer(uint32_t, glm::vec3);
+	void updateUniformBuffer(uint32_t, glm::vec3, glm::vec3);
 
 	VkDescriptorSetLayoutBinding createDescriptorSetLayoutBinding();
 

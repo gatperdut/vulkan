@@ -15,7 +15,7 @@ private:
 	void loadModel();
 
 public:
-	Model(std::string, std::string, glm::vec3);
+	Model(std::string, std::string, glm::vec3, glm::vec3);
 	~Model();
 
 	void createUBOs();
@@ -29,6 +29,7 @@ public:
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
 	glm::vec3 pos;
+	glm::vec3 scale;
 
 	std::string path;
 	std::string filename;
