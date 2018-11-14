@@ -22,6 +22,8 @@ Model::~Model() {
 	delete textureAddon;
 	delete uboHandler;
 	delete bufferHandler;
+
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
 }
 
 
@@ -109,12 +111,29 @@ VkDeviceSize Model::totalSize() {
 }
 
 
+void Model::createDescriptorSetLayout() {
+	VkDescriptorSetLayoutBinding layoutBindingUB = uboHandler->createDescriptorSetLayoutBinding();
+	VkDescriptorSetLayoutBinding layoutBindingCIS = textureAddon->createDescriptorSetLayoutBinding();
+
+	std::vector<VkDescriptorSetLayoutBinding> bindings = { layoutBindingUB, layoutBindingCIS };
+
+	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfo.bindingCount = bindings.size();
+	layoutInfo.pBindings = bindings.data();
+
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayout) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create CIS descriptor set layout!");
+	}
+}
+
+
 void Model::createDescriptorSets() {
 	VkDescriptorSetAllocateInfo allocInfo = {};
 	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 	allocInfo.descriptorPool = descriptorsHandler->descriptorPool;
 	allocInfo.descriptorSetCount = 1;
-	allocInfo.pSetLayouts = &modelsHandler->descriptorSetLayout;
+	allocInfo.pSetLayouts = &descriptorSetLayout;
 
 	descriptorSets.resize(swapchainHandler->images.size());
 

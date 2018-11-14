@@ -23,6 +23,7 @@ public:
 	VkDeviceSize verticesSize();
 	VkDeviceSize indicesSize();
 	VkDeviceSize totalSize();
+	void createDescriptorSetLayout();
 	void createDescriptorSets();
 
 	std::vector<Vertex> vertices;
@@ -37,5 +38,6 @@ public:
 	BufferHandler* bufferHandler;
 
 	std::vector<VkDescriptorSet> descriptorSets;
+	VkDescriptorSetLayout descriptorSetLayout;
 };
 

@@ -18,11 +18,10 @@ public:
 	void load(std::string, std::string, glm::vec3);
 	VkDeviceSize verticesSize();
 	VkDeviceSize indicesSize();
-	void createDescriptorSetLayout();
 	void createDescriptorSets();
 	void createUBOs();
 
-	VkDescriptorSetLayout descriptorSetLayout;
+	void createDescriptorSetLayouts();
 
 	std::vector<Model*> models;
 };

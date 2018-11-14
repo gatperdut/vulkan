@@ -20,6 +20,8 @@ public:
 	bool hasTexture(std::string);
 	int32_t indexByFilepath(std::string);
 
+	VkDescriptorSetLayoutBinding createDescriptorSetLayoutBinding();
+
 	std::vector<std::string> filepaths;
 	std::vector<VkImage> images;
 	std::vector<uint32_t> mipLevels;

@@ -45,6 +45,16 @@ int32_t TextureAddon::indexByFilepath(std::string filepath) {
 	return -1;
 }
 
+VkDescriptorSetLayoutBinding TextureAddon::createDescriptorSetLayoutBinding() {
+	VkDescriptorSetLayoutBinding layoutBinding = {};
+	layoutBinding.binding = 1;
+	layoutBinding.descriptorCount = filepaths.size();
+	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	layoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+
+	return layoutBinding;
+}
+
 
 void TextureAddon::addTexture(std::string filepath) {
 	filepaths.push_back(filepath);
