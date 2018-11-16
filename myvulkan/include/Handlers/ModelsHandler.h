@@ -22,6 +22,7 @@ public:
 	void createPipelines();
 	void destroyPipelines();
 	void createUBOs();
+	void updateUBOs(uint32_t);
 
 	void createDescriptorSetLayouts();
 	std::vector<VkDescriptorSetLayout> getDescriptorSetLayouts();

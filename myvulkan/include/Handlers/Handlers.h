@@ -13,6 +13,7 @@
 #include "ShadersHandler.h"
 #include "FramebuffersHandler.h"
 #include "ModelsHandler.h"
+#include "LightsHandler.h"
 #include "CommandBuffersHandler.h"
 #include "SynchrosHandler.h"
 #include "DrawHandler.h"
@@ -31,6 +32,7 @@ extern DescriptorsHandler* descriptorsHandler;
 extern ShadersHandler* shadersHandler;
 extern FramebuffersHandler* framebuffersHandler;
 extern ModelsHandler* modelsHandler;
+extern LightsHandler* lightsHandler;
 extern CommandBuffersHandler* commandBuffersHandler;
 extern SynchrosHandler* synchrosHandler;
 extern DrawHandler* drawHandler;

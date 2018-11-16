@@ -194,6 +194,7 @@
     <ClInclude Include="include\Handlers\Handlers.h" />
     <ClInclude Include="include\Handlers\InputHandler.h" />
     <ClInclude Include="include\Handlers\InstanceHandler.h" />
+    <ClInclude Include="include\Handlers\LightsHandler.h" />
     <ClInclude Include="include\Handlers\ModelsHandler.h" />
     <ClInclude Include="include\Handlers\QueuesHandler.h" />
     <ClInclude Include="include\Handlers\RenderPassHandler.h" />
@@ -203,11 +204,14 @@
     <ClInclude Include="include\Handlers\WindowHandler.h" />
     <ClInclude Include="include\images.h" />
     <ClInclude Include="include\image_views.h" />
+    <ClInclude Include="include\Light.h" />
+    <ClInclude Include="include\LightUboHandler.h" />
+    <ClInclude Include="include\light_ubo.h" />
     <ClInclude Include="include\Main.h" />
     <ClInclude Include="include\memory_types.h" />
     <ClInclude Include="include\Model.h" />
     <ClInclude Include="include\read_file.h" />
-    <ClInclude Include="include\uniform_buffer_objects.h" />
+    <ClInclude Include="include\mesh_ubo.h" />
     <ClInclude Include="include\vertex.h" />
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +231,7 @@
     <ClCompile Include="src\Handlers\FramebuffersHandler.cpp" />
     <ClCompile Include="src\Handlers\InputHandler.cpp" />
     <ClCompile Include="src\Handlers\InstanceHandler.cpp" />
+    <ClCompile Include="src\Handlers\LightsHandler.cpp" />
     <ClCompile Include="src\Handlers\ModelsHandler.cpp" />
     <ClCompile Include="src\Handlers\QueuesHandler.cpp" />
     <ClCompile Include="src\Handlers\RenderPassHandler.cpp" />
@@ -236,6 +241,8 @@
     <ClCompile Include="src\Handlers\WindowHandler.cpp" />
     <ClCompile Include="src\images.cpp" />
     <ClCompile Include="src\image_views.cpp" />
+    <ClCompile Include="src\Light.cpp" />
+    <ClCompile Include="src\LightUboHandler.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\memory_types.cpp" />
     <ClCompile Include="src\Model.cpp" />

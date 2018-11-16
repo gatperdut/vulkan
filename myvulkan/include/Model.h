@@ -20,7 +20,7 @@ public:
 	~Model();
 
 	void createUBOs();
-	void updateUBOs(uint32_t);
+	void updateUBO(uint32_t);
 	VkDeviceSize verticesSize();
 	VkDeviceSize indicesSize();
 	VkDeviceSize totalSize();

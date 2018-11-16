@@ -2,7 +2,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Handlers/DescriptorsHandler.h"
-#include "uniform_buffer_objects.h"
+#include "mesh_ubo.h"
 
 DescriptorsHandler::DescriptorsHandler() {
 

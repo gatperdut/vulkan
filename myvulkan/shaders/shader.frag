@@ -7,13 +7,18 @@ layout(set = 0, location = 2) in vec3 fragColor;
 layout(set = 0, location = 3) in vec2 fragTexCoord;
 layout(set = 0, location = 4) flat in uint texIndex;
 
-layout(set = 0, binding = 1) uniform sampler2D texSamplers[5];
+layout(set = 0, binding = 0) uniform LightUniformBufferObject {
+	vec3 pos;
+} lightUbo[10];
+
+layout(set = 1, binding = 1) uniform sampler2D texSamplers[5];
 
 layout(location = 0) out vec4 outColor;
 
 
 void main() {
-	vec3 lightPos = vec3(0.0, 5.0, 0.0);
+	//vec3 lightPos = vec3(0.0, 5.0, 0.0);
+	vec3 lightPos = lightUbo[0].pos;
 	vec3 normNormal = normalize(normal);
 	vec3 lightDir = normalize(lightPos - fragPos);
 	float diff = min(max(dot(normNormal, lightDir), 0.0), 0.95);

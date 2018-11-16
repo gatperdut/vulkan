@@ -3,7 +3,7 @@
 
 #include "Model.h"
 #include "Handlers/Handlers.h"
-#include "uniform_buffer_objects.h"
+#include "mesh_ubo.h"
 
 
 Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 scale) {
@@ -99,10 +99,10 @@ void Model::loadModel() {
 
 
 void Model::createUBOs() {
-	uboHandler->createUniformBuffer(totalSize());
+	uboHandler->createUniformBuffers(totalSize());
 }
 
-void Model::updateUBOs(uint32_t imageIndex) {
+void Model::updateUBO(uint32_t imageIndex) {
 	uboHandler->updateUniformBuffer(imageIndex, pos, scale);
 }
 
@@ -155,7 +155,7 @@ void Model::createDescriptorSets() {
 		VkDescriptorBufferInfo bufferInfo = {};
 		bufferInfo.buffer = uboHandler->buffers[i];
 		bufferInfo.offset = 0;
-		bufferInfo.range = sizeof(UniformBufferObject);
+		bufferInfo.range = sizeof(MeshUbo);
 
 
 		std::vector<VkWriteDescriptorSet> descriptorWrites;

@@ -130,9 +130,6 @@
     <ClInclude Include="include\read_file.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\uniform_buffer_objects.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -150,6 +147,21 @@
     </ClInclude>
     <ClInclude Include="include\Addons\PipelineHandler.h">
       <Filter>Header Files\Addons</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Handlers\LightsHandler.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mesh_ubo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\light_ubo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LightUboHandler.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +251,15 @@
     </ClCompile>
     <ClCompile Include="src\Addons\PipelineHandler.cpp">
       <Filter>Source Files\Addons</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Handlers\LightsHandler.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightUboHandler.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

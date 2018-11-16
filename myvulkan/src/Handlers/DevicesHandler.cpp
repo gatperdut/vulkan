@@ -4,7 +4,7 @@
 #include "Handlers/Handlers.h"
 #include "Handlers/DevicesHandler.h"
 #include "capabilities.h"
-#include "uniform_buffer_objects.h"
+#include "mesh_ubo.h"
 
 DevicesHandler::DevicesHandler() {
 
@@ -18,7 +18,7 @@ DevicesHandler::~DevicesHandler() {
 
 void DevicesHandler::computeUboAlignment() {
 	VkDeviceSize minUboAlignment = properties.limits.minUniformBufferOffsetAlignment;
-	uboAlignment = (VkDeviceSize)sizeof(UniformBufferObject);
+	uboAlignment = (VkDeviceSize)sizeof(MeshUbo);
 	if (minUboAlignment > 0) {
 		uboAlignment = (uboAlignment + minUboAlignment - 1) & ~(minUboAlignment - 1);
 	}

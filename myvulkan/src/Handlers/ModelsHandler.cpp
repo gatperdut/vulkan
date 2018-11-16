@@ -1,5 +1,4 @@
 #include "Handlers/Handlers.h"
-#include "Handlers/ModelsHandler.h"
 
 
 ModelsHandler::ModelsHandler() {
@@ -57,6 +56,12 @@ void ModelsHandler::load(std::string path, std::string filename, glm::vec3 pos, 
 void ModelsHandler::createUBOs() {
 	for (auto model : models) {
 		model->createUBOs();
+	}
+}
+
+void ModelsHandler::updateUBOs(uint32_t index) {
+	for (auto model : models) {
+		model->updateUBO(index);
 	}
 }
 

@@ -2,7 +2,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Handlers/CommandBuffersHandler.h"
-#include "uniform_buffer_objects.h"
+#include "mesh_ubo.h"
 
 
 CommandBuffersHandler::CommandBuffersHandler() {
@@ -53,19 +53,22 @@ void CommandBuffersHandler::internalCreateCommandBuffers(std::vector<VkCommandBu
 
 		vkCmdBeginRenderPass((*buffers)[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
+
 		Model* model;
 		for (size_t j = 0; j < modelsHandler->models.size(); j++) {
 			model = modelsHandler->models[j];
 		
 			vkCmdBindPipeline((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->pipelineHandler->pipeline);
+			
 
 			std::vector<VkDeviceSize> offsets = { 0 };
 			vkCmdBindVertexBuffers((*buffers)[i], 0, 1, &model->bufferHandler->vertexBuffer, offsets.data());
 			vkCmdBindIndexBuffer((*buffers)[i], model->bufferHandler->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 			//uint32_t dynamicOffset = j * (size_t)devicesHandler->uboAlignment;
-			uint32_t dynamicOffset = 0;
-			vkCmdBindDescriptorSets((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->pipelineHandler->layout, 0, 1, &model->descriptorSets[i], 1, &dynamicOffset);
+			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
+			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->descriptorSets[i], model->descriptorSets[i] };
+			vkCmdBindDescriptorSets((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->pipelineHandler->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 			vkCmdDrawIndexed((*buffers)[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
 			//vkCmdDraw((*buffers)[i], static_cast<uint32_t>(vertices.size()), 1, 0, 0);
