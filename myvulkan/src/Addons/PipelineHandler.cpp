@@ -1,20 +1,26 @@
 #include "Handlers/Handlers.h"
-#include "Handlers/PipelinesHandler.h"
+#include "Addons/PipelineHandler.h"
 #include "read_file.h"
 #include "vertex.h"
 
 
-PipelinesHandler::PipelinesHandler() {
+PipelineHandler::PipelineHandler() {
 
 }
 
 
-PipelinesHandler::~PipelinesHandler() {
-
+PipelineHandler::~PipelineHandler() {
+	freeResources();
 }
 
 
-void PipelinesHandler::createGraphicsPipeline() {
+void PipelineHandler::freeResources() {
+	vkDestroyPipeline(devicesHandler->device, pipeline, nullptr);
+	vkDestroyPipelineLayout(devicesHandler->device, layout, nullptr);
+}
+
+
+void PipelineHandler::create(VkDescriptorSetLayout descriptorSetLayout) {
 	VkShaderModule vertShaderModule;
 	VkShaderModule fragShaderModule;
 
@@ -128,13 +134,12 @@ void PipelinesHandler::createGraphicsPipeline() {
 
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	// would need to pass them all?
 	pipelineLayoutInfo.setLayoutCount = 1;
-	pipelineLayoutInfo.pSetLayouts = &modelsHandler->models[0]->descriptorSetLayout;
+	pipelineLayoutInfo.pSetLayouts = &descriptorSetLayout;
 	pipelineLayoutInfo.pushConstantRangeCount = 0; // Optional
 	pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
 
-	if (vkCreatePipelineLayout(devicesHandler->device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
+	if (vkCreatePipelineLayout(devicesHandler->device, &pipelineLayoutInfo, nullptr, &layout) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create pipeline layout!");
 	}
 
@@ -149,12 +154,12 @@ void PipelinesHandler::createGraphicsPipeline() {
 	pipelineInfo.pMultisampleState = &multisampling;
 	pipelineInfo.pDepthStencilState = &depthStencil;
 	pipelineInfo.pColorBlendState = &colorBlending;
-	pipelineInfo.layout = pipelineLayout;
+	pipelineInfo.layout = layout;
 	pipelineInfo.renderPass = renderPassHandler->renderPass;
 	pipelineInfo.subpass = 0;
 	pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-	if (vkCreateGraphicsPipelines(devicesHandler->device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS) {
+	if (vkCreateGraphicsPipelines(devicesHandler->device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create graphics pipeline!");
 	}
 

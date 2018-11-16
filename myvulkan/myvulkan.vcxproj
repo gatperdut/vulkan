@@ -177,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Addons\BufferHandler.h" />
+    <ClInclude Include="include\Addons\PipelineHandler.h" />
     <ClInclude Include="include\Addons\TextureAddon.h" />
     <ClInclude Include="include\Addons\UboHandler.h" />
     <ClInclude Include="include\buffers.h" />
@@ -194,7 +195,6 @@
     <ClInclude Include="include\Handlers\InputHandler.h" />
     <ClInclude Include="include\Handlers\InstanceHandler.h" />
     <ClInclude Include="include\Handlers\ModelsHandler.h" />
-    <ClInclude Include="include\Handlers\PipelinesHandler.h" />
     <ClInclude Include="include\Handlers\QueuesHandler.h" />
     <ClInclude Include="include\Handlers\RenderPassHandler.h" />
     <ClInclude Include="include\Handlers\ShadersHandler.h" />
@@ -212,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Addons\BufferHandler.cpp" />
+    <ClCompile Include="src\Addons\PipelineHandler.cpp" />
     <ClCompile Include="src\Addons\TextureAddon.cpp" />
     <ClCompile Include="src\Addons\UboHandler.cpp" />
     <ClCompile Include="src\buffers.cpp" />
@@ -227,7 +228,6 @@
     <ClCompile Include="src\Handlers\InputHandler.cpp" />
     <ClCompile Include="src\Handlers\InstanceHandler.cpp" />
     <ClCompile Include="src\Handlers\ModelsHandler.cpp" />
-    <ClCompile Include="src\Handlers\PipelinesHandler.cpp" />
     <ClCompile Include="src\Handlers\QueuesHandler.cpp" />
     <ClCompile Include="src\Handlers\RenderPassHandler.cpp" />
     <ClCompile Include="src\Handlers\ShadersHandler.cpp" />

@@ -20,10 +20,30 @@ void ModelsHandler::createDescriptorSetLayouts() {
 	}
 }
 
+std::vector<VkDescriptorSetLayout> ModelsHandler::getDescriptorSetLayouts() {
+	std::vector<VkDescriptorSetLayout> result;
+	for (auto model : models) {
+		result.push_back(model->descriptorSetLayout);
+	}
+	return result;
+}
 
 void ModelsHandler::createDescriptorSets() {
 	for (auto model : models) {
 		model->createDescriptorSets();
+	}
+}
+
+void ModelsHandler::createPipelines() {
+	for (auto model : models) {
+		model->createPipeline();
+	}
+}
+
+
+void ModelsHandler::destroyPipelines() {
+	for (auto model : models) {
+		model->pipelineHandler->freeResources();
 	}
 }
 

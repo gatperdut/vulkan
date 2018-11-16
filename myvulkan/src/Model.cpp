@@ -1,8 +1,8 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-#include "Handlers/Handlers.h"
 #include "Model.h"
+#include "Handlers/Handlers.h"
 #include "uniform_buffer_objects.h"
 
 
@@ -12,9 +12,10 @@ Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 sc
 	this->pos = pos;
 	this->scale = scale;
 
-	uboHandler = new UboHandler();
-	bufferHandler = new BufferHandler();
-	textureAddon = new TextureAddon();
+	uboHandler = new UboHandler;
+	bufferHandler = new BufferHandler;
+	textureAddon = new TextureAddon;
+	pipelineHandler = new PipelineHandler;
 	loadModel();
 }
 
@@ -23,6 +24,7 @@ Model::~Model() {
 	delete textureAddon;
 	delete uboHandler;
 	delete bufferHandler;
+	delete pipelineHandler;
 
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
 }
@@ -178,4 +180,8 @@ void Model::createDescriptorSets() {
 
 		vkUpdateDescriptorSets(devicesHandler->device, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr);
 	}
+}
+
+void Model::createPipeline() {
+	pipelineHandler->create(descriptorSetLayout);
 }

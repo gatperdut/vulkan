@@ -8,6 +8,7 @@
 #include "Addons/TextureAddon.h"
 #include "Addons/UboHandler.h"
 #include "Addons/BufferHandler.h"
+#include "Addons/PipelineHandler.h"
 
 
 class Model {
@@ -25,6 +26,7 @@ public:
 	VkDeviceSize totalSize();
 	void createDescriptorSetLayout();
 	void createDescriptorSets();
+	void createPipeline();
 
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
@@ -37,6 +39,7 @@ public:
 	UboHandler* uboHandler;
 	TextureAddon* textureAddon;
 	BufferHandler* bufferHandler;
+	PipelineHandler* pipelineHandler;
 
 	std::vector<VkDescriptorSet> descriptorSets;
 	VkDescriptorSetLayout descriptorSetLayout;

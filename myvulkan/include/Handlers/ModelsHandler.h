@@ -19,9 +19,12 @@ public:
 	VkDeviceSize verticesSize();
 	VkDeviceSize indicesSize();
 	void createDescriptorSets();
+	void createPipelines();
+	void destroyPipelines();
 	void createUBOs();
 
 	void createDescriptorSetLayouts();
+	std::vector<VkDescriptorSetLayout> getDescriptorSetLayouts();
 
 	std::vector<Model*> models;
 };

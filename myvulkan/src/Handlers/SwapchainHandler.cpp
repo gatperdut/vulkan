@@ -83,7 +83,7 @@ void SwapchainHandler::recreateSwapChain() {
 	createSwapchain();
 	createImageViews();
 	renderPassHandler->createRenderPass();
-	pipelinesHandler->createGraphicsPipeline();
+	modelsHandler->createPipelines();
 	renderPassHandler->createDepthResources();
 	framebuffersHandler->createFramebuffers();
 	commandBuffersHandler->createCommandBuffers();
@@ -100,8 +100,7 @@ void SwapchainHandler::cleanupSwapChain() {
 
 	vkFreeCommandBuffers(devicesHandler->device, commandsHandler->commandPool, static_cast<uint32_t>(commandBuffersHandler->commandBuffers.size()), commandBuffersHandler->commandBuffers.data());
 
-	vkDestroyPipeline(devicesHandler->device, pipelinesHandler->graphicsPipeline, nullptr);
-	vkDestroyPipelineLayout(devicesHandler->device, pipelinesHandler->pipelineLayout, nullptr);
+	modelsHandler->destroyPipelines();
 	vkDestroyRenderPass(devicesHandler->device, renderPassHandler->renderPass, nullptr);
 
 	for (auto imageView : swapchainHandler->imageViews) {
