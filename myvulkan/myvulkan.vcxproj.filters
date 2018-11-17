@@ -16,9 +16,6 @@
     <Filter Include="Resource Files\shaders">
       <UniqueIdentifier>{40ee63d3-ec89-49aa-bfc9-856fdcb38312}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\textures">
-      <UniqueIdentifier>{eef4c7ed-9315-4bb7-86f3-332ad6957b3f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\models">
       <UniqueIdentifier>{ee4c793b-f5f4-47c2-aa9f-8d1a248793d3}</UniqueIdentifier>
     </Filter>
@@ -294,10 +291,5 @@
     <ClCompile Include="src\Lights\LightPipeline.cpp">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="textures\angel.jpeg">
-      <Filter>Resource Files\textures</Filter>
-    </Image>
   </ItemGroup>
 </Project>
