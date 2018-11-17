@@ -64,22 +64,3 @@ void ModelsHandler::updateUBOs(uint32_t index) {
 		model->updateUBO(index);
 	}
 }
-
-VkDeviceSize ModelsHandler::verticesSize() {
-	VkDeviceSize total = 0;
-	for (auto model : models) {
-		total += model->verticesSize();
-	}
-	
-	return total;
-}
-
-
-VkDeviceSize ModelsHandler::indicesSize() {
-	VkDeviceSize total = 0;
-	for (auto model : models) {
-		total += model->indicesSize();
-	}
-
-	return total;
-}

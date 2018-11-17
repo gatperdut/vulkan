@@ -1,9 +1,13 @@
+#include <chrono>
+#include <math.h>
+
 #include "Handlers/Handlers.h"
 #include "Lights/light_ubo.h"
 
 
 LightsHandler::LightsHandler() {
-	lightUboHandler = new LightUBOs;
+	lightDataUBOs = new LightDataUBOs;
+	lightPipeline = new LightPipeline;
 }
 
 
@@ -12,8 +16,10 @@ LightsHandler::~LightsHandler() {
 		delete light;
 	}
 
-	delete lightUboHandler;
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
+	delete lightDataUBOs;
+	delete lightPipeline;
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutData, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutModel, nullptr);
 }
 
 
@@ -22,50 +28,93 @@ void LightsHandler::add(glm::vec3 pos) {
 	lights.push_back(light);
 }
 
-void LightsHandler::createDescriptorSetLayout() {
-	VkDescriptorSetLayoutBinding layoutBinding = lightUboHandler->createDescriptorSetLayoutBinding();
+
+VkDescriptorSetLayoutBinding LightsHandler::createDescriptorSetLayoutModelBinding() {
+	VkDescriptorSetLayoutBinding layoutBinding = {};
+	layoutBinding.binding = 0;
+	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+	layoutBinding.descriptorCount = 1;
+	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
+	return layoutBinding;
+}
+
+
+void LightsHandler::createDescriptorSetLayoutData() {
+	VkDescriptorSetLayoutBinding layoutBinding = lightDataUBOs->createDescriptorSetLayoutBinding();
 
 	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
 	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
 	layoutInfo.bindingCount = 1;
 	layoutInfo.pBindings = &layoutBinding;
 
-	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayout) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create CIS descriptor set layout!");
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutData) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create light data descriptor set layout!");
 	}
 }
 
-void LightsHandler::createUBOs() {
-	lightUboHandler->createUniformBuffers();
+
+void LightsHandler::createDescriptorSetLayoutModel() {
+	VkDescriptorSetLayoutBinding layoutBinding = createDescriptorSetLayoutModelBinding();
+
+	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfo.bindingCount = 1;
+	layoutInfo.pBindings = &layoutBinding;
+
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutModel) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create light model descriptor set layout!");
+	}
 }
 
-void LightsHandler::updateUBO(uint32_t index) {
-	lightUboHandler->updateUniformBuffer(index);
+void LightsHandler::createDataUBOs() {
+	lightDataUBOs->createUniformBuffers();
 }
 
-void LightsHandler::createDescriptorSets() {
+
+void LightsHandler::createModelUBOs() {
+	for (auto light : lights) {
+		light->createModelUBOs();
+	}
+}
+
+
+void LightsHandler::updateUBOs(uint32_t index) {
+	static auto startTime = std::chrono::high_resolution_clock::now();
+	auto currentTime = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+
+	for (auto light : lights) {
+		light->pos.z = 0.03 * light->pos.z + sin(time) * 8 - 4.0f;
+		light->updateModelUBO(index);
+	}
+	lightDataUBOs->updateUniformBuffer(index);
+}
+
+
+void LightsHandler::createDescriptorSetsData() {
 	VkDescriptorSetAllocateInfo allocInfo = {};
 	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 	allocInfo.descriptorPool = descriptorsHandler->descriptorPool;
 	allocInfo.descriptorSetCount = 1;
-	allocInfo.pSetLayouts = &descriptorSetLayout;
+	allocInfo.pSetLayouts = &descriptorSetLayoutData;
 
-	descriptorSets.resize(swapchainHandler->images.size());
+	descriptorSetsData.resize(swapchainHandler->images.size());
 
 	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
-		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSets[i]) != VK_SUCCESS) {
+		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSetsData[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to allocate UB descriptor set!");
 		}
 
 		VkDescriptorBufferInfo bufferInfo = {};
-		bufferInfo.buffer = lightUboHandler->buffers[i];
+		bufferInfo.buffer = lightDataUBOs->buffers[i];
 		bufferInfo.offset = 0;
 		bufferInfo.range = sizeof(LightUbo);
 
 		VkWriteDescriptorSet descriptorWrite = {};
 
 		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWrite.dstSet = descriptorSets[i];
+		descriptorWrite.dstSet = descriptorSetsData[i];
 		descriptorWrite.dstBinding = 0;
 		descriptorWrite.dstArrayElement = 0;
 		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
@@ -74,4 +123,15 @@ void LightsHandler::createDescriptorSets() {
 
 		vkUpdateDescriptorSets(devicesHandler->device, 1, &descriptorWrite, 0, nullptr);
 	}
+}
+
+
+void LightsHandler::createDescriptorSetsModel() {
+	for (auto light : lights) {
+		light->createDescriptorSetsModel();
+	}
+}
+
+void LightsHandler::createPipeline() {
+	lightPipeline->create(descriptorSetLayoutModel);
 }

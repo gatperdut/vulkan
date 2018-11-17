@@ -53,6 +53,21 @@ void CommandBuffersHandler::internalCreateCommandBuffers(std::vector<VkCommandBu
 
 		vkCmdBeginRenderPass((*buffers)[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
+		Light* light;
+		vkCmdBindPipeline((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->lightPipeline->pipeline);
+		for (size_t j = 0; j < lightsHandler->lights.size(); j++) {
+			light = lightsHandler->lights[j];
+
+			std::vector<VkDeviceSize> offsets = { 0 };
+			vkCmdBindVertexBuffers((*buffers)[i], 0, 1, &light->lightVBOs->vertexBuffer, offsets.data());
+			vkCmdBindIndexBuffer((*buffers)[i], light->lightVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+
+			std::vector<uint32_t> dynamicOffsets = { 0 };
+			std::vector<VkDescriptorSet> descriptorSets = { light->descriptorSetsModel[i] };
+			vkCmdBindDescriptorSets((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->lightPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
+
+			vkCmdDrawIndexed((*buffers)[i], static_cast<uint32_t>(light->indices.size()), 1, 0, 0, 0);
+		}
 
 		Model* model;
 		for (size_t j = 0; j < modelsHandler->models.size(); j++) {
@@ -65,13 +80,11 @@ void CommandBuffersHandler::internalCreateCommandBuffers(std::vector<VkCommandBu
 			vkCmdBindVertexBuffers((*buffers)[i], 0, 1, &model->modelVBOs->vertexBuffer, offsets.data());
 			vkCmdBindIndexBuffer((*buffers)[i], model->modelVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
-			//uint32_t dynamicOffset = j * (size_t)devicesHandler->uboAlignment;
 			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
-			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->descriptorSets[i], model->descriptorSets[i] };
+			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->descriptorSetsData[i], model->descriptorSets[i] };
 			vkCmdBindDescriptorSets((*buffers)[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->modelPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 			vkCmdDrawIndexed((*buffers)[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
-			//vkCmdDraw((*buffers)[i], static_cast<uint32_t>(vertices.size()), 1, 0, 0);
 		}
 
 		vkCmdEndRenderPass((*buffers)[i]);

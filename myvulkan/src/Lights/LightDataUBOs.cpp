@@ -3,20 +3,20 @@
 
 
 #include "Handlers/Handlers.h"
-#include "Lights/LightUBOs.h"
+#include "Lights/LightDataUBOs.h"
 #include "Lights/light_ubo.h"
 #include "buffers.h"
 
-LightUBOs::LightUBOs() {
+LightDataUBOs::LightDataUBOs() {
 
 }
 
 
-LightUBOs::~LightUBOs() {
+LightDataUBOs::~LightDataUBOs() {
 	freeResources();
 }
 
-void LightUBOs::freeResources() {
+void LightDataUBOs::freeResources() {
 	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
 		vkDestroyBuffer(devicesHandler->device, buffers[i], nullptr);
 		vkFreeMemory(devicesHandler->device, memories[i], nullptr);
@@ -24,7 +24,7 @@ void LightUBOs::freeResources() {
 }
 
 
-void LightUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
+void LightDataUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
 	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightUbo);
 
 	(*buffers).resize(swapchainHandler->images.size());
@@ -34,7 +34,7 @@ void LightUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std
 	}
 }
 
-void LightUBOs::createUniformBuffers() {
+void LightDataUBOs::createUniformBuffers() {
 
 	if (!buffers.size()) {
 		internalCreateUniformBuffers(&buffers, &memories);
@@ -54,7 +54,7 @@ void LightUBOs::createUniformBuffers() {
 }
 
 
-void LightUBOs::updateUniformBuffer(uint32_t currentImage) {
+void LightDataUBOs::updateUniformBuffer(uint32_t currentImage) {
 	static auto startTime = std::chrono::high_resolution_clock::now();
 
 	auto currentTime = std::chrono::high_resolution_clock::now();
@@ -76,7 +76,7 @@ void LightUBOs::updateUniformBuffer(uint32_t currentImage) {
 }
 
 
-VkDescriptorSetLayoutBinding LightUBOs::createDescriptorSetLayoutBinding() {
+VkDescriptorSetLayoutBinding LightDataUBOs::createDescriptorSetLayoutBinding() {
 	VkDescriptorSetLayoutBinding layoutBinding = {};
 	layoutBinding.binding = 0;
 	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;

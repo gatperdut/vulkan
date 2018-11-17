@@ -26,7 +26,7 @@ void DrawHandler::drawFrame() {
 		throw std::runtime_error("failed to acquire swap chain image!");
 	}
 
-	lightsHandler->updateUBO(imageIndex);
+	lightsHandler->updateUBOs(imageIndex);
 	modelsHandler->updateUBOs(imageIndex);
 
 	VkSubmitInfo submitInfo = {};

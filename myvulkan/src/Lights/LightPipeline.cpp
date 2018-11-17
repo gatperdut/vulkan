@@ -48,8 +48,8 @@ void LightPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	auto bindingDescription = ModelVertex::getBindingDescription();
-	auto attributeDescriptions = ModelVertex::getAttributeDescriptions();
+	auto bindingDescription = LightVertex::getBindingDescription();
+	auto attributeDescriptions = LightVertex::getAttributeDescriptions();
 
 	vertexInputInfo.vertexBindingDescriptionCount = 1;
 	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
@@ -133,6 +133,7 @@ void LightPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	colorBlending.blendConstants[3] = 0.0f; // Optional
 
 	std::vector<VkDescriptorSetLayout> layouts;
+	layouts.push_back(descriptorSetLayout);
 
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;

@@ -133,7 +133,7 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	colorBlending.blendConstants[3] = 0.0f; // Optional
 
 	std::vector<VkDescriptorSetLayout> layouts;
-	layouts.push_back(lightsHandler->descriptorSetLayout);
+	layouts.push_back(lightsHandler->descriptorSetLayoutData);
 	layouts.push_back(descriptorSetLayout);
 
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};

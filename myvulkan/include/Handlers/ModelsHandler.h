@@ -16,8 +16,6 @@ public:
 	~ModelsHandler();
 
 	void load(std::string, std::string, glm::vec3, glm::vec3);
-	VkDeviceSize verticesSize();
-	VkDeviceSize indicesSize();
 	void createDescriptorSets();
 	void createPipelines();
 	void destroyPipelines();

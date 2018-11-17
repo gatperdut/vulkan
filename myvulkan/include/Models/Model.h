@@ -14,6 +14,9 @@
 class Model {
 private:
 	void loadModel();
+	VkDeviceSize verticesSize();
+	VkDeviceSize indicesSize();
+	VkDeviceSize totalSize();
 
 public:
 	Model(std::string, std::string, glm::vec3, glm::vec3);
@@ -21,9 +24,6 @@ public:
 
 	void createUBOs();
 	void updateUBO(uint32_t);
-	VkDeviceSize verticesSize();
-	VkDeviceSize indicesSize();
-	VkDeviceSize totalSize();
 	void createDescriptorSetLayout();
 	void createDescriptorSets();
 	void createPipeline();

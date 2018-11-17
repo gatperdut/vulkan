@@ -5,7 +5,9 @@
 #include <glm/glm.hpp>
 #include <vulkan/vulkan.h>
 
-#include "Lights/LightUBOs.h"
+#include "Lights/LightPipeline.h"
+#include "Lights/LightDataUBOs.h"
+#include "Lights/LightModelUBOs.h"
 #include "Lights/Light.h"
 
 
@@ -16,14 +18,22 @@ public:
 	~LightsHandler();
 
 	void add(glm::vec3);
-	void createDescriptorSetLayout();
-	void createDescriptorSets();
-	void createUBOs();
-	void updateUBO(uint32_t);
+	void createPipeline();
+	void createDescriptorSetLayoutData();
+	void createDescriptorSetsData();
+	void createDescriptorSetLayoutModel();
+	VkDescriptorSetLayoutBinding createDescriptorSetLayoutModelBinding();
+	void createDescriptorSetsModel();
+	void createDataUBOs();
+	void createModelUBOs();
+	void updateUBOs(uint32_t);
 
 
-	LightUBOs* lightUboHandler;
+	LightDataUBOs* lightDataUBOs;
 	std::vector<Light*> lights;
-	VkDescriptorSetLayout descriptorSetLayout;
-	std::vector<VkDescriptorSet> descriptorSets;
+	VkDescriptorSetLayout descriptorSetLayoutData;
+	std::vector<VkDescriptorSet> descriptorSetsData;
+	VkDescriptorSetLayout descriptorSetLayoutModel;
+
+	LightPipeline* lightPipeline;
 };

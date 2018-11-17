@@ -203,8 +203,11 @@
     <ClInclude Include="include\images.h" />
     <ClInclude Include="include\image_views.h" />
     <ClInclude Include="include\Lights\Light.h" />
+    <ClInclude Include="include\Lights\LightModelUBOs.h" />
     <ClInclude Include="include\Lights\LightPipeline.h" />
-    <ClInclude Include="include\Lights\LightUBOs.h" />
+    <ClInclude Include="include\Lights\LightDataUBOs.h" />
+    <ClInclude Include="include\Lights\LightVBOs.h" />
+    <ClInclude Include="include\Lights\light_model_ubo.h" />
     <ClInclude Include="include\Lights\light_ubo.h" />
     <ClInclude Include="include\Lights\light_vertex.h" />
     <ClInclude Include="include\Main.h" />
@@ -244,8 +247,10 @@
     <ClCompile Include="src\images.cpp" />
     <ClCompile Include="src\image_views.cpp" />
     <ClCompile Include="src\Lights\Light.cpp" />
+    <ClCompile Include="src\Lights\LightModelUBOs.cpp" />
     <ClCompile Include="src\Lights\LightPipeline.cpp" />
-    <ClCompile Include="src\Lights\LightUBOs.cpp" />
+    <ClCompile Include="src\Lights\LightDataUBOs.cpp" />
+    <ClCompile Include="src\Lights\LightVBOs.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\memory_types.cpp" />
     <ClCompile Include="src\Models\ModelMaterials.cpp" />
