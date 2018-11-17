@@ -166,8 +166,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat" />
-    <None Include="shaders\shader.frag" />
-    <None Include="shaders\shader.vert" />
+    <None Include="shaders\lights\shader.frag" />
+    <None Include="shaders\lights\shader.vert" />
+    <None Include="shaders\models\shader.frag" />
+    <None Include="shaders\models\shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="models\chalet.obj">
@@ -201,8 +203,10 @@
     <ClInclude Include="include\images.h" />
     <ClInclude Include="include\image_views.h" />
     <ClInclude Include="include\Lights\Light.h" />
+    <ClInclude Include="include\Lights\LightPipeline.h" />
     <ClInclude Include="include\Lights\LightUBOs.h" />
     <ClInclude Include="include\Lights\light_ubo.h" />
+    <ClInclude Include="include\Lights\light_vertex.h" />
     <ClInclude Include="include\Main.h" />
     <ClInclude Include="include\memory_types.h" />
     <ClInclude Include="include\Models\ModelMaterials.h" />
@@ -211,7 +215,7 @@
     <ClInclude Include="include\Models\ModelVBOs.h" />
     <ClInclude Include="include\Models\model_ubo.h" />
     <ClInclude Include="include\Models\Model.h" />
-    <ClInclude Include="include\Models\vertex.h" />
+    <ClInclude Include="include\Models\model_vertex.h" />
     <ClInclude Include="include\read_file.h" />
     <ClInclude Include="include\mesh_ubo.h" />
     <ClInclude Include="include\vertex.h" />
@@ -240,6 +244,7 @@
     <ClCompile Include="src\images.cpp" />
     <ClCompile Include="src\image_views.cpp" />
     <ClCompile Include="src\Lights\Light.cpp" />
+    <ClCompile Include="src\Lights\LightPipeline.cpp" />
     <ClCompile Include="src\Lights\LightUBOs.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\memory_types.cpp" />

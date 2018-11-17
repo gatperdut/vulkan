@@ -6,7 +6,7 @@
 #include <vulkan/vulkan.h>
 
 #include "Models/Model.h"
-#include "Models/vertex.h"
+#include "Models/model_vertex.h"
 
 
 class ModelsHandler {

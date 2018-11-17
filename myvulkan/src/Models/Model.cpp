@@ -42,7 +42,7 @@ void Model::loadModel() {
 
 
 
-	std::unordered_map<Vertex, uint32_t> uniqueVertices = {};
+	std::unordered_map<ModelVertex, uint32_t> uniqueVertices = {};
 
 	for (auto material : materials) {
 		if (!modelMaterials->hasTexture(path + material.diffuse_texname)) {
@@ -54,7 +54,7 @@ void Model::loadModel() {
 	for (const auto& shape : shapes) {
 		uint32_t indexCount = 0;
 		for (const auto& index : shape.mesh.indices) {
-			Vertex vertex = {};
+			ModelVertex vertex = {};
 
 			vertex.pos = {
 				attrib.vertices[3 * index.vertex_index + 0],

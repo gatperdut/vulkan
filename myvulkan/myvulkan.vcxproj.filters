@@ -40,16 +40,28 @@
     <Filter Include="Source Files\Lights">
       <UniqueIdentifier>{9db5e3b0-e2ee-4495-be3d-ba0fc87a61c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\shaders\models">
+      <UniqueIdentifier>{5441670f-ecf8-48ed-8010-0e16743d8a8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\lights">
+      <UniqueIdentifier>{d3c9b9e8-31a7-44c1-9fd3-d38406799e2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\shader.frag">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="shaders\shader.vert">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="shaders\compile.bat">
       <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="shaders\models\shader.frag">
+      <Filter>Resource Files\shaders\models</Filter>
+    </None>
+    <None Include="shaders\models\shader.vert">
+      <Filter>Resource Files\shaders\models</Filter>
+    </None>
+    <None Include="shaders\lights\shader.frag">
+      <Filter>Resource Files\shaders\lights</Filter>
+    </None>
+    <None Include="shaders\lights\shader.vert">
+      <Filter>Resource Files\shaders\lights</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -148,9 +160,6 @@
     <ClInclude Include="include\Models\Model.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="include\Models\vertex.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="include\Models\model_ubo.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
@@ -174,6 +183,15 @@
     </ClInclude>
     <ClInclude Include="include\Models\ModelVBOs.h">
       <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lights\LightPipeline.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\model_vertex.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lights\light_vertex.h">
+      <Filter>Header Files\Lights</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +290,9 @@
     </ClCompile>
     <ClCompile Include="src\Models\ModelVBOs.cpp">
       <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lights\LightPipeline.cpp">
+      <Filter>Source Files\Lights</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

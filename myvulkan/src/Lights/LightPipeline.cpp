@@ -1,31 +1,31 @@
 #include "Handlers/Handlers.h"
-#include "Models/ModelPipeline.h"
+#include "Lights/LightPipeline.h"
 #include "read_file.h"
-#include "Models/model_vertex.h"
+#include "Lights/light_vertex.h"
 
 
-ModelPipeline::ModelPipeline() {
+LightPipeline::LightPipeline() {
 
 }
 
 
-ModelPipeline::~ModelPipeline() {
+LightPipeline::~LightPipeline() {
 	freeResources();
 }
 
 
-void ModelPipeline::freeResources() {
+void LightPipeline::freeResources() {
 	vkDestroyPipeline(devicesHandler->device, pipeline, nullptr);
 	vkDestroyPipelineLayout(devicesHandler->device, layout, nullptr);
 }
 
 
-void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
+void LightPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	VkShaderModule vertShaderModule;
 	VkShaderModule fragShaderModule;
 
-	auto vertShaderCode = readFile("shaders/models/vert.spv");
-	auto fragShaderCode = readFile("shaders/models/frag.spv");
+	auto vertShaderCode = readFile("shaders/lights/vert.spv");
+	auto fragShaderCode = readFile("shaders/lights/frag.spv");
 
 	vertShaderModule = shadersHandler->createShaderModule(vertShaderCode);
 	fragShaderModule = shadersHandler->createShaderModule(fragShaderCode);
@@ -133,8 +133,6 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	colorBlending.blendConstants[3] = 0.0f; // Optional
 
 	std::vector<VkDescriptorSetLayout> layouts;
-	layouts.push_back(lightsHandler->descriptorSetLayout);
-	layouts.push_back(descriptorSetLayout);
 
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;

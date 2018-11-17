@@ -23,7 +23,7 @@ void ModelVBOs::freeResources() {
 }
 
 
-void ModelVBOs::internalCreateBuffers(VkBuffer *vBuffer, VkDeviceMemory *vBufferMemory, VkBuffer *iBuffer, VkDeviceMemory *iBufferMemory, std::vector<Vertex> vertices, std::vector<uint32_t> indices) {
+void ModelVBOs::internalCreateBuffers(VkBuffer *vBuffer, VkDeviceMemory *vBufferMemory, VkBuffer *iBuffer, VkDeviceMemory *iBufferMemory, std::vector<ModelVertex> vertices, std::vector<uint32_t> indices) {
 	VkDeviceSize verticesSize = vertices.size() * sizeof(vertices[0]);
 	VkDeviceSize indicesSize = indices.size() * sizeof(indices[0]);
 
@@ -55,7 +55,7 @@ void ModelVBOs::internalCreateBuffers(VkBuffer *vBuffer, VkDeviceMemory *vBuffer
 }
 
 
-void ModelVBOs::createBuffers(std::vector<Vertex> vertices, std::vector<uint32_t> indices) {
+void ModelVBOs::createBuffers(std::vector<ModelVertex> vertices, std::vector<uint32_t> indices) {
 	if (!vertexBufferMemory) {
 		internalCreateBuffers(&vertexBuffer, &vertexBufferMemory, &indexBuffer, &indexBufferMemory, vertices, indices);
 	}

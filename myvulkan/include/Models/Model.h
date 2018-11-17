@@ -28,7 +28,7 @@ public:
 	void createDescriptorSets();
 	void createPipeline();
 
-	std::vector<Vertex> vertices;
+	std::vector<ModelVertex> vertices;
 	std::vector<uint32_t> indices;
 	glm::vec3 pos;
 	glm::vec3 scale;
