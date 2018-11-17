@@ -3,19 +3,19 @@
 #include <algorithm>
 
 #include "Handlers/Handlers.h"
-#include "Addons/TextureAddon.h"
+#include "Models/ModeLMaterials.h"
 #include "buffers.h"
 #include "images.h"
 #include "image_views.h"
 #include "buffer_to_image.h"
 
 
-TextureAddon::TextureAddon() {
+ModeLMaterials::ModeLMaterials() {
 
 }
 
 
-TextureAddon::~TextureAddon() {
+ModeLMaterials::~ModeLMaterials() {
 	for (auto sampler : samplers) {
 		vkDestroySampler(devicesHandler->device, sampler, nullptr);
 	}
@@ -31,11 +31,11 @@ TextureAddon::~TextureAddon() {
 }
 
 
-bool TextureAddon::hasTexture(std::string filepath) {
+bool ModeLMaterials::hasTexture(std::string filepath) {
 	return indexByFilepath(filepath) >= 0;
 }
 
-int32_t TextureAddon::indexByFilepath(std::string filepath) {
+int32_t ModeLMaterials::indexByFilepath(std::string filepath) {
 	for (size_t i = 0; i < filepaths.size(); i++) {
 		if (filepaths[i] == filepath) {
 			return i;
@@ -45,7 +45,7 @@ int32_t TextureAddon::indexByFilepath(std::string filepath) {
 	return -1;
 }
 
-VkDescriptorSetLayoutBinding TextureAddon::createDescriptorSetLayoutBinding() {
+VkDescriptorSetLayoutBinding ModeLMaterials::createDescriptorSetLayoutBinding() {
 	VkDescriptorSetLayoutBinding layoutBinding = {};
 	layoutBinding.binding = 1;
 	layoutBinding.descriptorCount = filepaths.size();
@@ -56,7 +56,7 @@ VkDescriptorSetLayoutBinding TextureAddon::createDescriptorSetLayoutBinding() {
 }
 
 
-void TextureAddon::addTexture(std::string filepath) {
+void ModeLMaterials::addTexture(std::string filepath) {
 	filepaths.push_back(filepath);
 	addImage(filepath);
 	addImageView();
@@ -64,7 +64,7 @@ void TextureAddon::addTexture(std::string filepath) {
 }
 
 
-void TextureAddon::addImage(std::string filepath) {
+void ModeLMaterials::addImage(std::string filepath) {
 	int texWidth, texHeight, texChannels;
 
 	stbi_uc* pixels = stbi_load(filepath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
@@ -107,7 +107,7 @@ void TextureAddon::addImage(std::string filepath) {
 	imageMemories.push_back(imageMemory);
 }
 
-void TextureAddon::addMipmaps(VkImage image, VkFormat imageFormat, int32_t texWidth, int32_t texHeight, uint32_t mipLevels) {
+void ModeLMaterials::addMipmaps(VkImage image, VkFormat imageFormat, int32_t texWidth, int32_t texHeight, uint32_t mipLevels) {
 	VkFormatProperties formatProperties;
 	vkGetPhysicalDeviceFormatProperties(devicesHandler->physicalDevice, imageFormat, &formatProperties);
 
@@ -202,13 +202,13 @@ void TextureAddon::addMipmaps(VkImage image, VkFormat imageFormat, int32_t texWi
 	commandsHandler->endSingleTimeCommands(commandBuffer);
 }
 
-void TextureAddon::addImageView() {
+void ModeLMaterials::addImageView() {
 	VkImageView imageView = createImageView(images.back(), VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_ASPECT_COLOR_BIT, mipLevels.back());
 	imageViews.push_back(imageView);
 };
 
 
-void TextureAddon::addSampler() {
+void ModeLMaterials::addSampler() {
 	VkSamplerCreateInfo samplerInfo = {};
 	samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
 	samplerInfo.magFilter = VK_FILTER_LINEAR;

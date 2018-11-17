@@ -10,7 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/hash.hpp>
 
-#include "vertex.h"
+#include "Models/vertex.h"
 
 
 struct Vertex {

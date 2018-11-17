@@ -176,10 +176,6 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Addons\BufferHandler.h" />
-    <ClInclude Include="include\Addons\PipelineHandler.h" />
-    <ClInclude Include="include\Addons\TextureAddon.h" />
-    <ClInclude Include="include\Addons\UboHandler.h" />
     <ClInclude Include="include\buffers.h" />
     <ClInclude Include="include\buffer_to_image.h" />
     <ClInclude Include="include\capabilities.h" />
@@ -204,21 +200,23 @@
     <ClInclude Include="include\Handlers\WindowHandler.h" />
     <ClInclude Include="include\images.h" />
     <ClInclude Include="include\image_views.h" />
-    <ClInclude Include="include\Light.h" />
-    <ClInclude Include="include\LightUboHandler.h" />
-    <ClInclude Include="include\light_ubo.h" />
+    <ClInclude Include="include\Lights\Light.h" />
+    <ClInclude Include="include\Lights\LightUBOs.h" />
+    <ClInclude Include="include\Lights\light_ubo.h" />
     <ClInclude Include="include\Main.h" />
     <ClInclude Include="include\memory_types.h" />
-    <ClInclude Include="include\Model.h" />
+    <ClInclude Include="include\Models\ModelMaterials.h" />
+    <ClInclude Include="include\Models\ModelPipeline.h" />
+    <ClInclude Include="include\Models\ModelUBOs.h" />
+    <ClInclude Include="include\Models\ModelVBOs.h" />
+    <ClInclude Include="include\Models\model_ubo.h" />
+    <ClInclude Include="include\Models\Model.h" />
+    <ClInclude Include="include\Models\vertex.h" />
     <ClInclude Include="include\read_file.h" />
     <ClInclude Include="include\mesh_ubo.h" />
     <ClInclude Include="include\vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Addons\BufferHandler.cpp" />
-    <ClCompile Include="src\Addons\PipelineHandler.cpp" />
-    <ClCompile Include="src\Addons\TextureAddon.cpp" />
-    <ClCompile Include="src\Addons\UboHandler.cpp" />
     <ClCompile Include="src\buffers.cpp" />
     <ClCompile Include="src\buffer_to_image.cpp" />
     <ClCompile Include="src\Handlers\CameraHandler.cpp" />
@@ -241,11 +239,15 @@
     <ClCompile Include="src\Handlers\WindowHandler.cpp" />
     <ClCompile Include="src\images.cpp" />
     <ClCompile Include="src\image_views.cpp" />
-    <ClCompile Include="src\Light.cpp" />
-    <ClCompile Include="src\LightUboHandler.cpp" />
+    <ClCompile Include="src\Lights\Light.cpp" />
+    <ClCompile Include="src\Lights\LightUBOs.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\memory_types.cpp" />
-    <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\Models\ModelMaterials.cpp" />
+    <ClCompile Include="src\Models\ModelPipeline.cpp" />
+    <ClCompile Include="src\Models\ModelUBOs.cpp" />
+    <ClCompile Include="src\Models\ModelVBOs.cpp" />
+    <ClCompile Include="src\Models\Model.cpp" />
     <ClCompile Include="src\read_file.cpp" />
   </ItemGroup>
   <ItemGroup>

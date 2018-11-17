@@ -5,8 +5,8 @@
 #include <glm/glm.hpp>
 #include <vulkan/vulkan.h>
 
-#include "Model.h"
-#include "vertex.h"
+#include "Models/Model.h"
+#include "Models/vertex.h"
 
 
 class ModelsHandler {

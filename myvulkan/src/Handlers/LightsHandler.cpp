@@ -1,9 +1,9 @@
 #include "Handlers/Handlers.h"
-#include "light_ubo.h"
+#include "Lights/light_ubo.h"
 
 
 LightsHandler::LightsHandler() {
-	lightUboHandler = new LightUboHandler;
+	lightUboHandler = new LightUBOs;
 }
 
 

@@ -1,21 +1,21 @@
 #include <cstring>
 
 #include "Handlers/Handlers.h"
-#include "Addons/BufferHandler.h"
+#include "Models/ModelVBOs.h"
 #include "buffers.h"
 
 
-BufferHandler::BufferHandler() {
+ModelVBOs::ModelVBOs() {
 
 }
 
 
-BufferHandler::~BufferHandler() {
+ModelVBOs::~ModelVBOs() {
 	freeResources();
 }
 
 
-void BufferHandler::freeResources() {
+void ModelVBOs::freeResources() {
 	vkDestroyBuffer(devicesHandler->device, vertexBuffer, nullptr);
 	vkDestroyBuffer(devicesHandler->device, indexBuffer, nullptr);
 	vkFreeMemory(devicesHandler->device, vertexBufferMemory, nullptr);
@@ -23,7 +23,7 @@ void BufferHandler::freeResources() {
 }
 
 
-void BufferHandler::internalCreateBuffers(VkBuffer *vBuffer, VkDeviceMemory *vBufferMemory, VkBuffer *iBuffer, VkDeviceMemory *iBufferMemory, std::vector<Vertex> vertices, std::vector<uint32_t> indices) {
+void ModelVBOs::internalCreateBuffers(VkBuffer *vBuffer, VkDeviceMemory *vBufferMemory, VkBuffer *iBuffer, VkDeviceMemory *iBufferMemory, std::vector<Vertex> vertices, std::vector<uint32_t> indices) {
 	VkDeviceSize verticesSize = vertices.size() * sizeof(vertices[0]);
 	VkDeviceSize indicesSize = indices.size() * sizeof(indices[0]);
 
@@ -55,7 +55,7 @@ void BufferHandler::internalCreateBuffers(VkBuffer *vBuffer, VkDeviceMemory *vBu
 }
 
 
-void BufferHandler::createBuffers(std::vector<Vertex> vertices, std::vector<uint32_t> indices) {
+void ModelVBOs::createBuffers(std::vector<Vertex> vertices, std::vector<uint32_t> indices) {
 	if (!vertexBufferMemory) {
 		internalCreateBuffers(&vertexBuffer, &vertexBufferMemory, &indexBuffer, &indexBufferMemory, vertices, indices);
 	}

@@ -1,26 +1,26 @@
 #include "Handlers/Handlers.h"
-#include "Addons/PipelineHandler.h"
+#include "Models/ModelPipeline.h"
 #include "read_file.h"
-#include "vertex.h"
+#include "Models/vertex.h"
 
 
-PipelineHandler::PipelineHandler() {
+ModelPipeline::ModelPipeline() {
 
 }
 
 
-PipelineHandler::~PipelineHandler() {
+ModelPipeline::~ModelPipeline() {
 	freeResources();
 }
 
 
-void PipelineHandler::freeResources() {
+void ModelPipeline::freeResources() {
 	vkDestroyPipeline(devicesHandler->device, pipeline, nullptr);
 	vkDestroyPipelineLayout(devicesHandler->device, layout, nullptr);
 }
 
 
-void PipelineHandler::create(VkDescriptorSetLayout descriptorSetLayout) {
+void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	VkShaderModule vertShaderModule;
 	VkShaderModule fragShaderModule;
 

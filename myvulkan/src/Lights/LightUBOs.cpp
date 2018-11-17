@@ -3,20 +3,20 @@
 
 
 #include "Handlers/Handlers.h"
-#include "Addons/UboHandler.h"
-#include "mesh_ubo.h"
+#include "Lights/LightUBOs.h"
+#include "Lights/light_ubo.h"
 #include "buffers.h"
 
-UboHandler::UboHandler() {
+LightUBOs::LightUBOs() {
 
 }
 
 
-UboHandler::~UboHandler() {
+LightUBOs::~LightUBOs() {
 	freeResources();
 }
 
-void UboHandler::freeResources() {
+void LightUBOs::freeResources() {
 	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
 		vkDestroyBuffer(devicesHandler->device, buffers[i], nullptr);
 		vkFreeMemory(devicesHandler->device, memories[i], nullptr);
@@ -24,7 +24,9 @@ void UboHandler::freeResources() {
 }
 
 
-void UboHandler::internalCreateUniformBuffers(VkDeviceSize size, std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
+void LightUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
+	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightUbo);
+
 	(*buffers).resize(swapchainHandler->images.size());
 	(*buffersMemories).resize(swapchainHandler->images.size());
 	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
@@ -32,15 +34,16 @@ void UboHandler::internalCreateUniformBuffers(VkDeviceSize size, std::vector<VkB
 	}
 }
 
-void UboHandler::createUniformBuffers(VkDeviceSize size) {
+void LightUBOs::createUniformBuffers() {
+
 	if (!buffers.size()) {
-		internalCreateUniformBuffers(size, &buffers, &memories);
+		internalCreateUniformBuffers(&buffers, &memories);
 	}
 	else {
 		std::vector<VkBuffer> newBuffers;
 		std::vector<VkDeviceMemory> newMemories;
 
-		internalCreateUniformBuffers(size, &newBuffers, &newMemories);
+		internalCreateUniformBuffers(&newBuffers, &newMemories);
 
 		freeResources();
 		for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
@@ -51,7 +54,7 @@ void UboHandler::createUniformBuffers(VkDeviceSize size) {
 }
 
 
-void UboHandler::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos, glm::vec3 scale) {
+void LightUBOs::updateUniformBuffer(uint32_t currentImage) {
 	static auto startTime = std::chrono::high_resolution_clock::now();
 
 	auto currentTime = std::chrono::high_resolution_clock::now();
@@ -59,29 +62,26 @@ void UboHandler::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos, glm::
 	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
 	void* data;
+
+	std::vector<LightUbo> ubos;
+	ubos.resize(lightsHandler->lights.size());
+	for (uint32_t i = 0; i < lightsHandler->lights.size(); i++) {
+		ubos[i].pos = lightsHandler->lights[i]->pos;
+	}
 	
-	MeshUbo ubo = {};
-	ubo.model = glm::translate(glm::mat4(1.0), pos);
-	ubo.model = glm::rotate(ubo.model, 0.0f * time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	ubo.model = glm::scale(ubo.model, scale);
-	ubo.view = cameraHandler->viewMatrix();
-	ubo.proj = glm::perspective(glm::radians(45.0f), swapchainHandler->extent.width / (float)swapchainHandler->extent.height, 0.1f, 100.0f);
-
-	ubo.proj[1][1] *= -1;
-
-	vkMapMemory(devicesHandler->device, memories[currentImage], 0, sizeof(ubo), 0, &data);
-	memcpy(data, &ubo, sizeof(ubo));
+	vkMapMemory(devicesHandler->device, memories[currentImage], 0, lightsHandler->lights.size() * sizeof(LightUbo), 0, &data);
+	memcpy(data, ubos.data(), lightsHandler->lights.size() * sizeof(LightUbo));
 	vkUnmapMemory(devicesHandler->device, memories[currentImage]);
 
 }
 
 
-VkDescriptorSetLayoutBinding UboHandler::createDescriptorSetLayoutBinding() {
+VkDescriptorSetLayoutBinding LightUBOs::createDescriptorSetLayoutBinding() {
 	VkDescriptorSetLayoutBinding layoutBinding = {};
 	layoutBinding.binding = 0;
 	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
 	layoutBinding.descriptorCount = 1;
-	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+	layoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
 
 	return layoutBinding;
 }

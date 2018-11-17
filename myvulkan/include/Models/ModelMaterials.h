@@ -5,7 +5,7 @@
 #include <vulkan/vulkan.h>
 
 
-class TextureAddon {
+class ModeLMaterials {
 private:
 	void addImage(std::string);
 	void addMipmaps(VkImage, VkFormat, int32_t, int32_t, uint32_t);
@@ -13,8 +13,8 @@ private:
 	void addSampler();
 
 public:
-	TextureAddon();
-	~TextureAddon();
+	ModeLMaterials();
+	~ModeLMaterials();
 
 	void addTexture(std::string);
 	bool hasTexture(std::string);

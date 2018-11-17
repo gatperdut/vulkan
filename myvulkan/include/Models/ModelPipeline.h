@@ -4,10 +4,10 @@
 #include <vulkan/vulkan.h>
 
 
-class PipelineHandler {
+class ModelPipeline {
 public:
-	PipelineHandler();
-	~PipelineHandler();
+	ModelPipeline();
+	~ModelPipeline();
 
 	void create(VkDescriptorSetLayout);
 	void freeResources();

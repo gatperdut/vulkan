@@ -5,10 +5,10 @@
 #include <vulkan/vulkan.h>
 #include <glm/glm.hpp>
 
-#include "Addons/TextureAddon.h"
-#include "Addons/UboHandler.h"
-#include "Addons/BufferHandler.h"
-#include "Addons/PipelineHandler.h"
+#include "Models/ModeLMaterials.h"
+#include "Models/ModelUBOs.h"
+#include "Models/ModelVBOs.h"
+#include "Models/ModelPipeline.h"
 
 
 class Model {
@@ -36,10 +36,10 @@ public:
 	std::string path;
 	std::string filename;
 
-	UboHandler* uboHandler;
-	TextureAddon* textureAddon;
-	BufferHandler* bufferHandler;
-	PipelineHandler* pipelineHandler;
+	ModelUBOs* modelUBOs;
+	ModeLMaterials* modelMaterials;
+	ModelVBOs* modelVBOs;
+	ModelPipeline* modelPipeline;
 
 	std::vector<VkDescriptorSet> descriptorSets;
 	VkDescriptorSetLayout descriptorSetLayout;

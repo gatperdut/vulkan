@@ -1,9 +1,9 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
-#include "Model.h"
+#include "Models/Model.h"
 #include "Handlers/Handlers.h"
-#include "mesh_ubo.h"
+#include "Models/model_ubo.h"
 
 
 Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 scale) {
@@ -12,19 +12,19 @@ Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 sc
 	this->pos = pos;
 	this->scale = scale;
 
-	uboHandler = new UboHandler;
-	bufferHandler = new BufferHandler;
-	textureAddon = new TextureAddon;
-	pipelineHandler = new PipelineHandler;
+	modelUBOs = new ModelUBOs;
+	modelVBOs = new ModelVBOs;
+	modelMaterials = new ModeLMaterials;
+	modelPipeline = new ModelPipeline;
 	loadModel();
 }
 
 
 Model::~Model() {
-	delete textureAddon;
-	delete uboHandler;
-	delete bufferHandler;
-	delete pipelineHandler;
+	delete modelMaterials;
+	delete modelUBOs;
+	delete modelVBOs;
+	delete modelPipeline;
 
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
 }
@@ -45,9 +45,9 @@ void Model::loadModel() {
 	std::unordered_map<Vertex, uint32_t> uniqueVertices = {};
 
 	for (auto material : materials) {
-		if (!textureAddon->hasTexture(path + material.diffuse_texname)) {
+		if (!modelMaterials->hasTexture(path + material.diffuse_texname)) {
 			std::cout << "Loading texture " << path + material.diffuse_texname << std::endl;
-			textureAddon->addTexture(path + material.diffuse_texname);
+			modelMaterials->addTexture(path + material.diffuse_texname);
 		}
 	}
 
@@ -75,7 +75,7 @@ void Model::loadModel() {
 
 			vertex.color = { 1.0f, 1.0f, 1.0f };
 
-			int32_t texIndex = textureAddon->indexByFilepath(path + materials[shape.mesh.material_ids[indexCount / 3]].diffuse_texname);
+			int32_t texIndex = modelMaterials->indexByFilepath(path + materials[shape.mesh.material_ids[indexCount / 3]].diffuse_texname);
 			if (texIndex < 0) {
 				std::cout << "WHAT IS THIS SORCERY?!" << std::endl;
 				texIndex = 0;
@@ -94,16 +94,16 @@ void Model::loadModel() {
 		indexCount = 0;
 	}
 
-	bufferHandler->createBuffers(vertices, indices);
+	modelVBOs->createBuffers(vertices, indices);
 }
 
 
 void Model::createUBOs() {
-	uboHandler->createUniformBuffers(totalSize());
+	modelUBOs->createUniformBuffers(totalSize());
 }
 
 void Model::updateUBO(uint32_t imageIndex) {
-	uboHandler->updateUniformBuffer(imageIndex, pos, scale);
+	modelUBOs->updateUniformBuffer(imageIndex, pos, scale);
 }
 
 
@@ -122,8 +122,8 @@ VkDeviceSize Model::totalSize() {
 
 
 void Model::createDescriptorSetLayout() {
-	VkDescriptorSetLayoutBinding layoutBindingUB = uboHandler->createDescriptorSetLayoutBinding();
-	VkDescriptorSetLayoutBinding layoutBindingCIS = textureAddon->createDescriptorSetLayoutBinding();
+	VkDescriptorSetLayoutBinding layoutBindingUB = modelUBOs->createDescriptorSetLayoutBinding();
+	VkDescriptorSetLayoutBinding layoutBindingCIS = modelMaterials->createDescriptorSetLayoutBinding();
 
 	std::vector<VkDescriptorSetLayoutBinding> bindings = { layoutBindingUB, layoutBindingCIS };
 
@@ -153,9 +153,9 @@ void Model::createDescriptorSets() {
 		}
 
 		VkDescriptorBufferInfo bufferInfo = {};
-		bufferInfo.buffer = uboHandler->buffers[i];
+		bufferInfo.buffer = modelUBOs->buffers[i];
 		bufferInfo.offset = 0;
-		bufferInfo.range = sizeof(MeshUbo);
+		bufferInfo.range = sizeof(ModelUBO);
 
 
 		std::vector<VkWriteDescriptorSet> descriptorWrites;
@@ -170,11 +170,11 @@ void Model::createDescriptorSets() {
 		descriptorWrites[0].pBufferInfo = &bufferInfo;
 
 		std::vector<VkDescriptorImageInfo> imageInfos;
-		imageInfos.resize(textureAddon->filepaths.size());
-		for (size_t j = 0; j < textureAddon->filepaths.size(); j++) {
+		imageInfos.resize(modelMaterials->filepaths.size());
+		for (size_t j = 0; j < modelMaterials->filepaths.size(); j++) {
 			imageInfos[j].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-			imageInfos[j].imageView = textureAddon->imageViews[j];
-			imageInfos[j].sampler = textureAddon->samplers[j];
+			imageInfos[j].imageView = modelMaterials->imageViews[j];
+			imageInfos[j].sampler = modelMaterials->samplers[j];
 		}
 		descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		descriptorWrites[1].dstSet = descriptorSets[i];
@@ -189,5 +189,5 @@ void Model::createDescriptorSets() {
 }
 
 void Model::createPipeline() {
-	pipelineHandler->create(descriptorSetLayout);
+	modelPipeline->create(descriptorSetLayout);
 }

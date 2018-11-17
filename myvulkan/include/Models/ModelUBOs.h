@@ -6,17 +6,18 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-class LightUboHandler {
+
+class ModelUBOs {
 private:
-	void internalCreateUniformBuffers(std::vector<VkBuffer>*, std::vector<VkDeviceMemory>*);
+	void internalCreateUniformBuffers(VkDeviceSize, std::vector<VkBuffer>*, std::vector<VkDeviceMemory>*);
 
 public:
-	LightUboHandler();
-	~LightUboHandler();
+	ModelUBOs();
+	~ModelUBOs();
 
 	void freeResources();
-	void createUniformBuffers();
-	void updateUniformBuffer(uint32_t);
+	void createUniformBuffers(VkDeviceSize);
+	void updateUniformBuffer(uint32_t, glm::vec3, glm::vec3);
 
 	VkDescriptorSetLayoutBinding createDescriptorSetLayoutBinding();
 

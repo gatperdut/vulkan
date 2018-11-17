@@ -5,8 +5,8 @@
 #include <glm/glm.hpp>
 #include <vulkan/vulkan.h>
 
-#include "LightUboHandler.h"
-#include "Light.h"
+#include "Lights/LightUBOs.h"
+#include "Lights/Light.h"
 
 
 class LightsHandler {
@@ -22,7 +22,7 @@ public:
 	void updateUBO(uint32_t);
 
 
-	LightUboHandler* lightUboHandler;
+	LightUBOs* lightUboHandler;
 	std::vector<Light*> lights;
 	VkDescriptorSetLayout descriptorSetLayout;
 	std::vector<VkDescriptorSet> descriptorSets;

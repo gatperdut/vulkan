@@ -4,16 +4,16 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#include "vertex.h"
+#include "Models/vertex.h"
 
 
-class BufferHandler {
+class ModelVBOs {
 private:
 	void internalCreateBuffers(VkBuffer*, VkDeviceMemory*, VkBuffer*, VkDeviceMemory*, std::vector<Vertex>, std::vector<uint32_t>);
 
 public:
-	BufferHandler();
-	~BufferHandler();
+	ModelVBOs();
+	~ModelVBOs();
 
 	void freeResources();
 	void createBuffers(std::vector<Vertex>, std::vector<uint32_t>);

@@ -42,7 +42,7 @@ void ModelsHandler::createPipelines() {
 
 void ModelsHandler::destroyPipelines() {
 	for (auto model : models) {
-		model->pipelineHandler->freeResources();
+		model->modelPipeline->freeResources();
 	}
 }
 

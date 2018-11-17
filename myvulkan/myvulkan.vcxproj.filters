@@ -28,11 +28,17 @@
     <Filter Include="Source Files\Handlers">
       <UniqueIdentifier>{713cafee-6320-4418-9d7c-488899bd7638}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Addons">
+    <Filter Include="Header Files\Models">
       <UniqueIdentifier>{8db0101c-3052-45ef-9926-09d9d604f086}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Addons">
+    <Filter Include="Source Files\Models">
       <UniqueIdentifier>{f0f23fc9-b7ca-423d-b0ba-0194e9e012f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Lights">
+      <UniqueIdentifier>{55c5696d-9b58-49ef-957f-70c6af610a9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lights">
+      <UniqueIdentifier>{9db5e3b0-e2ee-4495-be3d-ba0fc87a61c1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -133,35 +139,41 @@
     <ClInclude Include="include\vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Addons\TextureAddon.h">
-      <Filter>Header Files\Addons</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Addons\UboHandler.h">
-      <Filter>Header Files\Addons</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Addons\BufferHandler.h">
-      <Filter>Header Files\Addons</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Addons\PipelineHandler.h">
-      <Filter>Header Files\Addons</Filter>
-    </ClInclude>
     <ClInclude Include="include\Handlers\LightsHandler.h">
       <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Light.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\mesh_ubo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\light_ubo.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Models\Model.h">
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="include\LightUboHandler.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Models\vertex.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\model_ubo.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lights\Light.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lights\light_ubo.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lights\LightUBOs.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\ModelMaterials.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\ModelPipeline.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\ModelUBOs.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\ModelVBOs.h">
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -237,29 +249,29 @@
     <ClCompile Include="src\read_file.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Addons\TextureAddon.cpp">
-      <Filter>Source Files\Addons</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Addons\UboHandler.cpp">
-      <Filter>Source Files\Addons</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Addons\BufferHandler.cpp">
-      <Filter>Source Files\Addons</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Addons\PipelineHandler.cpp">
-      <Filter>Source Files\Addons</Filter>
-    </ClCompile>
     <ClCompile Include="src\Handlers\LightsHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\Light.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Models\Model.cpp">
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="src\LightUboHandler.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Lights\Light.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lights\LightUBOs.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\ModelMaterials.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\ModelPipeline.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\ModelUBOs.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\ModelVBOs.cpp">
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
