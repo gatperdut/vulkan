@@ -208,7 +208,7 @@
     <ClInclude Include="include\Lights\LightDataUBOs.h" />
     <ClInclude Include="include\Lights\LightVBOs.h" />
     <ClInclude Include="include\Lights\light_model_ubo.h" />
-    <ClInclude Include="include\Lights\light_ubo.h" />
+    <ClInclude Include="include\Lights\light_data_ubo.h" />
     <ClInclude Include="include\Lights\light_vertex.h" />
     <ClInclude Include="include\Main.h" />
     <ClInclude Include="include\memory_types.h" />

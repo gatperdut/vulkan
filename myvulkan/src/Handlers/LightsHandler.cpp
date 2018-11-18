@@ -2,7 +2,7 @@
 #include <math.h>
 
 #include "Handlers/Handlers.h"
-#include "Lights/light_ubo.h"
+#include "Lights/light_data_ubo.h"
 
 
 LightsHandler::LightsHandler() {
@@ -88,7 +88,7 @@ void LightsHandler::updateUBOs(uint32_t index) {
 		light->pos.z = 0.03 * light->pos.z + sin(time) * 8 - 4.0f;
 		light->updateModelUBO(index);
 	}
-	lightDataUBOs->updateUniformBuffer(index);
+	lightDataUBOs->updateDataUBO(index);
 }
 
 
@@ -109,7 +109,7 @@ void LightsHandler::createDescriptorSetsData() {
 		VkDescriptorBufferInfo bufferInfo = {};
 		bufferInfo.buffer = lightDataUBOs->buffers[i];
 		bufferInfo.offset = 0;
-		bufferInfo.range = sizeof(LightUbo);
+		bufferInfo.range = lights.size() * sizeof(LightDataUBO);
 
 		VkWriteDescriptorSet descriptorWrite = {};
 

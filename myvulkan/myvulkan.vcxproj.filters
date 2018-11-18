@@ -163,9 +163,6 @@
     <ClInclude Include="include\Lights\Light.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lights\light_ubo.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="include\Models\ModelMaterials.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
@@ -197,6 +194,9 @@
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
     <ClInclude Include="include\Lights\LightDataUBOs.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lights\light_data_ubo.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
   </ItemGroup>

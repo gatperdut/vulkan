@@ -2,7 +2,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Lights/LightDataUBOs.h"
-#include "Lights/light_ubo.h"
+#include "Lights/light_data_ubo.h"
 #include "buffers.h"
 
 LightDataUBOs::LightDataUBOs() {
@@ -23,11 +23,7 @@ void LightDataUBOs::freeResources() {
 
 
 void LightDataUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
-	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightUbo);
-
-	if (size == 0) {
-		return;
-	}
+	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightDataUBO) * 2;
 
 	(*buffers).resize(swapchainHandler->images.size());
 	(*buffersMemories).resize(swapchainHandler->images.size());
@@ -55,19 +51,18 @@ void LightDataUBOs::createUniformBuffers() {
 }
 
 
-void LightDataUBOs::updateUniformBuffer(uint32_t currentImage) {
+void LightDataUBOs::updateDataUBO(uint32_t currentImage) {
 	void* data;
 
-	std::vector<LightUbo> ubos;
+	std::vector<LightDataUBO> ubos;
 	ubos.resize(lightsHandler->lights.size());
 	for (uint32_t i = 0; i < lightsHandler->lights.size(); i++) {
-		ubos[i].pos = lightsHandler->lights[i]->pos;
-		ubos[i].filler = 0.0f;
-		ubos[i].color = lightsHandler->lights[i]->color;
+		ubos[i].pos = glm::vec4(lightsHandler->lights[i]->pos, 1.0);
+		ubos[i].color = glm::vec4(lightsHandler->lights[i]->color, 1.0);
 	}
 	
-	vkMapMemory(devicesHandler->device, memories[currentImage], 0, lightsHandler->lights.size() * sizeof(LightUbo), 0, &data);
-	memcpy(data, ubos.data(), lightsHandler->lights.size() * sizeof(LightUbo));
+	vkMapMemory(devicesHandler->device, memories[currentImage], 0, lightsHandler->lights.size() * sizeof(LightDataUBO), 0, &data);
+	memcpy(data, ubos.data(), lightsHandler->lights.size() * sizeof(LightDataUBO));
 	vkUnmapMemory(devicesHandler->device, memories[currentImage]);
 
 }

@@ -16,7 +16,7 @@ public:
 
 	void freeResources();
 	void createUniformBuffers();
-	void updateUniformBuffer(uint32_t);
+	void updateDataUBO(uint32_t);
 
 	VkDescriptorSetLayoutBinding createDescriptorSetLayoutBinding();
 
