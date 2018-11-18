@@ -1,6 +1,4 @@
 #include <glm/gtc/matrix_transform.hpp>
-#include <chrono>
-
 
 #include "Handlers/Handlers.h"
 #include "Lights/LightDataUBOs.h"
@@ -35,7 +33,6 @@ void LightDataUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers,
 }
 
 void LightDataUBOs::createUniformBuffers() {
-
 	if (!buffers.size()) {
 		internalCreateUniformBuffers(&buffers, &memories);
 	}
@@ -55,12 +52,6 @@ void LightDataUBOs::createUniformBuffers() {
 
 
 void LightDataUBOs::updateUniformBuffer(uint32_t currentImage) {
-	static auto startTime = std::chrono::high_resolution_clock::now();
-
-	auto currentTime = std::chrono::high_resolution_clock::now();
-
-	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
-
 	void* data;
 
 	std::vector<LightUbo> ubos;
