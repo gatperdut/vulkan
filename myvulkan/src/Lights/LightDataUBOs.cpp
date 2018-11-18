@@ -25,6 +25,10 @@ void LightDataUBOs::freeResources() {
 void LightDataUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
 	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightUbo);
 
+	if (size == 0) {
+		return;
+	}
+
 	(*buffers).resize(swapchainHandler->images.size());
 	(*buffersMemories).resize(swapchainHandler->images.size());
 	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
@@ -58,6 +62,8 @@ void LightDataUBOs::updateUniformBuffer(uint32_t currentImage) {
 	ubos.resize(lightsHandler->lights.size());
 	for (uint32_t i = 0; i < lightsHandler->lights.size(); i++) {
 		ubos[i].pos = lightsHandler->lights[i]->pos;
+		ubos[i].filler = 0.0f;
+		ubos[i].color = lightsHandler->lights[i]->color;
 	}
 	
 	vkMapMemory(devicesHandler->device, memories[currentImage], 0, lightsHandler->lights.size() * sizeof(LightUbo), 0, &data);

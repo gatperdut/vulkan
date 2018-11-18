@@ -17,7 +17,7 @@ public:
 	LightsHandler();
 	~LightsHandler();
 
-	void add(glm::vec3);
+	void add(glm::vec3, glm::vec3);
 	void createPipeline();
 	void createDescriptorSetLayoutData();
 	void createDescriptorSetsData();

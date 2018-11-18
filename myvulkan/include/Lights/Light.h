@@ -11,7 +11,7 @@
 
 class Light {
 public:
-	Light(glm::vec3);
+	Light(glm::vec3, glm::vec3);
 	~Light();
 
 	void loadModel();
@@ -23,6 +23,7 @@ public:
 	std::vector<uint32_t> indices;
 
 	glm::vec3 pos;
+	glm::vec3 color;
 	std::vector<VkDescriptorSet> descriptorSetsModel;
 	LightModelUBOs* lightModelUBOs;
 	LightVBOs* lightVBOs;

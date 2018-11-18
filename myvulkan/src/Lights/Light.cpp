@@ -6,8 +6,9 @@
 #include "Lights/light_model_ubo.h"
 
 
-Light::Light(glm::vec3 pos) {
+Light::Light(glm::vec3 pos, glm::vec3 color) {
 	this->pos = pos;
+	this->color = color;
 
 	lightModelUBOs = new LightModelUBOs;
 	lightVBOs = new LightVBOs;

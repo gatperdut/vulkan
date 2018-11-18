@@ -23,8 +23,8 @@ LightsHandler::~LightsHandler() {
 }
 
 
-void LightsHandler::add(glm::vec3 pos) {
-	Light* light = new Light(pos);
+void LightsHandler::add(glm::vec3 pos, glm::vec3 color) {
+	Light* light = new Light(pos, color);
 	lights.push_back(light);
 }
 
