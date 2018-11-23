@@ -1,7 +1,6 @@
 #include <array>
 #include <vector>
 
-#include "Handlers/RenderPassHandler.h"
 #include "Handlers/Handlers.h"
 #include "image_views.h"
 #include "images.h"
@@ -13,13 +12,14 @@ RenderPassHandler::RenderPassHandler() {
 
 
 RenderPassHandler::~RenderPassHandler() {
-
+	vkDestroyRenderPass(devicesHandler->device, renderPassHandler->renderPassRegular, nullptr);
+	vkDestroyRenderPass(devicesHandler->device, renderPassHandler->renderPassShadow, nullptr);
 }
 
 
-void RenderPassHandler::createRenderPass() {
+void RenderPassHandler::createRenderPassRegular() {
 	VkAttachmentDescription colorAttachment = {};
-	colorAttachment.format = swapchainHandler->format;
+	colorAttachment.format = presentation->swapchain.format;
 	colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
 	colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 	colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -32,7 +32,7 @@ void RenderPassHandler::createRenderPass() {
 	colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
 	VkAttachmentDescription depthAttachment = {};
-	depthAttachment.format = findDepthFormat();
+	depthAttachment.format = presentation->findDepthFormat();
 	depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
 	depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 	depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -70,40 +70,61 @@ void RenderPassHandler::createRenderPass() {
 	renderPassInfo.pDependencies = &dependency;
 
 
-	if (vkCreateRenderPass(devicesHandler->device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create render pass!");
+	if (vkCreateRenderPass(devicesHandler->device, &renderPassInfo, nullptr, &renderPassRegular) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create regular render pass!");
 	}
 }
 
-VkFormat RenderPassHandler::findDepthFormat() {
-	return findSupportedFormat(
-		{ VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
-		VK_IMAGE_TILING_OPTIMAL,
-		VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT
-	);
-}
 
-VkFormat RenderPassHandler::findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features) {
-	for (VkFormat format : candidates) {
-		VkFormatProperties props;
-		vkGetPhysicalDeviceFormatProperties(devicesHandler->physicalDevice, format, &props);
+void RenderPassHandler::createRenderPassShadow() {
+	VkAttachmentDescription attachmentDescription = {};
+	attachmentDescription.format = VK_FORMAT_D16_UNORM;
+	attachmentDescription.samples = VK_SAMPLE_COUNT_1_BIT;
+	attachmentDescription.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	attachmentDescription.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+	attachmentDescription.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+	attachmentDescription.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+	attachmentDescription.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	attachmentDescription.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL;
 
-		if (tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) == features) {
-			return format;
-		}
-		else if (tiling == VK_IMAGE_TILING_OPTIMAL && (props.optimalTilingFeatures & features) == features) {
-			return format;
-		}
+	VkAttachmentReference depthReference = {};
+	depthReference.attachment = 0;
+	depthReference.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
+	VkSubpassDescription subpass = {};
+	subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+	subpass.colorAttachmentCount = 0;
+	subpass.pDepthStencilAttachment = &depthReference;
+
+	// Use subpass dependencies for layout transitions
+	std::array<VkSubpassDependency, 2> dependencies;
+
+	dependencies[0].srcSubpass = VK_SUBPASS_EXTERNAL;
+	dependencies[0].dstSubpass = 0;
+	dependencies[0].srcStageMask = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+	dependencies[0].dstStageMask = VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
+	dependencies[0].srcAccessMask = 0;
+	dependencies[0].dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+	dependencies[0].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+
+	dependencies[1].srcSubpass = 0;
+	dependencies[1].dstSubpass = VK_SUBPASS_EXTERNAL;
+	dependencies[1].srcStageMask = VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
+	dependencies[1].dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+	dependencies[1].srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+	dependencies[1].dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+	dependencies[1].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+
+	VkRenderPassCreateInfo renderPassInfo = {};
+	renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+	renderPassInfo.attachmentCount = 1;
+	renderPassInfo.pAttachments = &attachmentDescription;
+	renderPassInfo.subpassCount = 1;
+	renderPassInfo.pSubpasses = &subpass;
+	renderPassInfo.dependencyCount = static_cast<uint32_t>(dependencies.size());
+	renderPassInfo.pDependencies = dependencies.data();
+
+	if (vkCreateRenderPass(devicesHandler->device, &renderPassInfo, nullptr, &renderPassShadow) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create shadow render pass!");
 	}
-
-	throw std::runtime_error("failed to find supported format!");
-};
-
-void RenderPassHandler::createDepthResources() {
-	VkFormat depthFormat = findDepthFormat();
-
-	createImage(swapchainHandler->extent.width, swapchainHandler->extent.height, 1, depthFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, depthImage, depthImageMemory);
-	depthImageView = createImageView(depthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT, 1);
-
-	transitionImageLayout(depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, 1);
 }

@@ -3,6 +3,7 @@
 #include "Models/Model.h"
 #include "Handlers/Handlers.h"
 #include "Models/model_ubo.h"
+#include "Lights/light_model_ubo.h"
 
 
 Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 scale) {
@@ -26,6 +27,7 @@ Model::~Model() {
 	delete modelPipeline;
 
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutGeometry, nullptr);
 }
 
 
@@ -137,6 +139,22 @@ void Model::createDescriptorSetLayout() {
 }
 
 
+void Model::createDescriptorSetLayoutGeometry() {
+	VkDescriptorSetLayoutBinding layoutBindingUB = modelUBOs->createDescriptorSetLayoutBinding();
+
+	std::vector<VkDescriptorSetLayoutBinding> bindings = { layoutBindingUB };
+
+	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfo.bindingCount = bindings.size();
+	layoutInfo.pBindings = bindings.data();
+
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutGeometry) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create CIS descriptor set layout!");
+	}
+}
+
+
 void Model::createDescriptorSets() {
 	VkDescriptorSetAllocateInfo allocInfo = {};
 	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
@@ -144,9 +162,9 @@ void Model::createDescriptorSets() {
 	allocInfo.descriptorSetCount = 1;
 	allocInfo.pSetLayouts = &descriptorSetLayout;
 
-	descriptorSets.resize(swapchainHandler->images.size());
+	descriptorSets.resize(presentation->swapchain.images.size());
 
-	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
 		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSets[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to allocate UB descriptor set!");
 		}
@@ -186,6 +204,42 @@ void Model::createDescriptorSets() {
 		vkUpdateDescriptorSets(devicesHandler->device, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr);
 	}
 }
+
+
+void Model::createDescriptorSetsGeometry() {
+	VkDescriptorSetAllocateInfo allocInfo = {};
+	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+	allocInfo.descriptorPool = descriptorsHandler->descriptorPool;
+	allocInfo.descriptorSetCount = 1;
+	allocInfo.pSetLayouts = &descriptorSetLayoutGeometry;
+
+	descriptorSetsGeometry.resize(presentation->swapchain.images.size());
+
+	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
+		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSetsGeometry[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to allocate UB descriptor set geometry!");
+		}
+
+		VkDescriptorBufferInfo bufferInfo = {};
+		bufferInfo.buffer = modelUBOs->buffers[i];
+		bufferInfo.offset = 0;
+		bufferInfo.range = sizeof(LightModelUBO); // ModelUBO
+
+
+		VkWriteDescriptorSet descriptorWrite = {};
+
+		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		descriptorWrite.dstSet = descriptorSetsGeometry[i];
+		descriptorWrite.dstBinding = 0;
+		descriptorWrite.dstArrayElement = 0;
+		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+		descriptorWrite.descriptorCount = 1;
+		descriptorWrite.pBufferInfo = &bufferInfo;
+
+		vkUpdateDescriptorSets(devicesHandler->device, 1, &descriptorWrite, 0, nullptr);
+	}
+}
+
 
 void Model::createPipeline() {
 	modelPipeline->create(descriptorSetLayout);

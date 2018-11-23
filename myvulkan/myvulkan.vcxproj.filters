@@ -43,6 +43,21 @@
     <Filter Include="Resource Files\shaders\lights">
       <UniqueIdentifier>{d3c9b9e8-31a7-44c1-9fd3-d38406799e2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shadows">
+      <UniqueIdentifier>{be6b8dae-1253-49b1-9f58-94b3e86c6064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shadows">
+      <UniqueIdentifier>{d35ad76e-f140-458c-b15c-c8891b86208d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\shadows">
+      <UniqueIdentifier>{ba52f1c2-1f0e-4c4a-a126-0a38fe2469ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Presentation">
+      <UniqueIdentifier>{da8d7500-d7f3-4a43-91b1-263ccda5d814}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Presentation">
+      <UniqueIdentifier>{7b4cd94c-0c88-40a3-be2a-7637e3e70f6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -59,6 +74,12 @@
     </None>
     <None Include="shaders\lights\shader.vert">
       <Filter>Resource Files\shaders\lights</Filter>
+    </None>
+    <None Include="shaders\shadows\shader.vert">
+      <Filter>Resource Files\shaders\shadows</Filter>
+    </None>
+    <None Include="shaders\shadows\shader.frag">
+      <Filter>Resource Files\shaders\shadows</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -88,9 +109,6 @@
     <ClInclude Include="include\Handlers\DrawHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Handlers\FramebuffersHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
     <ClInclude Include="include\Handlers\Handlers.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
@@ -110,9 +128,6 @@
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\Handlers\ShadersHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Handlers\SwapchainHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\Handlers\SynchrosHandler.h">
@@ -184,9 +199,6 @@
     <ClInclude Include="include\Lights\light_vertex.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lights\light_model_ubo.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="include\Lights\LightModelUBOs.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
@@ -196,7 +208,22 @@
     <ClInclude Include="include\Lights\LightDataUBOs.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
+    <ClInclude Include="include\Shadows\ShadowPipeline.h">
+      <Filter>Header Files\Shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shadows\shadow_vertex.h">
+      <Filter>Header Files\Shadows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Presentation\Presentation.h">
+      <Filter>Header Files\Presentation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\swapchain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Lights\light_data_ubo.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lights\light_model_ubo.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
   </ItemGroup>
@@ -222,9 +249,6 @@
     <ClCompile Include="src\Handlers\DrawHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\Handlers\FramebuffersHandler.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
     <ClCompile Include="src\Handlers\InputHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
@@ -241,9 +265,6 @@
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\ShadersHandler.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Handlers\SwapchainHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\SynchrosHandler.cpp">
@@ -305,6 +326,15 @@
     </ClCompile>
     <ClCompile Include="src\Lights\LightDataUBOs.cpp">
       <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shadows\ShadowPipeline.cpp">
+      <Filter>Source Files\Shadows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Presentation\Presentation.cpp">
+      <Filter>Source Files\Presentation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swapchain.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -16,58 +16,62 @@ void DrawHandler::drawFrame() {
 	vkWaitForFences(devicesHandler->device, 1, &synchrosHandler->inFlightFences[currentFrame], VK_TRUE, std::numeric_limits<uint64_t>::max());
 
 	uint32_t imageIndex;
-	VkResult result = vkAcquireNextImageKHR(devicesHandler->device, swapchainHandler->swapchain, std::numeric_limits<uint64_t>::max(), synchrosHandler->imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
+	VkResult result = vkAcquireNextImageKHR(devicesHandler->device, presentation->swapchain.handle, std::numeric_limits<uint64_t>::max(), synchrosHandler->imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
 
-	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-		swapchainHandler->recreateSwapChain();
-		return;
-	}
-	else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+	if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
 		throw std::runtime_error("failed to acquire swap chain image!");
 	}
 
 	lightsHandler->updateUBOs(imageIndex);
 	modelsHandler->updateUBOs(imageIndex);
 
-	VkSubmitInfo submitInfo = {};
-	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-
-	VkSemaphore waitSemaphores[] = { synchrosHandler->imageAvailableSemaphores[currentFrame] };
-	VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-	submitInfo.waitSemaphoreCount = 1;
-	submitInfo.pWaitSemaphores = waitSemaphores;
-	submitInfo.pWaitDstStageMask = waitStages;
-
-	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &commandBuffersHandler->commandBuffers[imageIndex];
-
-	VkSemaphore signalSemaphores[] = { synchrosHandler->renderFinishedSemaphores[currentFrame] };
-	submitInfo.signalSemaphoreCount = 1;
-	submitInfo.pSignalSemaphores = signalSemaphores;
-
+	VkSubmitInfo submitInfoShadow = {};
+	submitInfoShadow.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	VkSemaphore waitSemaphoresShadow[] = { synchrosHandler->imageAvailableSemaphores[currentFrame] };
+	submitInfoShadow.waitSemaphoreCount = 1;
+	submitInfoShadow.pWaitSemaphores = waitSemaphoresShadow;
+	VkSemaphore signalSemaphoresShadow[] = { synchrosHandler->shadowSemaphores[currentFrame] };
+	submitInfoShadow.signalSemaphoreCount = 1;
+	submitInfoShadow.pSignalSemaphores = signalSemaphoresShadow;
+	VkPipelineStageFlags waitStagesShadow[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+	submitInfoShadow.pWaitDstStageMask = waitStagesShadow;
+	submitInfoShadow.commandBufferCount = 1;
+	submitInfoShadow.pCommandBuffers = &commandBuffersHandler->commandBuffersShadow[imageIndex];
 	vkResetFences(devicesHandler->device, 1, &synchrosHandler->inFlightFences[currentFrame]);
+	VkResult resu = vkQueueSubmit(queuesHandler->graphicsQueue, 1, &submitInfoShadow, synchrosHandler->inFlightFences[currentFrame]);
+	if (resu != VK_SUCCESS) {
+		throw std::runtime_error("failed to submit shadow draw command buffer!");
+	}
 
-	if (vkQueueSubmit(queuesHandler->graphicsQueue, 1, &submitInfo, synchrosHandler->inFlightFences[currentFrame]) != VK_SUCCESS) {
-		throw std::runtime_error("failed to submit draw command buffer!");
+	VkSubmitInfo submitInfoRegular = {};
+	submitInfoRegular.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	VkSemaphore waitSemaphoresRegular[] = { synchrosHandler->shadowSemaphores[currentFrame] };
+	submitInfoRegular.waitSemaphoreCount = 1;
+	submitInfoRegular.pWaitSemaphores = waitSemaphoresRegular;
+	VkSemaphore signalSemaphoresRegular[] = { synchrosHandler->renderFinishedSemaphores[currentFrame] };
+	submitInfoRegular.signalSemaphoreCount = 1;
+	submitInfoRegular.pSignalSemaphores = signalSemaphoresRegular;
+	VkPipelineStageFlags waitStagesRegular[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+	submitInfoRegular.pWaitDstStageMask = waitStagesRegular;
+	submitInfoRegular.commandBufferCount = 1;
+	submitInfoRegular.pCommandBuffers = &commandBuffersHandler->commandBuffersRegular[imageIndex];
+
+	VkResult res = vkQueueSubmit(queuesHandler->graphicsQueue, 1, &submitInfoRegular, VK_NULL_HANDLE);
+	if (res != VK_SUCCESS) {
+		throw std::runtime_error("failed to submit regular draw command buffer!");
 	}
 
 	VkPresentInfoKHR presentInfo = {};
 	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	presentInfo.waitSemaphoreCount = 1;
-	presentInfo.pWaitSemaphores = signalSemaphores;
-	VkSwapchainKHR swapChains[] = { swapchainHandler->swapchain };
+	presentInfo.pWaitSemaphores = signalSemaphoresRegular;
+	VkSwapchainKHR swapchains[] = { presentation->swapchain.handle };
 	presentInfo.swapchainCount = 1;
-	presentInfo.pSwapchains = swapChains;
+	presentInfo.pSwapchains = swapchains;
 	presentInfo.pImageIndices = &imageIndex;
 	presentInfo.pResults = nullptr;
 
-	result = vkQueuePresentKHR(queuesHandler->presentQueue, &presentInfo);
-
-	if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || windowHandler->framebufferResized) {
-		windowHandler->framebufferResized = false;
-		swapchainHandler->recreateSwapChain();
-	}
-	else if (result != VK_SUCCESS) {
+	if (vkQueuePresentKHR(queuesHandler->presentQueue, &presentInfo) != VK_SUCCESS) {
 		throw std::runtime_error("failed to present swap chain image!");
 	}
 

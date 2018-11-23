@@ -170,6 +170,8 @@
     <None Include="shaders\lights\shader.vert" />
     <None Include="shaders\models\shader.frag" />
     <None Include="shaders\models\shader.vert" />
+    <None Include="shaders\shadows\shader.frag" />
+    <None Include="shaders\shadows\shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="models\chalet.obj">
@@ -188,7 +190,6 @@
     <ClInclude Include="include\Handlers\DescriptorsHandler.h" />
     <ClInclude Include="include\Handlers\DevicesHandler.h" />
     <ClInclude Include="include\Handlers\DrawHandler.h" />
-    <ClInclude Include="include\Handlers\FramebuffersHandler.h" />
     <ClInclude Include="include\Handlers\Handlers.h" />
     <ClInclude Include="include\Handlers\InputHandler.h" />
     <ClInclude Include="include\Handlers\InstanceHandler.h" />
@@ -197,7 +198,6 @@
     <ClInclude Include="include\Handlers\QueuesHandler.h" />
     <ClInclude Include="include\Handlers\RenderPassHandler.h" />
     <ClInclude Include="include\Handlers\ShadersHandler.h" />
-    <ClInclude Include="include\Handlers\SwapchainHandler.h" />
     <ClInclude Include="include\Handlers\SynchrosHandler.h" />
     <ClInclude Include="include\Handlers\WindowHandler.h" />
     <ClInclude Include="include\images.h" />
@@ -207,8 +207,8 @@
     <ClInclude Include="include\Lights\LightPipeline.h" />
     <ClInclude Include="include\Lights\LightDataUBOs.h" />
     <ClInclude Include="include\Lights\LightVBOs.h" />
-    <ClInclude Include="include\Lights\light_model_ubo.h" />
     <ClInclude Include="include\Lights\light_data_ubo.h" />
+    <ClInclude Include="include\Lights\light_model_ubo.h" />
     <ClInclude Include="include\Lights\light_vertex.h" />
     <ClInclude Include="include\Main.h" />
     <ClInclude Include="include\memory_types.h" />
@@ -219,8 +219,12 @@
     <ClInclude Include="include\Models\model_ubo.h" />
     <ClInclude Include="include\Models\Model.h" />
     <ClInclude Include="include\Models\model_vertex.h" />
+    <ClInclude Include="include\Presentation\Presentation.h" />
     <ClInclude Include="include\read_file.h" />
     <ClInclude Include="include\mesh_ubo.h" />
+    <ClInclude Include="include\Shadows\ShadowPipeline.h" />
+    <ClInclude Include="include\Shadows\shadow_vertex.h" />
+    <ClInclude Include="include\swapchain.h" />
     <ClInclude Include="include\vertex.h" />
   </ItemGroup>
   <ItemGroup>
@@ -233,7 +237,6 @@
     <ClCompile Include="src\Handlers\DescriptorsHandler.cpp" />
     <ClCompile Include="src\Handlers\DevicesHandler.cpp" />
     <ClCompile Include="src\Handlers\DrawHandler.cpp" />
-    <ClCompile Include="src\Handlers\FramebuffersHandler.cpp" />
     <ClCompile Include="src\Handlers\InputHandler.cpp" />
     <ClCompile Include="src\Handlers\InstanceHandler.cpp" />
     <ClCompile Include="src\Handlers\LightsHandler.cpp" />
@@ -241,7 +244,6 @@
     <ClCompile Include="src\Handlers\QueuesHandler.cpp" />
     <ClCompile Include="src\Handlers\RenderPassHandler.cpp" />
     <ClCompile Include="src\Handlers\ShadersHandler.cpp" />
-    <ClCompile Include="src\Handlers\SwapchainHandler.cpp" />
     <ClCompile Include="src\Handlers\SynchrosHandler.cpp" />
     <ClCompile Include="src\Handlers\WindowHandler.cpp" />
     <ClCompile Include="src\images.cpp" />
@@ -258,7 +260,10 @@
     <ClCompile Include="src\Models\ModelUBOs.cpp" />
     <ClCompile Include="src\Models\ModelVBOs.cpp" />
     <ClCompile Include="src\Models\Model.cpp" />
+    <ClCompile Include="src\Presentation\Presentation.cpp" />
     <ClCompile Include="src\read_file.cpp" />
+    <ClCompile Include="src\Shadows\ShadowPipeline.cpp" />
+    <ClCompile Include="src\swapchain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

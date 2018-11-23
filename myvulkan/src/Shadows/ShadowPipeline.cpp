@@ -1,31 +1,56 @@
 #include "Handlers/Handlers.h"
-#include "Models/ModelPipeline.h"
+#include "Shadows/ShadowPipeline.h"
 #include "read_file.h"
-#include "Models/model_vertex.h"
+#include "Shadows/shadow_vertex.h"
 
 
-ModelPipeline::ModelPipeline() {
+ShadowPipeline::ShadowPipeline() {
 
 }
 
 
-ModelPipeline::~ModelPipeline() {
+ShadowPipeline::~ShadowPipeline() {
 	freeResources();
 }
 
 
-void ModelPipeline::freeResources() {
-	vkDestroyPipeline(devicesHandler->device, pipeline, nullptr);
-	vkDestroyPipelineLayout(devicesHandler->device, layout, nullptr);
+VkDescriptorSetLayoutBinding ShadowPipeline::createDescriptorSetLayoutBinding() {
+	VkDescriptorSetLayoutBinding layoutBinding = {};
+	layoutBinding.binding = 0;
+	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+	layoutBinding.descriptorCount = 1;
+	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
+	return layoutBinding;
 }
 
 
-void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
+void ShadowPipeline::createDescriptorSetLayout() {
+	VkDescriptorSetLayoutBinding layoutBinding = createDescriptorSetLayoutBinding();
+
+	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfo.bindingCount = 1;
+	layoutInfo.pBindings = &layoutBinding;
+
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayout) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create shadow descriptor set layout!");
+	}
+}
+
+void ShadowPipeline::freeResources() {
+	vkDestroyPipeline(devicesHandler->device, pipeline, nullptr);
+	vkDestroyPipelineLayout(devicesHandler->device, layout, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
+}
+
+
+void ShadowPipeline::create() {
 	VkShaderModule vertShaderModule;
 	VkShaderModule fragShaderModule;
 
-	auto vertShaderCode = readFile("shaders/models/vert.spv");
-	auto fragShaderCode = readFile("shaders/models/frag.spv");
+	auto vertShaderCode = readFile("shaders/shadows/vert.spv");
+	auto fragShaderCode = readFile("shaders/shadows/frag.spv");
 
 	vertShaderModule = shadersHandler->createShaderModule(vertShaderCode);
 	fragShaderModule = shadersHandler->createShaderModule(fragShaderCode);
@@ -37,19 +62,12 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	vertShaderStageInfo.pSpecializationInfo = nullptr;
 	vertShaderStageInfo.pName = "main";
 
-	VkPipelineShaderStageCreateInfo fragShaderStageInfo = {};
-	fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-	fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-	fragShaderStageInfo.module = fragShaderModule;
-	fragShaderStageInfo.pSpecializationInfo = nullptr;
-	fragShaderStageInfo.pName = "main";
-
-	VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo, fragShaderStageInfo };
+	VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo };
 
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	auto bindingDescription = ModelVertex::getBindingDescription();
-	auto attributeDescriptions = ModelVertex::getAttributeDescriptions();
+	auto bindingDescription = ShadowVertex::getBindingDescription();
+	auto attributeDescriptions = ShadowVertex::getAttributeDescriptions();
 
 	vertexInputInfo.vertexBindingDescriptionCount = 1;
 	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
@@ -89,7 +107,7 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	rasterizer.cullMode = VK_CULL_MODE_NONE;
 	//rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
 	rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
-	rasterizer.depthBiasEnable = VK_FALSE;
+	rasterizer.depthBiasEnable = VK_TRUE;
 
 	VkPipelineMultisampleStateCreateInfo multisampling = {};
 	multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
@@ -111,17 +129,13 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	VkPipelineColorBlendStateCreateInfo colorBlending = {};
 	colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
 	colorBlending.logicOpEnable = VK_FALSE;
-	colorBlending.attachmentCount = 1;
+	colorBlending.attachmentCount = 0;
 	colorBlending.pAttachments = &colorBlendAttachment;
-
-	std::vector<VkDescriptorSetLayout> layouts;
-	layouts.push_back(lightsHandler->descriptorSetLayoutData);
-	layouts.push_back(descriptorSetLayout);
 
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	pipelineLayoutInfo.setLayoutCount = layouts.size();
-	pipelineLayoutInfo.pSetLayouts = layouts.data();
+	pipelineLayoutInfo.setLayoutCount = 1;
+	pipelineLayoutInfo.pSetLayouts = &descriptorSetLayout;
 	pipelineLayoutInfo.pushConstantRangeCount = 0; // Optional
 	pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
 
@@ -131,7 +145,7 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 
 	VkGraphicsPipelineCreateInfo pipelineInfo = {};
 	pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-	pipelineInfo.stageCount = 2;
+	pipelineInfo.stageCount = 1;
 	pipelineInfo.pStages = shaderStages;
 	pipelineInfo.pVertexInputState = &vertexInputInfo;
 	pipelineInfo.pInputAssemblyState = &inputAssembly;
@@ -141,12 +155,12 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	pipelineInfo.pDepthStencilState = &depthStencil;
 	pipelineInfo.pColorBlendState = &colorBlending;
 	pipelineInfo.layout = layout;
-	pipelineInfo.renderPass = renderPassHandler->renderPassRegular;
+	pipelineInfo.renderPass = renderPassHandler->renderPassShadow;
 	pipelineInfo.subpass = 0;
 	pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
 	if (vkCreateGraphicsPipelines(devicesHandler->device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create models pipeline!");
+		throw std::runtime_error("failed to create shadow pipeline!");
 	}
 
 	vkDestroyShaderModule(devicesHandler->device, fragShaderModule, nullptr);

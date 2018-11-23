@@ -17,7 +17,7 @@ ModelUBOs::~ModelUBOs() {
 }
 
 void ModelUBOs::freeResources() {
-	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
 		vkDestroyBuffer(devicesHandler->device, buffers[i], nullptr);
 		vkFreeMemory(devicesHandler->device, memories[i], nullptr);
 	}
@@ -25,9 +25,9 @@ void ModelUBOs::freeResources() {
 
 
 void ModelUBOs::internalCreateUniformBuffers(VkDeviceSize size, std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
-	(*buffers).resize(swapchainHandler->images.size());
-	(*buffersMemories).resize(swapchainHandler->images.size());
-	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+	(*buffers).resize(presentation->swapchain.images.size());
+	(*buffersMemories).resize(presentation->swapchain.images.size());
+	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
 		createBuffer(size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, (*buffers)[i], (*buffersMemories)[i]);
 	}
 }
@@ -43,7 +43,7 @@ void ModelUBOs::createUniformBuffers(VkDeviceSize size) {
 		internalCreateUniformBuffers(size, &newBuffers, &newMemories);
 
 		freeResources();
-		for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+		for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
 			buffers[i] = newBuffers[i];
 			memories[i] = newMemories[i];
 		}
@@ -65,7 +65,7 @@ void ModelUBOs::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos, glm::v
 	ubo.model = glm::rotate(ubo.model, 0.0f * time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	ubo.model = glm::scale(ubo.model, scale);
 	ubo.view = cameraHandler->viewMatrix();
-	ubo.proj = glm::perspective(glm::radians(45.0f), swapchainHandler->extent.width / (float)swapchainHandler->extent.height, 0.1f, 100.0f);
+	ubo.proj = glm::perspective(glm::radians(45.0f), presentation->swapchain.extent.width / (float)presentation->swapchain.extent.height, 0.1f, 100.0f);
 
 	ubo.proj[1][1] *= -1;
 

@@ -9,6 +9,7 @@
 #include "Lights/LightDataUBOs.h"
 #include "Lights/LightModelUBOs.h"
 #include "Lights/Light.h"
+#include "Shadows/ShadowPipeline.h"
 
 
 class LightsHandler {
@@ -18,7 +19,7 @@ public:
 	~LightsHandler();
 
 	void add(glm::vec3, glm::vec3);
-	void createPipeline();
+	void createPipelines();
 	void createDescriptorSetLayoutData();
 	void createDescriptorSetsData();
 	void createDescriptorSetLayoutModel();
@@ -36,4 +37,5 @@ public:
 	VkDescriptorSetLayout descriptorSetLayoutModel;
 
 	LightPipeline* lightPipeline;
+	ShadowPipeline* shadowPipeline;
 };

@@ -6,16 +6,15 @@
 
 
 class CommandBuffersHandler {
-private:
-	void internalCreateCommandBuffers(std::vector<VkCommandBuffer>*);
-
 public:
 	CommandBuffersHandler();
 	~CommandBuffersHandler();
 
-	void createCommandBuffers();
+	void createCommandBuffersRegular();
+	void createCommandBuffersShadow();
 
 
-	std::vector<VkCommandBuffer> commandBuffers;
+	std::vector<VkCommandBuffer> commandBuffersRegular;
+	std::vector<VkCommandBuffer> commandBuffersShadow;
 };
 

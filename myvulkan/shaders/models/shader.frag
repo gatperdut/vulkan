@@ -16,6 +16,8 @@ layout(set = 0, binding = 0) uniform LightUniformBufferObject {
 	Light lights[10];
 };
 
+layout(set = 0, binding = 1) uniform sampler2D shadowmap;
+
 layout(set = 1, binding = 1) uniform sampler2D texSamplers[5];
 
 layout(location = 0) out vec4 outColor;

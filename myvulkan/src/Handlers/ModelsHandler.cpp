@@ -16,6 +16,7 @@ ModelsHandler::~ModelsHandler() {
 void ModelsHandler::createDescriptorSetLayouts() {
 	for (auto model : models) {
 		model->createDescriptorSetLayout();
+		model->createDescriptorSetLayoutGeometry();
 	}
 }
 
@@ -30,6 +31,7 @@ std::vector<VkDescriptorSetLayout> ModelsHandler::getDescriptorSetLayouts() {
 void ModelsHandler::createDescriptorSets() {
 	for (auto model : models) {
 		model->createDescriptorSets();
+		model->createDescriptorSetsGeometry();
 	}
 }
 

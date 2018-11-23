@@ -25,7 +25,9 @@ public:
 	void createUBOs();
 	void updateUBO(uint32_t);
 	void createDescriptorSetLayout();
+	void createDescriptorSetLayoutGeometry();
 	void createDescriptorSets();
+	void createDescriptorSetsGeometry();
 	void createPipeline();
 
 	std::vector<ModelVertex> vertices;
@@ -42,6 +44,8 @@ public:
 	ModelPipeline* modelPipeline;
 
 	std::vector<VkDescriptorSet> descriptorSets;
+	std::vector<VkDescriptorSet> descriptorSetsGeometry;
 	VkDescriptorSetLayout descriptorSetLayout;
+	VkDescriptorSetLayout descriptorSetLayoutGeometry;
 };
 

@@ -6,12 +6,11 @@
 #include "DevicesHandler.h"
 #include "QueuesHandler.h"
 #include "CapabilitiesHandler.h"
-#include "SwapchainHandler.h"
+#include "Presentation/Presentation.h"
 #include "RenderPassHandler.h"
 #include "CommandsHandler.h"
 #include "DescriptorsHandler.h"
 #include "ShadersHandler.h"
-#include "FramebuffersHandler.h"
 #include "ModelsHandler.h"
 #include "LightsHandler.h"
 #include "CommandBuffersHandler.h"
@@ -25,12 +24,11 @@ extern WindowHandler* windowHandler;
 extern DevicesHandler* devicesHandler;
 extern QueuesHandler* queuesHandler;
 extern CapabilitiesHandler* capabilitiesHandler;
-extern SwapchainHandler* swapchainHandler;
+extern Presentation* presentation;
 extern RenderPassHandler* renderPassHandler;
 extern CommandsHandler* commandsHandler;
 extern DescriptorsHandler* descriptorsHandler;
 extern ShadersHandler* shadersHandler;
-extern FramebuffersHandler* framebuffersHandler;
 extern ModelsHandler* modelsHandler;
 extern LightsHandler* lightsHandler;
 extern CommandBuffersHandler* commandBuffersHandler;

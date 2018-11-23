@@ -18,5 +18,7 @@ public:
 	std::vector<VkSemaphore> imageAvailableSemaphores;
 	std::vector<VkSemaphore> renderFinishedSemaphores;
 	std::vector<VkFence> inFlightFences;
+
+	std::vector<VkSemaphore> shadowSemaphores;
 };
 

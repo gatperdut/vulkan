@@ -76,9 +76,9 @@ void Light::createDescriptorSetsModel() {
 	allocInfo.descriptorSetCount = 1;
 	allocInfo.pSetLayouts = &lightsHandler->descriptorSetLayoutModel;
 
-	descriptorSetsModel.resize(swapchainHandler->images.size());
+	descriptorSetsModel.resize(presentation->swapchain.images.size());
 
-	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
 		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSetsModel[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to allocate UB descriptor set!");
 		}

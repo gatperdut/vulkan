@@ -5,20 +5,14 @@
 
 
 class RenderPassHandler {
-private:
-	VkFormat findDepthFormat();
-	VkFormat findSupportedFormat(const std::vector<VkFormat>&, VkImageTiling, VkFormatFeatureFlags);
-
 public:
 	RenderPassHandler();
 	~RenderPassHandler();
 
-	void createRenderPass();
-	void createDepthResources();
+	void createRenderPassRegular();
+	void createRenderPassShadow();
 
-	VkRenderPass renderPass;
-	VkImage depthImage;
-	VkDeviceMemory depthImageMemory;
-	VkImageView depthImageView;
+	VkRenderPass renderPassRegular;
+	VkRenderPass renderPassShadow;
 };
 

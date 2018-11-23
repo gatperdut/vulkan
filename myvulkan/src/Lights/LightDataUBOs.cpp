@@ -15,7 +15,7 @@ LightDataUBOs::~LightDataUBOs() {
 }
 
 void LightDataUBOs::freeResources() {
-	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
 		vkDestroyBuffer(devicesHandler->device, buffers[i], nullptr);
 		vkFreeMemory(devicesHandler->device, memories[i], nullptr);
 	}
@@ -25,9 +25,9 @@ void LightDataUBOs::freeResources() {
 void LightDataUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
 	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightDataUBO) * 2;
 
-	(*buffers).resize(swapchainHandler->images.size());
-	(*buffersMemories).resize(swapchainHandler->images.size());
-	for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+	(*buffers).resize(presentation->swapchain.images.size());
+	(*buffersMemories).resize(presentation->swapchain.images.size());
+	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
 		createBuffer(size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, (*buffers)[i], (*buffersMemories)[i]);
 	}
 }
@@ -43,7 +43,7 @@ void LightDataUBOs::createUniformBuffers() {
 		internalCreateUniformBuffers(&newBuffers, &newMemories);
 
 		freeResources();
-		for (size_t i = 0; i < swapchainHandler->images.size(); i++) {
+		for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
 			buffers[i] = newBuffers[i];
 			memories[i] = newMemories[i];
 		}
