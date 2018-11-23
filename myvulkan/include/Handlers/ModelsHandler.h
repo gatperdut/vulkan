@@ -17,13 +17,18 @@ public:
 
 	void load(std::string, std::string, glm::vec3, glm::vec3);
 	void createDescriptorSets();
+	void createDescriptorSetLayoutMatrices();
+	VkDescriptorSetLayoutBinding createDescriptorSetLayoutBinding();
 	void createPipelines();
 	void destroyPipelines();
 	void createUBOs();
 	void updateUBOs(uint32_t);
 
+
 	void createDescriptorSetLayouts();
 	std::vector<VkDescriptorSetLayout> getDescriptorSetLayouts();
+
+	VkDescriptorSetLayout descriptorSetLayoutMatrices;
 
 	std::vector<Model*> models;
 };

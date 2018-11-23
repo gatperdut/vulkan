@@ -206,9 +206,11 @@
     <ClInclude Include="include\Lights\LightModelUBOs.h" />
     <ClInclude Include="include\Lights\LightPipeline.h" />
     <ClInclude Include="include\Lights\LightDataUBOs.h" />
+    <ClInclude Include="include\Lights\LightSpaceUBOs.h" />
     <ClInclude Include="include\Lights\LightVBOs.h" />
     <ClInclude Include="include\Lights\light_data_ubo.h" />
     <ClInclude Include="include\Lights\light_model_ubo.h" />
+    <ClInclude Include="include\Lights\light_space_ubo.h" />
     <ClInclude Include="include\Lights\light_vertex.h" />
     <ClInclude Include="include\Main.h" />
     <ClInclude Include="include\memory_types.h" />
@@ -219,6 +221,7 @@
     <ClInclude Include="include\Models\model_ubo.h" />
     <ClInclude Include="include\Models\Model.h" />
     <ClInclude Include="include\Models\model_vertex.h" />
+    <ClInclude Include="include\Models\ShadowVBOs.h" />
     <ClInclude Include="include\Presentation\Presentation.h" />
     <ClInclude Include="include\read_file.h" />
     <ClInclude Include="include\mesh_ubo.h" />
@@ -252,6 +255,7 @@
     <ClCompile Include="src\Lights\LightModelUBOs.cpp" />
     <ClCompile Include="src\Lights\LightPipeline.cpp" />
     <ClCompile Include="src\Lights\LightDataUBOs.cpp" />
+    <ClCompile Include="src\Lights\LightSpaceUBOs.cpp" />
     <ClCompile Include="src\Lights\LightVBOs.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\memory_types.cpp" />
@@ -260,6 +264,7 @@
     <ClCompile Include="src\Models\ModelUBOs.cpp" />
     <ClCompile Include="src\Models\ModelVBOs.cpp" />
     <ClCompile Include="src\Models\Model.cpp" />
+    <ClCompile Include="src\Models\ShadowVBOs.cpp" />
     <ClCompile Include="src\Presentation\Presentation.cpp" />
     <ClCompile Include="src\read_file.cpp" />
     <ClCompile Include="src\Shadows\ShadowPipeline.cpp" />

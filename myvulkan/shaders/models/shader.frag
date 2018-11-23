@@ -6,6 +6,7 @@ layout(set = 0, location = 1) in vec3 normal;
 layout(set = 0, location = 2) in vec3 fragColor;
 layout(set = 0, location = 3) in vec2 fragTexCoord;
 layout(set = 0, location = 4) flat in uint texIndex;
+layout(set = 0, location = 5) in vec4 shadowCoord;
 
 struct Light {
 	vec4 pos;
@@ -16,7 +17,7 @@ layout(set = 0, binding = 0) uniform LightUniformBufferObject {
 	Light lights[10];
 };
 
-layout(set = 0, binding = 1) uniform sampler2D shadowmap;
+layout(set = 0, binding = 2) uniform sampler2D shadowmap;
 
 layout(set = 1, binding = 1) uniform sampler2D texSamplers[5];
 
@@ -32,7 +33,16 @@ void main() {
 		lightColor += vec3(diff) * vec3(lights[i].color);
 	}
 
+	float shadow = 1.0;
+
+	if (texture(shadowmap, shadowCoord.xy).r < shadowCoord.z) {
+		shadow = 0.2;
+	}
+
 	lightColor = clamp(lightColor, vec3(0.05, 0.05, 0.05), vec3(1.0, 1.0, 1.0));
 
-	outColor = vec4(lightColor * fragColor * texture(texSamplers[texIndex], fragTexCoord).rgb, 1.0);
+	//outColor = vec4(lightColor * fragColor * texture(texSamplers[texIndex], fragTexCoord).rgb, 1.0);
+	outColor = vec4(shadow * fragColor * texture(texSamplers[texIndex], fragTexCoord).rgb, 1.0);
+
+	//outColor = vec4(texture(shadowmap, shadowCoord.xy).r, 0.0, 0.0, 1.0);
 }

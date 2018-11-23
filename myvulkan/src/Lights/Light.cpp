@@ -60,11 +60,11 @@ void Light::loadModel() {
 }
 
 
-void Light::createModelUBOs() {
+void Light::createUBOs() {
 	lightModelUBOs->createUniformBuffers();
 }
 
-void Light::updateModelUBO(uint32_t index) {
+void Light::updateUBOs(uint32_t index) {
 	lightModelUBOs->updateUniformBuffer(index, pos);
 }
 

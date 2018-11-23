@@ -226,6 +226,15 @@
     <ClInclude Include="include\Lights\light_model_ubo.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
+    <ClInclude Include="include\Lights\light_space_ubo.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Lights\LightSpaceUBOs.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Models\ShadowVBOs.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CameraHandler.cpp">
@@ -335,6 +344,12 @@
     </ClCompile>
     <ClCompile Include="src\swapchain.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lights\LightSpaceUBOs.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Models\ShadowVBOs.cpp">
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

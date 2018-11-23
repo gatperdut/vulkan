@@ -74,14 +74,3 @@ void ModelUBOs::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos, glm::v
 	vkUnmapMemory(devicesHandler->device, memories[currentImage]);
 
 }
-
-
-VkDescriptorSetLayoutBinding ModelUBOs::createDescriptorSetLayoutBinding() {
-	VkDescriptorSetLayoutBinding layoutBinding = {};
-	layoutBinding.binding = 0;
-	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-	layoutBinding.descriptorCount = 1;
-	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-
-	return layoutBinding;
-}

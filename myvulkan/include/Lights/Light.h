@@ -16,8 +16,8 @@ public:
 
 	void loadModel();
 	void createDescriptorSetsModel();
-	void createModelUBOs();
-	void updateModelUBO(uint32_t);
+	void createUBOs();
+	void updateUBOs(uint32_t);
 
 	std::vector<LightVertex> vertices;
 	std::vector<uint32_t> indices;
@@ -25,6 +25,7 @@ public:
 	glm::vec3 pos;
 	glm::vec3 color;
 	std::vector<VkDescriptorSet> descriptorSetsModel;
+	std::vector<VkDescriptorSet> descriptorSetsSpace;
 	LightModelUBOs* lightModelUBOs;
 	LightVBOs* lightVBOs;
 };

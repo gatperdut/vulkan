@@ -114,8 +114,7 @@ void LightPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	colorBlending.attachmentCount = 1;
 	colorBlending.pAttachments = &colorBlendAttachment;
 
-	std::vector<VkDescriptorSetLayout> layouts;
-	layouts.push_back(descriptorSetLayout);
+	std::vector<VkDescriptorSetLayout> layouts = { descriptorSetLayout };
 
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;

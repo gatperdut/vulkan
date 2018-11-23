@@ -13,35 +13,9 @@ ShadowPipeline::~ShadowPipeline() {
 	freeResources();
 }
 
-
-VkDescriptorSetLayoutBinding ShadowPipeline::createDescriptorSetLayoutBinding() {
-	VkDescriptorSetLayoutBinding layoutBinding = {};
-	layoutBinding.binding = 0;
-	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-	layoutBinding.descriptorCount = 1;
-	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-
-	return layoutBinding;
-}
-
-
-void ShadowPipeline::createDescriptorSetLayout() {
-	VkDescriptorSetLayoutBinding layoutBinding = createDescriptorSetLayoutBinding();
-
-	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = 1;
-	layoutInfo.pBindings = &layoutBinding;
-
-	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayout) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create shadow descriptor set layout!");
-	}
-}
-
 void ShadowPipeline::freeResources() {
 	vkDestroyPipeline(devicesHandler->device, pipeline, nullptr);
 	vkDestroyPipelineLayout(devicesHandler->device, layout, nullptr);
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
 }
 
 
@@ -132,10 +106,12 @@ void ShadowPipeline::create() {
 	colorBlending.attachmentCount = 0;
 	colorBlending.pAttachments = &colorBlendAttachment;
 
+	std::vector<VkDescriptorSetLayout> layouts = { lightsHandler->descriptorSetLayoutSpace, modelsHandler->descriptorSetLayoutMatrices };
+
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	pipelineLayoutInfo.setLayoutCount = 1;
-	pipelineLayoutInfo.pSetLayouts = &descriptorSetLayout;
+	pipelineLayoutInfo.setLayoutCount = layouts.size();
+	pipelineLayoutInfo.pSetLayouts = layouts.data();
 	pipelineLayoutInfo.pushConstantRangeCount = 0; // Optional
 	pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
 

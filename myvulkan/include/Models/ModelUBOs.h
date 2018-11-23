@@ -19,8 +19,6 @@ public:
 	void createUniformBuffers(VkDeviceSize);
 	void updateUniformBuffer(uint32_t, glm::vec3, glm::vec3);
 
-	VkDescriptorSetLayoutBinding createDescriptorSetLayoutBinding();
-
 	std::vector<VkBuffer> buffers;
 	std::vector<VkDeviceMemory> memories;
 };

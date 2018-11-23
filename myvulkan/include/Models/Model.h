@@ -8,7 +8,9 @@
 #include "Models/ModeLMaterials.h"
 #include "Models/ModelUBOs.h"
 #include "Models/ModelVBOs.h"
+#include "Models/ShadowVBOs.h"
 #include "Models/ModelPipeline.h"
+#include "Shadows/shadow_vertex.h"
 
 
 class Model {
@@ -25,12 +27,13 @@ public:
 	void createUBOs();
 	void updateUBO(uint32_t);
 	void createDescriptorSetLayout();
-	void createDescriptorSetLayoutGeometry();
+
 	void createDescriptorSets();
-	void createDescriptorSetsGeometry();
+	void createDescriptorSetsMatrices();
 	void createPipeline();
 
 	std::vector<ModelVertex> vertices;
+	std::vector<ShadowVertex> verticesShadow;
 	std::vector<uint32_t> indices;
 	glm::vec3 pos;
 	glm::vec3 scale;
@@ -41,11 +44,12 @@ public:
 	ModelUBOs* modelUBOs;
 	ModeLMaterials* modelMaterials;
 	ModelVBOs* modelVBOs;
+	ShadowVBOs* shadowVBOs;
 	ModelPipeline* modelPipeline;
 
 	std::vector<VkDescriptorSet> descriptorSets;
-	std::vector<VkDescriptorSet> descriptorSetsGeometry;
 	VkDescriptorSetLayout descriptorSetLayout;
-	VkDescriptorSetLayout descriptorSetLayoutGeometry;
+
+	std::vector<VkDescriptorSet> descriptorSetsMatrices;
 };
 

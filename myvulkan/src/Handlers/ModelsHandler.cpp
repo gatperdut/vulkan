@@ -10,15 +10,16 @@ ModelsHandler::~ModelsHandler() {
 	for (auto model : models) {
 		delete model;
 	}
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutMatrices, nullptr);
 }
 
 
 void ModelsHandler::createDescriptorSetLayouts() {
 	for (auto model : models) {
 		model->createDescriptorSetLayout();
-		model->createDescriptorSetLayoutGeometry();
 	}
 }
+
 
 std::vector<VkDescriptorSetLayout> ModelsHandler::getDescriptorSetLayouts() {
 	std::vector<VkDescriptorSetLayout> result;
@@ -28,10 +29,11 @@ std::vector<VkDescriptorSetLayout> ModelsHandler::getDescriptorSetLayouts() {
 	return result;
 }
 
+
 void ModelsHandler::createDescriptorSets() {
 	for (auto model : models) {
 		model->createDescriptorSets();
-		model->createDescriptorSetsGeometry();
+		model->createDescriptorSetsMatrices();
 	}
 }
 
@@ -64,5 +66,32 @@ void ModelsHandler::createUBOs() {
 void ModelsHandler::updateUBOs(uint32_t index) {
 	for (auto model : models) {
 		model->updateUBO(index);
+	}
+}
+
+
+VkDescriptorSetLayoutBinding ModelsHandler::createDescriptorSetLayoutBinding() {
+	VkDescriptorSetLayoutBinding layoutBinding = {};
+	layoutBinding.binding = 0;
+	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+	layoutBinding.descriptorCount = 1;
+	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
+	return layoutBinding;
+}
+
+
+void ModelsHandler::createDescriptorSetLayoutMatrices() {
+	VkDescriptorSetLayoutBinding layoutBindingUB = createDescriptorSetLayoutBinding();
+
+	std::vector<VkDescriptorSetLayoutBinding> bindings = { layoutBindingUB };
+
+	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfo.bindingCount = bindings.size();
+	layoutInfo.pBindings = bindings.data();
+
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutMatrices) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create CIS descriptor set layout!");
 	}
 }

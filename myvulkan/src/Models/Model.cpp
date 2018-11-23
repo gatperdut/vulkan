@@ -14,6 +14,7 @@ Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 sc
 
 	modelUBOs = new ModelUBOs;
 	modelVBOs = new ModelVBOs;
+	shadowVBOs = new ShadowVBOs;
 	modelMaterials = new ModeLMaterials;
 	modelPipeline = new ModelPipeline;
 	loadModel();
@@ -24,10 +25,10 @@ Model::~Model() {
 	delete modelMaterials;
 	delete modelUBOs;
 	delete modelVBOs;
+	delete shadowVBOs;
 	delete modelPipeline;
 
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutGeometry, nullptr);
 }
 
 
@@ -40,7 +41,6 @@ void Model::loadModel() {
 	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, (path + filename).c_str(), path.c_str(), true)) {
 		throw std::runtime_error(err);
 	}
-
 
 
 	std::unordered_map<ModelVertex, uint32_t> uniqueVertices = {};
@@ -56,8 +56,15 @@ void Model::loadModel() {
 		uint32_t indexCount = 0;
 		for (const auto& index : shape.mesh.indices) {
 			ModelVertex vertex = {};
+			ShadowVertex shadowVertex = {};
 
 			vertex.pos = {
+				attrib.vertices[3 * index.vertex_index + 0],
+				attrib.vertices[3 * index.vertex_index + 1],
+				attrib.vertices[3 * index.vertex_index + 2]
+			};
+
+			shadowVertex.pos = {
 				attrib.vertices[3 * index.vertex_index + 0],
 				attrib.vertices[3 * index.vertex_index + 1],
 				attrib.vertices[3 * index.vertex_index + 2]
@@ -86,6 +93,7 @@ void Model::loadModel() {
 			if (uniqueVertices.count(vertex) == 0) {
 				uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
 				vertices.push_back(vertex);
+				verticesShadow.push_back(shadowVertex);
 			}
 
 			indices.push_back(uniqueVertices[vertex]);
@@ -96,6 +104,7 @@ void Model::loadModel() {
 	}
 
 	modelVBOs->createBuffers(vertices, indices);
+	shadowVBOs->createBuffers(verticesShadow, indices);
 }
 
 
@@ -123,7 +132,7 @@ VkDeviceSize Model::totalSize() {
 
 
 void Model::createDescriptorSetLayout() {
-	VkDescriptorSetLayoutBinding layoutBindingUB = modelUBOs->createDescriptorSetLayoutBinding();
+	VkDescriptorSetLayoutBinding layoutBindingUB = modelsHandler->createDescriptorSetLayoutBinding();
 	VkDescriptorSetLayoutBinding layoutBindingCIS = modelMaterials->createDescriptorSetLayoutBinding();
 
 	std::vector<VkDescriptorSetLayoutBinding> bindings = { layoutBindingUB, layoutBindingCIS };
@@ -134,22 +143,6 @@ void Model::createDescriptorSetLayout() {
 	layoutInfo.pBindings = bindings.data();
 
 	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayout) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create CIS descriptor set layout!");
-	}
-}
-
-
-void Model::createDescriptorSetLayoutGeometry() {
-	VkDescriptorSetLayoutBinding layoutBindingUB = modelUBOs->createDescriptorSetLayoutBinding();
-
-	std::vector<VkDescriptorSetLayoutBinding> bindings = { layoutBindingUB };
-
-	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = bindings.size();
-	layoutInfo.pBindings = bindings.data();
-
-	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutGeometry) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create CIS descriptor set layout!");
 	}
 }
@@ -206,30 +199,30 @@ void Model::createDescriptorSets() {
 }
 
 
-void Model::createDescriptorSetsGeometry() {
+void Model::createDescriptorSetsMatrices() {
 	VkDescriptorSetAllocateInfo allocInfo = {};
 	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
 	allocInfo.descriptorPool = descriptorsHandler->descriptorPool;
 	allocInfo.descriptorSetCount = 1;
-	allocInfo.pSetLayouts = &descriptorSetLayoutGeometry;
+	allocInfo.pSetLayouts = &modelsHandler->descriptorSetLayoutMatrices;
 
-	descriptorSetsGeometry.resize(presentation->swapchain.images.size());
+	descriptorSetsMatrices.resize(presentation->swapchain.images.size());
 
 	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
-		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSetsGeometry[i]) != VK_SUCCESS) {
-			throw std::runtime_error("failed to allocate UB descriptor set geometry!");
+		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSetsMatrices[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to allocate UB descriptor set!");
 		}
 
 		VkDescriptorBufferInfo bufferInfo = {};
 		bufferInfo.buffer = modelUBOs->buffers[i];
 		bufferInfo.offset = 0;
-		bufferInfo.range = sizeof(LightModelUBO); // ModelUBO
+		bufferInfo.range = sizeof(ModelUBO);
 
 
 		VkWriteDescriptorSet descriptorWrite = {};
 
 		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWrite.dstSet = descriptorSetsGeometry[i];
+		descriptorWrite.dstSet = descriptorSetsMatrices[i];
 		descriptorWrite.dstBinding = 0;
 		descriptorWrite.dstArrayElement = 0;
 		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;

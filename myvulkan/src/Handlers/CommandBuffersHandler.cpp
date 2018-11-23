@@ -80,7 +80,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 			vkCmdBindVertexBuffers(commandBuffersRegular[i], 0, 1, &model->modelVBOs->vertexBuffer, offsets.data());
 			vkCmdBindIndexBuffer(commandBuffersRegular[i], model->modelVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
-			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
+			std::vector<uint32_t> dynamicOffsets = { 0, 0, 0 };
 			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->descriptorSetsData[i], model->descriptorSets[i] };
 			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->modelPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
@@ -155,11 +155,11 @@ void CommandBuffersHandler::createCommandBuffersShadow() {
 		for (size_t j = 0; j < modelsHandler->models.size(); j++) {
 			model = modelsHandler->models[j];
 			std::vector<VkDeviceSize> offsets = { 0 };
-			vkCmdBindVertexBuffers(commandBuffersShadow[i], 0, 1, &model->modelVBOs->vertexBuffer, offsets.data());
-			vkCmdBindIndexBuffer(commandBuffersShadow[i], model->modelVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+			vkCmdBindVertexBuffers(commandBuffersShadow[i], 0, 1, &model->shadowVBOs->vertexBuffer, offsets.data());
+			vkCmdBindIndexBuffer(commandBuffersShadow[i], model->shadowVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
-			std::vector<uint32_t> dynamicOffsets = { 0 };
-			std::vector<VkDescriptorSet> descriptorSets = { model->descriptorSetsGeometry[i] };
+			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
+			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->descriptorSetsSpace[i], model->descriptorSetsMatrices[j] };
 			vkCmdBindDescriptorSets(commandBuffersShadow[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->shadowPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 			vkCmdDrawIndexed(commandBuffersShadow[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
