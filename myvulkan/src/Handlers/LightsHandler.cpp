@@ -124,7 +124,8 @@ void LightsHandler::updateUBOs(uint32_t index) {
 	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
 	for (auto light : lights) {
-		light->pos.x = sin(glm::radians(time * 50.0f)) * 10.0f;
+		light->pos.x = sin(glm::radians(time * 30.0f)) * 6.0f;
+		light->pos.z = cos(glm::radians(time * 30.0f)) * 6.0f;
 		light->updateUBOs(index);
 	}
 	lightDataUBOs->updateDataUBO(index);

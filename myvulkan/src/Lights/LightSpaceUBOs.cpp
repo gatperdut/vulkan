@@ -60,14 +60,11 @@ void LightSpaceUBOs::updateUniformBuffer(uint32_t currentImage) {
 	std::vector<LightSpaceUBO> ubos;
 	ubos.resize(numLights);
 
-	//glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, 1.0f, 50.0f);
-	glm::mat4 projection = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, 0.1f, 10.f);
-	//projection[1][1] *= -1;
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
 	glm::mat4 model = glm::mat4(1.0f);
 
 	for (uint32_t i = 0; i < numLights; i++) {
-		//glm::mat4 view = glm::lookAt(lightsHandler->lights[i]->pos, lightsHandler->lights[i]->pos + glm::vec3(0.0f, -1.0f, 0.1f), glm::vec3(1.0f, 1.0f, 1.0f));
-		glm::mat4 view = glm::lookAt(lightsHandler->lights[i]->pos, lightsHandler->lights[i]->pos + glm::vec3(1.0f, -1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 view = glm::lookAt(lightsHandler->lights[i]->pos, glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		ubos[i].projectionView = projection * view * model;
 	}
 

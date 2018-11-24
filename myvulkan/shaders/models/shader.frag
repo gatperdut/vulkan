@@ -24,25 +24,23 @@ layout(set = 1, binding = 1) uniform sampler2D texSamplers[5];
 layout(location = 0) out vec4 outColor;
 
 void main() {
+	vec4 normShadowCoord = shadowCoord / shadowCoord.w;
+
 	vec3 lightColor = vec3(0.0, 0.0, 0.0);
 	for (int i = 0; i < lights.length(); i++) {
-		vec3 lightPos = vec3(lights[i].pos);
-		vec3 normNormal = normalize(normal);
-		vec3 lightDir = normalize(lightPos - fragPos);
-		float diff = min(max(dot(normNormal, lightDir), 0.0), 0.95);
-		lightColor += vec3(diff) * vec3(lights[i].color);
-	}
-
-	float shadow = 1.0;
-
-	if (texture(shadowmap, shadowCoord.xy).r < shadowCoord.z) {
-		shadow = 0.2;
+		if (texture(shadowmap, normShadowCoord.xy).r > normShadowCoord.z - 0.005) {
+			vec3 lightPos = vec3(lights[i].pos);
+			vec3 normNormal = normalize(normal);
+			vec3 lightDir = normalize(lightPos - fragPos);
+			float diff = min(max(dot(normNormal, lightDir), 0.0), 0.95);
+			lightColor += vec3(diff) * vec3(lights[i].color);
+		}
 	}
 
 	lightColor = clamp(lightColor, vec3(0.05, 0.05, 0.05), vec3(1.0, 1.0, 1.0));
 
-	//outColor = vec4(lightColor * fragColor * texture(texSamplers[texIndex], fragTexCoord).rgb, 1.0);
-	outColor = vec4(shadow * fragColor * texture(texSamplers[texIndex], fragTexCoord).rgb, 1.0);
+	outColor = vec4(lightColor * fragColor * texture(texSamplers[texIndex], fragTexCoord).rgb, 1.0);
+	//outColor = vec4(shadow * fragColor * texture(texSamplers[texIndex], fragTexCoord).rgb, 1.0);
 
-	//outColor = vec4(texture(shadowmap, shadowCoord.xy).r, 0.0, 0.0, 1.0);
+	//outColor = vec4(texture(shadowmap, newShadowCoord.xy).r, 0.0, 0.0, 1.0);
 }

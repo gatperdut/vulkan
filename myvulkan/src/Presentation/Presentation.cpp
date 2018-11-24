@@ -132,8 +132,8 @@ void Presentation::createFramebuffersShadow() {
 	VkImageCreateInfo imageCreateInfo = {};
 	imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
 	imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
-	imageCreateInfo.extent.width = 2048;
-	imageCreateInfo.extent.height = 2048;
+	imageCreateInfo.extent.width = 1024;
+	imageCreateInfo.extent.height = 1024;
 	imageCreateInfo.extent.depth = 1;
 	imageCreateInfo.mipLevels = 1;
 	imageCreateInfo.arrayLayers = 1;
@@ -178,7 +178,7 @@ void Presentation::createFramebuffersShadow() {
 	sampler.magFilter = VK_FILTER_LINEAR;
 	sampler.minFilter = VK_FILTER_LINEAR;
 	sampler.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
-	sampler.addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+	sampler.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 	sampler.addressModeV = sampler.addressModeU;
 	sampler.addressModeW = sampler.addressModeU;
 	sampler.mipLodBias = 0.0f;
@@ -196,8 +196,8 @@ void Presentation::createFramebuffersShadow() {
 	shadowFramebufferCreateInfo.renderPass = renderPassHandler->renderPassShadow;
 	shadowFramebufferCreateInfo.attachmentCount = 1;
 	shadowFramebufferCreateInfo.pAttachments = &shadow.imageView;
-	shadowFramebufferCreateInfo.width = 2048;
-	shadowFramebufferCreateInfo.height = 2048;
+	shadowFramebufferCreateInfo.width = 1024;
+	shadowFramebufferCreateInfo.height = 1024;
 	shadowFramebufferCreateInfo.layers = 1;
 
 	if (vkCreateFramebuffer(devicesHandler->device, &shadowFramebufferCreateInfo, nullptr, &shadow.framebuffer) != VK_SUCCESS) {

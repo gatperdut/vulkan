@@ -122,15 +122,15 @@ void CommandBuffersHandler::createCommandBuffersShadow() {
 
 
 		VkViewport viewport = {};
-		viewport.width = 2048.0f;
-		viewport.height = 2048.0f;
+		viewport.width = 1024.0f;
+		viewport.height = 1024.0f;
 		viewport.minDepth = 0.0f;
 		viewport.maxDepth = 1.0f;
 		vkCmdSetViewport(commandBuffersShadow[i], 0, 1, &viewport);
 
 		VkRect2D scissor = {};
-		scissor.extent.width = 2048;
-		scissor.extent.height = 2048;
+		scissor.extent.width = 1024;
+		scissor.extent.height = 1024;
 		scissor.offset.x = 0;
 		scissor.offset.y = 0;
 		vkCmdSetScissor(commandBuffersShadow[i], 0, 1, &scissor);
@@ -143,8 +143,8 @@ void CommandBuffersHandler::createCommandBuffersShadow() {
 		renderPassBeginInfo.framebuffer = presentation->shadow.framebuffer;
 		renderPassBeginInfo.renderArea.offset.x = 0;
 		renderPassBeginInfo.renderArea.offset.y = 0;
-		renderPassBeginInfo.renderArea.extent.width = 2048;
-		renderPassBeginInfo.renderArea.extent.height = 2048;
+		renderPassBeginInfo.renderArea.extent.width = 1024;
+		renderPassBeginInfo.renderArea.extent.height = 1024;
 		renderPassBeginInfo.clearValueCount = 2;
 		renderPassBeginInfo.pClearValues = clearValues;
 
