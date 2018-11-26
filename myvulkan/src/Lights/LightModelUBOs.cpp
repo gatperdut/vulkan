@@ -58,7 +58,7 @@ void LightModelUBOs::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos) {
 	
 	ubo.model = glm::translate(glm::mat4(1.0), pos);
 	ubo.view = cameraHandler->viewMatrix();
-	ubo.proj = glm::perspective(glm::radians(45.0f), presentation->swapchain.extent.width / (float)presentation->swapchain.extent.height, 0.1f, 100.0f);
+	ubo.proj = cameraHandler->projMatrix();
 
 	ubo.proj[1][1] *= -1;
 

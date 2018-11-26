@@ -1,3 +1,4 @@
+#include "Handlers/Handlers.h"
 #include "Handlers/CameraHandler.h"
 
 
@@ -19,6 +20,9 @@ glm::mat4 CameraHandler::viewMatrix() {
 	return glm::lookAt(pos, pos + front, up);
 }
 
+glm::mat4 CameraHandler::projMatrix() {
+	return glm::perspective(glm::radians(45.0f), presentation->swapchain.extent.width / (float)presentation->swapchain.extent.height, 0.1f, 100.0f);
+}
 
 void CameraHandler::updateCameraVectors() {
 	glm::vec3 newFront;

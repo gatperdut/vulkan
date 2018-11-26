@@ -1,5 +1,3 @@
-#define GLM_FORCE_DEPTH_ZERO_TO_ONE
-#define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Handlers/Handlers.h"
@@ -25,7 +23,8 @@ void LightSpaceUBOs::freeResources() {
 
 
 void LightSpaceUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
-	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightSpaceUBO);
+	//VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightSpaceUBO);
+	VkDeviceSize size = 2 * sizeof(LightSpaceUBO);
 
 	(*buffers).resize(presentation->swapchain.images.size());
 	(*buffersMemories).resize(presentation->swapchain.images.size());
@@ -60,12 +59,19 @@ void LightSpaceUBOs::updateUniformBuffer(uint32_t currentImage) {
 	std::vector<LightSpaceUBO> ubos;
 	ubos.resize(numLights);
 
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
-	glm::mat4 model = glm::mat4(1.0f);
+	
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 30.0f);
+
+	glm::mat4 correction = {
+		1.0f,  0.0f, 0.0f, 0.0f,
+		0.0f, -1.0f, 0.0f, 0.0f,
+		0.0f,  0.0f, 0.5f, 0.5f,
+		0.0f,  0.0f, 0.0f, 1.0f
+	};
 
 	for (uint32_t i = 0; i < numLights; i++) {
-		glm::mat4 view = glm::lookAt(lightsHandler->lights[i]->pos, glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		ubos[i].projectionView = projection * view * model;
+		glm::mat4 view = glm::lookAt(lightsHandler->lights[i]->pos, lightsHandler->lights[i]->pos + glm::vec3(-10.0f, -0.1f, 0.1f), glm::vec3(0.0f, 1.0f, 0.0f));
+		ubos[i].projectionView = projection * view;
 	}
 
 	vkMapMemory(devicesHandler->device, memories[currentImage], 0, numLights * sizeof(LightSpaceUBO), 0, &data);

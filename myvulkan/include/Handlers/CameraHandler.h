@@ -11,6 +11,7 @@ public:
 	~CameraHandler();
 
 	glm::mat4 viewMatrix();
+	glm::mat4 projMatrix();
 	void updateCameraVectors();
 
 

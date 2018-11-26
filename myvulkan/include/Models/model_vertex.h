@@ -4,7 +4,7 @@
 #include <set>
 #include <array>
 #include <vulkan/vulkan.h>
-#define GLM_FORCE_RADIANS
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

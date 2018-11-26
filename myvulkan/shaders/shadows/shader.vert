@@ -21,6 +21,9 @@ out gl_PerVertex {
     vec4 gl_Position;
 };
 
+
 void main() {
-    gl_Position = (ubo.lightSpace[0].projectionView * uboMatrices.model) * vec4(inPosition, 1.0);
+    gl_Position = ubo.lightSpace[0].projectionView * uboMatrices.model * vec4(inPosition, 1.0);
+	//gl_Position.z = (gl_Position.z + gl_Position.w) / 2.0;
+
 }

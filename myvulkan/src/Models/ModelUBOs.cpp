@@ -60,12 +60,22 @@ void ModelUBOs::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos, glm::v
 
 	void* data;
 	
+	glm::mat4 correction = {
+	1.0f,  0.0f, 0.0f, 0.0f,
+	0.0f, -1.0f, 0.0f, 0.0f,
+	0.0f,  0.0f, 0.5f, 0.5f,
+	0.0f,  0.0f, 0.0f, 1.0f
+	};
+
 	ModelUBO ubo = {};
+	//ubo.model = pos.x == 0.0f ? glm::translate(glm::mat4(1.0), pos) : glm::translate(glm::mat4(1.0), glm::vec3(pos.x, sin(time) * 8.0f + 4.0f, pos.z));
 	ubo.model = glm::translate(glm::mat4(1.0), pos);
-	ubo.model = glm::rotate(ubo.model, 0.0f * time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	if (pos.x > 0) {
+		ubo.model = glm::rotate(ubo.model, 0.25f * time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	}
 	ubo.model = glm::scale(ubo.model, scale);
 	ubo.view = cameraHandler->viewMatrix();
-	ubo.proj = glm::perspective(glm::radians(45.0f), presentation->swapchain.extent.width / (float)presentation->swapchain.extent.height, 0.1f, 100.0f);
+	ubo.proj = cameraHandler->projMatrix();
 
 	ubo.proj[1][1] *= -1;
 

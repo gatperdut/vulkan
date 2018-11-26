@@ -2,6 +2,8 @@
 #include "buffers.h"
 #include "memory_types.h"
 
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+
 void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory) {
 	VkBufferCreateInfo bufferInfo = {};
 	bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;

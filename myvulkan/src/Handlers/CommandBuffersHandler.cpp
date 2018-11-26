@@ -66,6 +66,8 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 			std::vector<VkDescriptorSet> descriptorSets = { light->descriptorSetsModel[i] };
 			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->lightPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
+
+
 			vkCmdDrawIndexed(commandBuffersRegular[i], static_cast<uint32_t>(light->indices.size()), 1, 0, 0, 0);
 		}
 

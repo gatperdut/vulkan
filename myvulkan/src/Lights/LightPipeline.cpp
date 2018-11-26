@@ -8,7 +8,6 @@ LightPipeline::LightPipeline() {
 
 }
 
-
 LightPipeline::~LightPipeline() {
 	freeResources();
 }
