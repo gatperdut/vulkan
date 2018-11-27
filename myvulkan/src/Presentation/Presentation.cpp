@@ -139,7 +139,7 @@ void Presentation::createFramebuffersShadow() {
 	imageCreateInfo.arrayLayers = 1;
 	imageCreateInfo.samples = VK_SAMPLE_COUNT_1_BIT;
 	imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
-	imageCreateInfo.format = VK_FORMAT_D16_UNORM;
+	imageCreateInfo.format = VK_FORMAT_D32_SFLOAT;
 	imageCreateInfo.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
 	if (vkCreateImage(devicesHandler->device, &imageCreateInfo, nullptr, &shadow.image) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create shadow image!");
@@ -161,7 +161,7 @@ void Presentation::createFramebuffersShadow() {
 	VkImageViewCreateInfo depthStencilView = {};
 	depthStencilView.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 	depthStencilView.viewType = VK_IMAGE_VIEW_TYPE_2D;
-	depthStencilView.format = VK_FORMAT_D16_UNORM;
+	depthStencilView.format = VK_FORMAT_D32_SFLOAT;
 	depthStencilView.subresourceRange = {};
 	depthStencilView.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
 	depthStencilView.subresourceRange.baseMipLevel = 0;

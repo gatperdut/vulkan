@@ -24,8 +24,10 @@ void ShadowPipeline::create() {
 	VkShaderModule fragShaderModule;
 
 	auto vertShaderCode = readFile("shaders/shadows/vert.spv");
+	auto fragShaderCode = readFile("shaders/shadows/frag.spv");
 
 	vertShaderModule = shadersHandler->createShaderModule(vertShaderCode);
+	fragShaderModule = shadersHandler->createShaderModule(fragShaderCode);
 
 	VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
 	vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -34,7 +36,14 @@ void ShadowPipeline::create() {
 	vertShaderStageInfo.pSpecializationInfo = nullptr;
 	vertShaderStageInfo.pName = "main";
 
-	VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo };
+	VkPipelineShaderStageCreateInfo fragShaderStageInfo = {};
+	fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+	fragShaderStageInfo.module = fragShaderModule;
+	fragShaderStageInfo.pSpecializationInfo = nullptr;
+	fragShaderStageInfo.pName = "main";
+
+	VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo, fragShaderStageInfo };
 
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -117,7 +126,7 @@ void ShadowPipeline::create() {
 
 	VkGraphicsPipelineCreateInfo pipelineInfo = {};
 	pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-	pipelineInfo.stageCount = 1;
+	pipelineInfo.stageCount = 2;
 	pipelineInfo.pStages = shaderStages;
 	pipelineInfo.pVertexInputState = &vertexInputInfo;
 	pipelineInfo.pInputAssemblyState = &inputAssembly;
@@ -136,4 +145,5 @@ void ShadowPipeline::create() {
 	}
 
 	vkDestroyShaderModule(devicesHandler->device, vertShaderModule, nullptr);
+	vkDestroyShaderModule(devicesHandler->device, fragShaderModule, nullptr);
 }

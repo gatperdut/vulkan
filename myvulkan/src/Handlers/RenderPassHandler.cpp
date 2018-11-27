@@ -78,7 +78,7 @@ void RenderPassHandler::createRenderPassRegular() {
 
 void RenderPassHandler::createRenderPassShadow() {
 	VkAttachmentDescription attachmentDescription = {};
-	attachmentDescription.format = VK_FORMAT_D16_UNORM;
+	attachmentDescription.format = VK_FORMAT_D32_SFLOAT;
 	attachmentDescription.samples = VK_SAMPLE_COUNT_1_BIT;
 	attachmentDescription.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 	attachmentDescription.storeOp = VK_ATTACHMENT_STORE_OP_STORE;

@@ -78,6 +78,9 @@
     <None Include="shaders\shadows\shader.vert">
       <Filter>Resource Files\shaders\shadows</Filter>
     </None>
+    <None Include="shaders\shadows\shader.frag">
+      <Filter>Resource Files\shaders\shadows</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Object Include="models\chalet.obj">

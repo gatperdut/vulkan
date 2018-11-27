@@ -29,10 +29,11 @@ void main() {
 	vec3 lightColor = vec3(0.0, 0.0, 0.0);
 
 	for (int i = 0; i < lights.length(); i++) {
-		if (texture(shadowmap, normShadowCoord.xy).r > normShadowCoord.z - 0.05) {
-			vec3 lightPos = vec3(lights[i].pos);
-			vec3 normNormal = normalize(normal);
-			vec3 lightDir = normalize(lightPos - fragPos);
+		vec3 lightPos = vec3(lights[i].pos);
+		vec3 lightDir = normalize(lightPos - fragPos);
+		vec3 normNormal = normalize(normal);
+		float bias = max(0.05 * (1.0 - dot(normNormal, lightDir)), 0.005);  
+		if (texture(shadowmap, normShadowCoord.xy).r > normShadowCoord.z - bias) {
 			float diff = min(max(dot(normNormal, lightDir), 0.0), 0.95);
 			lightColor += vec3(diff) * vec3(lights[i].color);
 		}

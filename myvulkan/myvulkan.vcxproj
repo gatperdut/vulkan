@@ -170,6 +170,7 @@
     <None Include="shaders\lights\shader.vert" />
     <None Include="shaders\models\shader.frag" />
     <None Include="shaders\models\shader.vert" />
+    <None Include="shaders\shadows\shader.frag" />
     <None Include="shaders\shadows\shader.vert" />
   </ItemGroup>
   <ItemGroup>
