@@ -24,33 +24,19 @@ layout(set = 1, binding = 1) uniform sampler2D texSamplers[5];
 layout(location = 0) out vec4 outColor;
 
 void main() {
-	vec4 normShadowCoord = shadowCoord;
-	
-	const mat4 biasMat = mat4( 
-	0.5, 0.0, 0.0, 0.0,
-	0.0, 0.5, 0.0, 0.0,
-	0.0, 0.0, 1.0, 0.0,
-	0.5, 0.5, 0.0, 1.0
-);
-
-	//normShadowCoord = biasMat * normShadowCoord;
-	
-	normShadowCoord /= shadowCoord.w;
+	vec4 normShadowCoord = shadowCoord / shadowCoord.w;
 
 	vec3 lightColor = vec3(0.0, 0.0, 0.0);
 
-	//outColor = vec4(texture(texSamplers[texIndex], fragTexCoord).rgb * 0.1, 1.0) +  vec4(vec3(1.0 - texture(shadowmap, normShadowCoord.xy).r), 1.0);
-	//return;
-
-	//for (int i = 0; i < lights.length(); i++) {
-		if (texture(shadowmap, normShadowCoord.xy).r > normShadowCoord.z - 0.005) {
-			vec3 lightPos = vec3(lights[0].pos);
+	for (int i = 0; i < lights.length(); i++) {
+		if (texture(shadowmap, normShadowCoord.xy).r > normShadowCoord.z - 0.05) {
+			vec3 lightPos = vec3(lights[i].pos);
 			vec3 normNormal = normalize(normal);
 			vec3 lightDir = normalize(lightPos - fragPos);
 			float diff = min(max(dot(normNormal, lightDir), 0.0), 0.95);
-			lightColor += vec3(diff) * vec3(lights[0].color);
+			lightColor += vec3(diff) * vec3(lights[i].color);
 		}
-	//}
+	}
 
 	lightColor = clamp(lightColor, vec3(0.05, 0.05, 0.05), vec3(1.0, 1.0, 1.0));
 

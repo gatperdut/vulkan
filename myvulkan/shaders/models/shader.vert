@@ -43,15 +43,12 @@ const mat4 biasMat = mat4(
 
 void main() {
     gl_Position = ubo.proj * ubo.view * ubo.model * vec4(inPosition, 1.0);
-
-	//gl_Position =  lightUbo.lightSpace[0].projectionView * ubo.model * vec4(inPosition, 1.0);
-	
 	fragPos = vec3(ubo.model * vec4(inPosition, 1.0));
-	normal = inNormal;
+	//normal = inNormal;
+	normal = mat3(transpose(inverse(ubo.model))) * inNormal;
 	fragColor = inColor;
 	fragTexCoord = inTexCoord;
 	texIndex = inTexIndex;
 	shadowCoord =  biasMat * lightUbo.lightSpace[0].projectionView * ubo.model * vec4(inPosition, 1.0);
 	shadowCoord.z = (shadowCoord.z + shadowCoord.w) / 2.0;
-
 }

@@ -24,10 +24,8 @@ void ShadowPipeline::create() {
 	VkShaderModule fragShaderModule;
 
 	auto vertShaderCode = readFile("shaders/shadows/vert.spv");
-	auto fragShaderCode = readFile("shaders/shadows/frag.spv");
 
 	vertShaderModule = shadersHandler->createShaderModule(vertShaderCode);
-	fragShaderModule = shadersHandler->createShaderModule(fragShaderCode);
 
 	VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
 	vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -35,13 +33,6 @@ void ShadowPipeline::create() {
 	vertShaderStageInfo.module = vertShaderModule;
 	vertShaderStageInfo.pSpecializationInfo = nullptr;
 	vertShaderStageInfo.pName = "main";
-
-	VkPipelineShaderStageCreateInfo fragShaderStageInfo = {};
-	fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-	fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-	fragShaderStageInfo.module = fragShaderModule;
-	fragShaderStageInfo.pSpecializationInfo = nullptr;
-	fragShaderStageInfo.pName = "main";
 
 	VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo };
 
@@ -144,6 +135,5 @@ void ShadowPipeline::create() {
 		throw std::runtime_error("failed to create shadow pipeline!");
 	}
 
-	vkDestroyShaderModule(devicesHandler->device, fragShaderModule, nullptr);
 	vkDestroyShaderModule(devicesHandler->device, vertShaderModule, nullptr);
 }

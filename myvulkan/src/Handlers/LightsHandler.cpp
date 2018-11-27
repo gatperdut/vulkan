@@ -126,6 +126,7 @@ void LightsHandler::updateUBOs(uint32_t index) {
 	for (auto light : lights) {
 		//light->pos.x = 3.0f + sin(glm::radians(time * 30.0f)) * 3.5f;
 		light->pos.x = 15.0f + cos(glm::radians(time * 30.0f)) * 6.5f;
+		//light->pos.y = 4.0f + cos(glm::radians(time * 30.0f)) * 6.5f;
 		light->updateUBOs(index);
 	}
 	lightDataUBOs->updateDataUBO(index);

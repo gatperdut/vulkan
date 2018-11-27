@@ -60,7 +60,9 @@ void LightSpaceUBOs::updateUniformBuffer(uint32_t currentImage) {
 	ubos.resize(numLights);
 
 	
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 30.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.0f, 1.0f, 40.0f);
+
+	//glm::mat4 projection = glm::ortho(-8.0f, 8.0f, -8.0f, 8.0f, 1.0f, 40.0f);
 
 	glm::mat4 correction = {
 		1.0f,  0.0f, 0.0f, 0.0f,
