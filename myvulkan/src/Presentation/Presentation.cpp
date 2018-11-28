@@ -85,11 +85,13 @@ void Presentation::cleanupSwapChain() {
 	}
 	vkDestroySwapchainKHR(devicesHandler->device, swapchain.handle, nullptr);
 
-	vkDestroyFramebuffer(devicesHandler->device, shadow.framebuffer, nullptr);
-	vkDestroyImageView(devicesHandler->device, shadow.imageView, nullptr);
-	vkDestroyImage(devicesHandler->device, shadow.image, nullptr);
-	vkFreeMemory(devicesHandler->device, shadow.imageMemory, nullptr);
-	vkDestroySampler(devicesHandler->device, shadow.sampler, nullptr);
+	for (size_t i = 0; i < shadow.framebuffers.size(); i++) {
+		vkDestroyFramebuffer(devicesHandler->device, shadow.framebuffers[i], nullptr);
+		vkDestroyImageView(devicesHandler->device, shadow.imageViews[i], nullptr);
+		vkDestroyImage(devicesHandler->device, shadow.images[i], nullptr);
+		vkFreeMemory(devicesHandler->device, shadow.imageMemories[i], nullptr);
+		vkDestroySampler(devicesHandler->device, shadow.samplers[i], nullptr);
+	}
 
 	modelsHandler->destroyPipelines();
 }
@@ -129,79 +131,88 @@ void Presentation::createFramebuffersRegular() {
 
 
 void Presentation::createFramebuffersShadow() {
-	VkImageCreateInfo imageCreateInfo = {};
-	imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-	imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
-	imageCreateInfo.extent.width = 1024;
-	imageCreateInfo.extent.height = 1024;
-	imageCreateInfo.extent.depth = 1;
-	imageCreateInfo.mipLevels = 1;
-	imageCreateInfo.arrayLayers = 1;
-	imageCreateInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-	imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
-	imageCreateInfo.format = VK_FORMAT_D32_SFLOAT;
-	imageCreateInfo.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
-	if (vkCreateImage(devicesHandler->device, &imageCreateInfo, nullptr, &shadow.image) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create shadow image!");
-	}
+	size_t numLights = lightsHandler->lights.size();
 
-	VkMemoryAllocateInfo memoryAllocInfo = {};
-	memoryAllocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;;
-	VkMemoryRequirements memReqs;
-	vkGetImageMemoryRequirements(devicesHandler->device, shadow.image, &memReqs);
-	memoryAllocInfo.allocationSize = memReqs.size;
-	memoryAllocInfo.memoryTypeIndex = findMemoryType(memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-	if (vkAllocateMemory(devicesHandler->device, &memoryAllocInfo, nullptr, &shadow.imageMemory) != VK_SUCCESS) {
-		throw std::runtime_error("failed to allocate memory for shadow map!");
-	}
-	if (vkBindImageMemory(devicesHandler->device, shadow.image, shadow.imageMemory, 0) != VK_SUCCESS) {
-		throw std::runtime_error("failed to bind shadow map!");
-	}
+	shadow.images.resize(numLights);
+	shadow.imageViews.resize(numLights);
+	shadow.imageMemories.resize(numLights);
+	shadow.samplers.resize(numLights);
+	shadow.framebuffers.resize(numLights);
 
-	VkImageViewCreateInfo depthStencilView = {};
-	depthStencilView.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-	depthStencilView.viewType = VK_IMAGE_VIEW_TYPE_2D;
-	depthStencilView.format = VK_FORMAT_D32_SFLOAT;
-	depthStencilView.subresourceRange = {};
-	depthStencilView.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
-	depthStencilView.subresourceRange.baseMipLevel = 0;
-	depthStencilView.subresourceRange.levelCount = 1;
-	depthStencilView.subresourceRange.baseArrayLayer = 0;
-	depthStencilView.subresourceRange.layerCount = 1;
-	depthStencilView.image = shadow.image;
-	if (vkCreateImageView(devicesHandler->device, &depthStencilView, nullptr, &shadow.imageView) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create shadow image view!");
-	}
+	for (size_t i = 0; i < numLights; i++) {
+		VkImageCreateInfo imageCreateInfo = {};
+		imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+		imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
+		imageCreateInfo.extent.width = 1024;
+		imageCreateInfo.extent.height = 1024;
+		imageCreateInfo.extent.depth = 1;
+		imageCreateInfo.mipLevels = 1;
+		imageCreateInfo.arrayLayers = 1;
+		imageCreateInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+		imageCreateInfo.format = VK_FORMAT_D32_SFLOAT;
+		imageCreateInfo.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
+		if (vkCreateImage(devicesHandler->device, &imageCreateInfo, nullptr, &shadow.images[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to create shadow image!");
+		}
 
-	VkSamplerCreateInfo sampler = {};
-	sampler.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-	sampler.magFilter = VK_FILTER_NEAREST;
-	sampler.minFilter = VK_FILTER_NEAREST;
-	sampler.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
-	sampler.addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
-	sampler.addressModeV = sampler.addressModeU;
-	sampler.addressModeW = sampler.addressModeU;
-	sampler.mipLodBias = 0.0f;
-	sampler.maxAnisotropy = 1.0f;
-	sampler.minLod = 0.0f;
-	sampler.maxLod = 1.0f;
-	sampler.borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
-	if (vkCreateSampler(devicesHandler->device, &sampler, nullptr, &shadow.sampler) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create shadow sampler!");
-	}
+		VkMemoryAllocateInfo memoryAllocInfo = {};
+		memoryAllocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;;
+		VkMemoryRequirements memReqs;
+		vkGetImageMemoryRequirements(devicesHandler->device, shadow.images[i], &memReqs);
+		memoryAllocInfo.allocationSize = memReqs.size;
+		memoryAllocInfo.memoryTypeIndex = findMemoryType(memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+		if (vkAllocateMemory(devicesHandler->device, &memoryAllocInfo, nullptr, &shadow.imageMemories[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to allocate memory for shadow map!");
+		}
+		if (vkBindImageMemory(devicesHandler->device, shadow.images[i], shadow.imageMemories[i], 0) != VK_SUCCESS) {
+			throw std::runtime_error("failed to bind shadow map!");
+		}
 
-	// Create framebuffer
-	VkFramebufferCreateInfo shadowFramebufferCreateInfo = {};
-	shadowFramebufferCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-	shadowFramebufferCreateInfo.renderPass = renderPassHandler->renderPassShadow;
-	shadowFramebufferCreateInfo.attachmentCount = 1;
-	shadowFramebufferCreateInfo.pAttachments = &shadow.imageView;
-	shadowFramebufferCreateInfo.width = 1024;
-	shadowFramebufferCreateInfo.height = 1024;
-	shadowFramebufferCreateInfo.layers = 1;
+		VkImageViewCreateInfo depthStencilView = {};
+		depthStencilView.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+		depthStencilView.viewType = VK_IMAGE_VIEW_TYPE_2D;
+		depthStencilView.format = VK_FORMAT_D32_SFLOAT;
+		depthStencilView.subresourceRange = {};
+		depthStencilView.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+		depthStencilView.subresourceRange.baseMipLevel = 0;
+		depthStencilView.subresourceRange.levelCount = 1;
+		depthStencilView.subresourceRange.baseArrayLayer = 0;
+		depthStencilView.subresourceRange.layerCount = 1;
+		depthStencilView.image = shadow.images[i];
+		if (vkCreateImageView(devicesHandler->device, &depthStencilView, nullptr, &shadow.imageViews[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to create shadow image view!");
+		}
 
-	if (vkCreateFramebuffer(devicesHandler->device, &shadowFramebufferCreateInfo, nullptr, &shadow.framebuffer) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create shadow framebuffer!");
+		VkSamplerCreateInfo sampler = {};
+		sampler.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+		sampler.magFilter = VK_FILTER_NEAREST;
+		sampler.minFilter = VK_FILTER_NEAREST;
+		sampler.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+		sampler.addressModeU = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
+		sampler.addressModeV = sampler.addressModeU;
+		sampler.addressModeW = sampler.addressModeU;
+		sampler.mipLodBias = 0.0f;
+		sampler.maxAnisotropy = 1.0f;
+		sampler.minLod = 0.0f;
+		sampler.maxLod = 1.0f;
+		sampler.borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
+		if (vkCreateSampler(devicesHandler->device, &sampler, nullptr, &shadow.samplers[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to create shadow sampler!");
+		}
+		// Create framebuffer
+		VkFramebufferCreateInfo shadowFramebufferCreateInfo = {};
+		shadowFramebufferCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+		shadowFramebufferCreateInfo.renderPass = renderPassHandler->renderPassShadow;
+		shadowFramebufferCreateInfo.attachmentCount = 1;
+		shadowFramebufferCreateInfo.pAttachments = &shadow.imageViews[i];
+		shadowFramebufferCreateInfo.width = 1024;
+		shadowFramebufferCreateInfo.height = 1024;
+		shadowFramebufferCreateInfo.layers = 1;
+
+		if (vkCreateFramebuffer(devicesHandler->device, &shadowFramebufferCreateInfo, nullptr, &shadow.framebuffers[i]) != VK_SUCCESS) {
+			throw std::runtime_error("failed to create shadow framebuffer!");
+		}
 	}
 }
 

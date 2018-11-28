@@ -25,6 +25,8 @@ public:
 	void createDescriptorSetLayoutData();
 	void createDescriptorSetLayoutModel();
 	void createDescriptorSetLayoutSpace();
+	void createDescriptorSetLayoutSingleSpace();
+	void createDescriptorSetsSingleSpace();
 	void createDescriptorSetsData();
 	void createDescriptorSetsModel();
 	void createDescriptorSetsSpace();
@@ -39,6 +41,7 @@ public:
 	VkDescriptorSetLayout descriptorSetLayoutData;
 	VkDescriptorSetLayout descriptorSetLayoutModel;
 	VkDescriptorSetLayout descriptorSetLayoutSpace;
+	VkDescriptorSetLayout descriptorSetLayoutSingleSpace;
 	std::vector<VkDescriptorSet> descriptorSetsData;
 	std::vector<VkDescriptorSet> descriptorSetsSpace;
 

@@ -26,10 +26,14 @@ LightsHandler::~LightsHandler() {
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutData, nullptr);
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutModel, nullptr);
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutSpace, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutSingleSpace, nullptr);
 }
 
 
 void LightsHandler::add(glm::vec3 pos, glm::vec3 color) {
+	if (lights.size() == 3) {
+		std::cout << "Limit of 3 lights reached." << std::endl;
+	}
 	Light* light = new Light(pos, color);
 	lights.push_back(light);
 }
@@ -64,7 +68,7 @@ void LightsHandler::createDescriptorSetLayoutData() {
 
 	VkDescriptorSetLayoutBinding layoutBindingShadow = {};
 	layoutBindingShadow.binding = 2;
-	layoutBindingShadow.descriptorCount = 1;
+	layoutBindingShadow.descriptorCount = lights.size();
 	layoutBindingShadow.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 	layoutBindingShadow.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
 
@@ -109,6 +113,24 @@ void LightsHandler::createDescriptorSetLayoutSpace() {
 }
 
 
+void LightsHandler::createDescriptorSetLayoutSingleSpace() {
+	VkDescriptorSetLayoutBinding layoutBinding = {};
+	layoutBinding.binding = 0;
+	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+	layoutBinding.descriptorCount = 1;
+	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
+	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfo.bindingCount = 1;
+	layoutInfo.pBindings = &layoutBinding;
+
+	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutSingleSpace) != VK_SUCCESS) {
+		throw std::runtime_error("failed to create light data descriptor set layout!");
+	}
+}
+
+
 void LightsHandler::createUBOs() {
 	lightDataUBOs->createUniformBuffers();
 	lightSpaceUBOs->createUniformBuffers();
@@ -123,11 +145,24 @@ void LightsHandler::updateUBOs(uint32_t index) {
 	auto currentTime = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
-	for (auto light : lights) {
-		//light->pos.x = 3.0f + sin(glm::radians(time * 30.0f)) * 3.5f;
-		light->pos.x = 15.0f + cos(glm::radians(time * 30.0f)) * 6.5f;
-		//light->pos.y = 4.0f + cos(glm::radians(time * 30.0f)) * 6.5f;
+	for (size_t i = 0; i < lights.size(); i++) {
+		Light* light = lights[i];
+		float factor = 1.0f;
+		if (i == 0) {
+			light->pos.y = 2.0f + cos(glm::radians(time * 30.0f)) * 5.0f;
+		}
+		if (i == 1) {
+			light->pos.y = 2.0f - cos(glm::radians(time * 30.0f)) * 5.0f;
+		}
+		if (i == 2) {
+			light->pos.z = 5.0f + cos(glm::radians(time * 60.0f)) * 4.5f;
+		}
+		
+		light->updateProjectionView();
+
 		light->updateUBOs(index);
+	}
+	for (auto light : lights) {
 	}
 	lightDataUBOs->updateDataUBO(index);
 	lightSpaceUBOs->updateUniformBuffer(index);
@@ -147,6 +182,7 @@ void LightsHandler::createDescriptorSetsData() {
 		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSetsData[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to allocate UB descriptor set!");
 		}
+
 
 		std::vector<VkWriteDescriptorSet> descriptorWrites;
 		descriptorWrites.resize(3);
@@ -177,20 +213,29 @@ void LightsHandler::createDescriptorSetsData() {
 		descriptorWrites[1].descriptorCount = 1;
 		descriptorWrites[1].pBufferInfo = &bufferInfoSpace;
 
-		VkDescriptorImageInfo imageInfo = {};
-		imageInfo.imageLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL;
-		imageInfo.imageView = presentation->shadow.imageView;
-		imageInfo.sampler = presentation->shadow.sampler;
+		std::vector<VkDescriptorImageInfo> imageInfos = {};
+		imageInfos.resize(lights.size());
+		for (size_t j = 0; j < lights.size(); j++) {
+			imageInfos[j].imageLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL;
+			imageInfos[j].imageView = presentation->shadow.imageViews[j];
+			imageInfos[j].sampler = presentation->shadow.samplers[j];
+		}
 
 		descriptorWrites[2].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		descriptorWrites[2].dstSet = descriptorSetsData[i];
 		descriptorWrites[2].dstBinding = 2;
 		descriptorWrites[2].dstArrayElement = 0;
 		descriptorWrites[2].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-		descriptorWrites[2].descriptorCount = 1;
-		descriptorWrites[2].pImageInfo = &imageInfo;
+		descriptorWrites[2].descriptorCount = imageInfos.size();
+		descriptorWrites[2].pImageInfo = imageInfos.data();
 
 		vkUpdateDescriptorSets(devicesHandler->device, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr);
+	}
+}
+
+void LightsHandler::createDescriptorSetsSingleSpace() {
+	for (auto light : lights) {
+		light->createDescriptorSetsSpace();
 	}
 }
 

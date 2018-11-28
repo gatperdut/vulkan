@@ -33,11 +33,11 @@ public:
 	} depth;
 
 	struct {
-		VkFramebuffer framebuffer;
-		VkImage image;
-		VkImageView imageView;
-		VkDeviceMemory imageMemory;
-		VkSampler sampler;
+		std::vector<VkFramebuffer> framebuffers;
+		std::vector<VkImage> images;
+		std::vector<VkImageView> imageViews;
+		std::vector<VkDeviceMemory> imageMemories;
+		std::vector<VkSampler> samplers;
 	} shadow;
 
 

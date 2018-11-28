@@ -6,7 +6,7 @@ layout(set = 0, location = 1) in vec3 normal;
 layout(set = 0, location = 2) in vec3 fragColor;
 layout(set = 0, location = 3) in vec2 fragTexCoord;
 layout(set = 0, location = 4) flat in uint texIndex;
-layout(set = 0, location = 5) in vec4 shadowCoord;
+layout(set = 0, location = 5) in vec4 shadowCoord[3];
 
 struct Light {
 	vec4 pos;
@@ -14,26 +14,26 @@ struct Light {
 };
 
 layout(set = 0, binding = 0) uniform LightUniformBufferObject {
-	Light lights[10];
+	Light lights[3];
 };
 
-layout(set = 0, binding = 2) uniform sampler2D shadowmap;
+layout(set = 0, binding = 2) uniform sampler2D shadowmap[3];
 
-layout(set = 1, binding = 1) uniform sampler2D texSamplers[5];
+layout(set = 1, binding = 1) uniform sampler2D texSamplers[3];
 
 layout(location = 0) out vec4 outColor;
 
 void main() {
-	vec4 normShadowCoord = shadowCoord / shadowCoord.w;
 
 	vec3 lightColor = vec3(0.0, 0.0, 0.0);
 
 	for (int i = 0; i < lights.length(); i++) {
+		vec4 normShadowCoord = shadowCoord[i] / shadowCoord[i].w;
 		vec3 lightPos = vec3(lights[i].pos);
 		vec3 lightDir = normalize(lightPos - fragPos);
 		vec3 normNormal = normalize(normal);
 		float bias = max(0.05 * (1.0 - dot(normNormal, lightDir)), 0.005);  
-		if (texture(shadowmap, normShadowCoord.xy).r > normShadowCoord.z - bias) {
+		if (texture(shadowmap[i], normShadowCoord.xy).r > normShadowCoord.z - bias) {
 			float diff = min(max(dot(normNormal, lightDir), 0.0), 0.95);
 			lightColor += vec3(diff) * vec3(lights[i].color);
 		}

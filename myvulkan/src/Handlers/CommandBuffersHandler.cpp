@@ -139,35 +139,37 @@ void CommandBuffersHandler::createCommandBuffersShadow() {
 
 		vkCmdSetDepthBias(commandBuffersShadow[i], 1.25f, 0.0f, 1.75f); // needed?
 
-		VkRenderPassBeginInfo renderPassBeginInfo = {};
-		renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-		renderPassBeginInfo.renderPass = renderPassHandler->renderPassShadow;
-		renderPassBeginInfo.framebuffer = presentation->shadow.framebuffer;
-		renderPassBeginInfo.renderArea.offset.x = 0;
-		renderPassBeginInfo.renderArea.offset.y = 0;
-		renderPassBeginInfo.renderArea.extent.width = 1024;
-		renderPassBeginInfo.renderArea.extent.height = 1024;
-		renderPassBeginInfo.clearValueCount = 2;
-		renderPassBeginInfo.pClearValues = clearValues;
+		for (size_t j = 0; j < lightsHandler->lights.size(); j++) {
+			VkRenderPassBeginInfo renderPassBeginInfo = {};
+			renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+			renderPassBeginInfo.renderPass = renderPassHandler->renderPassShadow;
+			renderPassBeginInfo.framebuffer = presentation->shadow.framebuffers[j];
+			renderPassBeginInfo.renderArea.offset.x = 0;
+			renderPassBeginInfo.renderArea.offset.y = 0;
+			renderPassBeginInfo.renderArea.extent.width = 1024;
+			renderPassBeginInfo.renderArea.extent.height = 1024;
+			renderPassBeginInfo.clearValueCount = 2;
+			renderPassBeginInfo.pClearValues = clearValues;
 
-		vkCmdBeginRenderPass(commandBuffersShadow[i], &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+			vkCmdBeginRenderPass(commandBuffersShadow[i], &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-		vkCmdBindPipeline(commandBuffersShadow[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->shadowPipeline->pipeline);
-		Model* model;
-		for (size_t j = 0; j < modelsHandler->models.size(); j++) {
-			model = modelsHandler->models[j];
-			std::vector<VkDeviceSize> offsets = { 0 };
-			vkCmdBindVertexBuffers(commandBuffersShadow[i], 0, 1, &model->shadowVBOs->vertexBuffer, offsets.data());
-			vkCmdBindIndexBuffer(commandBuffersShadow[i], model->shadowVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+			vkCmdBindPipeline(commandBuffersShadow[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->shadowPipeline->pipeline);
+			Model* model;
+			for (size_t k = 0; k < modelsHandler->models.size(); k++) {
+				model = modelsHandler->models[k];
+				std::vector<VkDeviceSize> offsets = { 0 };
+				vkCmdBindVertexBuffers(commandBuffersShadow[i], 0, 1, &model->shadowVBOs->vertexBuffer, offsets.data());
+				vkCmdBindIndexBuffer(commandBuffersShadow[i], model->shadowVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
-			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
-			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->descriptorSetsSpace[i], model->descriptorSetsMatrices[i] };
-			vkCmdBindDescriptorSets(commandBuffersShadow[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->shadowPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
+				std::vector<uint32_t> dynamicOffsets = { 0, 0 };
+				std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->lights[j]->descriptorSetsSpace[i], model->descriptorSetsMatrices[i] };
+				vkCmdBindDescriptorSets(commandBuffersShadow[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->shadowPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
-			vkCmdDrawIndexed(commandBuffersShadow[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
+				vkCmdDrawIndexed(commandBuffersShadow[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
+			}
+
+			vkCmdEndRenderPass(commandBuffersShadow[i]);
 		}
-
-		vkCmdEndRenderPass(commandBuffersShadow[i]);
 
 		if (vkEndCommandBuffer(commandBuffersShadow[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to record shadow command buffer!");

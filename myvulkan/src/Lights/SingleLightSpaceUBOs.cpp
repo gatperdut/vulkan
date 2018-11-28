@@ -1,20 +1,20 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Handlers/Handlers.h"
-#include "Lights/LightSpaceUBOs.h"
+#include "Lights/SingleLightSpaceUBOs.h"
 #include "Lights/light_space_ubo.h"
 #include "buffers.h"
 
-LightSpaceUBOs::LightSpaceUBOs() {
+SingleLightSpaceUBOs::SingleLightSpaceUBOs() {
 
 }
 
 
-LightSpaceUBOs::~LightSpaceUBOs() {
+SingleLightSpaceUBOs::~SingleLightSpaceUBOs() {
 	freeResources();
 }
 
-void LightSpaceUBOs::freeResources() {
+void SingleLightSpaceUBOs::freeResources() {
 	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
 		vkDestroyBuffer(devicesHandler->device, buffers[i], nullptr);
 		vkFreeMemory(devicesHandler->device, memories[i], nullptr);
@@ -22,8 +22,8 @@ void LightSpaceUBOs::freeResources() {
 }
 
 
-void LightSpaceUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
-	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightSpaceUBO);
+void SingleLightSpaceUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
+	VkDeviceSize size = sizeof(LightSpaceUBO);
 
 	(*buffers).resize(presentation->swapchain.images.size());
 	(*buffersMemories).resize(presentation->swapchain.images.size());
@@ -32,7 +32,7 @@ void LightSpaceUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers
 	}
 }
 
-void LightSpaceUBOs::createUniformBuffers() {
+void SingleLightSpaceUBOs::createUniformBuffers() {
 	if (!buffers.size()) {
 		internalCreateUniformBuffers(&buffers, &memories);
 	}
@@ -51,19 +51,15 @@ void LightSpaceUBOs::createUniformBuffers() {
 }
 
 
-void LightSpaceUBOs::updateUniformBuffer(uint32_t currentImage) {
+void SingleLightSpaceUBOs::updateUniformBuffer(uint32_t currentImage, glm::mat4 projectionView) {
 	void* data;
-	size_t numLights = lightsHandler->lights.size();
 
-	std::vector<LightSpaceUBO> ubos;
-	ubos.resize(numLights);
+	std::vector<LightSpaceUBO> ubo;
+	ubo.resize(1);
 
-	for (uint32_t i = 0; i < numLights; i++) {
-		Light* light = lightsHandler->lights[i];
-		ubos[i].projectionView = light->projectionView;
-	}
+	ubo[0].projectionView = projectionView;
 
-	vkMapMemory(devicesHandler->device, memories[currentImage], 0, numLights * sizeof(LightSpaceUBO), 0, &data);
-	memcpy(data, ubos.data(), numLights * sizeof(LightSpaceUBO));
+	vkMapMemory(devicesHandler->device, memories[currentImage], 0, sizeof(LightSpaceUBO), 0, &data);
+	memcpy(data, ubo.data(), sizeof(LightSpaceUBO));
 	vkUnmapMemory(devicesHandler->device, memories[currentImage]);
 }

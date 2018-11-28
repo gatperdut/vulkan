@@ -235,6 +235,9 @@
     <ClInclude Include="include\Models\ShadowVBOs.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
+    <ClInclude Include="include\Lights\SingleLightSpaceUBOs.h">
+      <Filter>Header Files\Lights</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CameraHandler.cpp">
@@ -350,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="src\Models\ShadowVBOs.cpp">
       <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lights\SingleLightSpaceUBOs.cpp">
+      <Filter>Source Files\Lights</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

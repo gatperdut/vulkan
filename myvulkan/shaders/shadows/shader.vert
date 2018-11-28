@@ -6,7 +6,7 @@ struct LightSpace {
 };
 
 layout(set = 0, binding = 0) uniform UniformBufferObject {
-	LightSpace lightSpace[10];
+	LightSpace lightSpace;
 } ubo;
 
 layout(set = 1, binding = 0) uniform UBOModelsMatrices {
@@ -23,7 +23,7 @@ out gl_PerVertex {
 
 
 void main() {
-    gl_Position = ubo.lightSpace[0].projectionView * uboMatrices.model * vec4(inPosition, 1.0);
+    gl_Position = ubo.lightSpace.projectionView * uboMatrices.model * vec4(inPosition, 1.0);
 	gl_Position.z = (gl_Position.z + gl_Position.w) / 2.0;
 
 }

@@ -12,7 +12,7 @@ struct LightSpace {
 };
 
 layout(set = 0, binding = 1) uniform UBOLightsMatrix {
-	LightSpace lightSpace[10];
+	LightSpace lightSpace[3];
 } lightUbo;
 
 layout(set = 0, location = 0) in vec3 inPosition;
@@ -26,7 +26,7 @@ layout(location = 1) out vec3 normal;
 layout(location = 2) out vec3 fragColor;
 layout(location = 3) out vec2 fragTexCoord;
 layout(location = 4) out uint texIndex;
-layout(location = 5) out vec4 shadowCoord;
+layout(location = 5) out vec4 shadowCoord[3];
 
 out gl_PerVertex {
     vec4 gl_Position;
@@ -49,6 +49,8 @@ void main() {
 	fragColor = inColor;
 	fragTexCoord = inTexCoord;
 	texIndex = inTexIndex;
-	shadowCoord =  biasMat * lightUbo.lightSpace[0].projectionView * ubo.model * vec4(inPosition, 1.0);
-	shadowCoord.z = (shadowCoord.z + shadowCoord.w) / 2.0;
+	for (int i = 0; i < lightUbo.lightSpace.length(); i++) {
+		shadowCoord[i] =  biasMat * lightUbo.lightSpace[i].projectionView * ubo.model * vec4(inPosition, 1.0);
+		shadowCoord[i].z = (shadowCoord[i].z + shadowCoord[i].w) / 2.0;
+	}
 }
