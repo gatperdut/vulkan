@@ -161,7 +161,7 @@ void CommandBuffersHandler::createCommandBuffersShadow() {
 			vkCmdBindIndexBuffer(commandBuffersShadow[i], model->shadowVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
-			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->descriptorSetsSpace[i], model->descriptorSetsMatrices[j] };
+			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->descriptorSetsSpace[i], model->descriptorSetsMatrices[i] };
 			vkCmdBindDescriptorSets(commandBuffersShadow[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->shadowPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 			vkCmdDrawIndexed(commandBuffersShadow[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
