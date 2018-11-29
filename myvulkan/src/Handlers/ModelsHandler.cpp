@@ -1,4 +1,6 @@
 #include "Handlers/Handlers.h"
+#include "Layouts/model_l.h"
+
 
 
 ModelsHandler::ModelsHandler() {
@@ -70,28 +72,6 @@ void ModelsHandler::updateUBOs(uint32_t index) {
 }
 
 
-VkDescriptorSetLayoutBinding ModelsHandler::createDescriptorSetLayoutBinding() {
-	VkDescriptorSetLayoutBinding layoutBinding = {};
-	layoutBinding.binding = 0;
-	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-	layoutBinding.descriptorCount = 1;
-	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-
-	return layoutBinding;
-}
-
-
-void ModelsHandler::createDescriptorSetLayoutMatrices() {
-	VkDescriptorSetLayoutBinding layoutBindingUB = createDescriptorSetLayoutBinding();
-
-	std::vector<VkDescriptorSetLayoutBinding> bindings = { layoutBindingUB };
-
-	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = bindings.size();
-	layoutInfo.pBindings = bindings.data();
-
-	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutMatrices) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create CIS descriptor set layout!");
-	}
+void ModelsHandler::createDSL_PVM() {
+	layouts::models::PVM(&descriptorSetLayoutMatrices, 0, 1);
 }

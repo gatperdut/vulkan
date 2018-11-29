@@ -17,8 +17,7 @@ public:
 
 	void load(std::string, std::string, glm::vec3, glm::vec3);
 	void createDescriptorSets();
-	void createDescriptorSetLayoutMatrices();
-	VkDescriptorSetLayoutBinding createDescriptorSetLayoutBinding();
+	void createDSL_PVM();
 	void createPipelines();
 	void destroyPipelines();
 	void createUBOs();

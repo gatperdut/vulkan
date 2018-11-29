@@ -42,7 +42,7 @@ public:
 	std::string filename;
 
 	ModelUBOs* modelUBOs;
-	ModeLMaterials* modelMaterials;
+	ModelMaterials* modelMaterials;
 	ModelVBOs* modelVBOs;
 	ShadowVBOs* shadowVBOs;
 	ModelPipeline* modelPipeline;

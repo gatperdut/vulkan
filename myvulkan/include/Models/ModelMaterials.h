@@ -5,7 +5,7 @@
 #include <vulkan/vulkan.h>
 
 
-class ModeLMaterials {
+class ModelMaterials {
 private:
 	void addImage(std::string);
 	void addMipmaps(VkImage, VkFormat, int32_t, int32_t, uint32_t);
@@ -13,14 +13,12 @@ private:
 	void addSampler();
 
 public:
-	ModeLMaterials();
-	~ModeLMaterials();
+	ModelMaterials();
+	~ModelMaterials();
 
 	void addTexture(std::string);
 	bool hasTexture(std::string);
 	int32_t indexByFilepath(std::string);
-
-	VkDescriptorSetLayoutBinding createDescriptorSetLayoutBinding();
 
 	std::vector<std::string> filepaths;
 	std::vector<VkImage> images;

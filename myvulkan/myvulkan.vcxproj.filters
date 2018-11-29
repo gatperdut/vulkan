@@ -58,6 +58,24 @@
     <Filter Include="Source Files\Presentation">
       <UniqueIdentifier>{7b4cd94c-0c88-40a3-be2a-7637e3e70f6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Materials">
+      <UniqueIdentifier>{970b1471-2bb3-409b-9139-9ee3ded741df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Materials">
+      <UniqueIdentifier>{6056cf65-f424-4149-883b-a55db810748b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Bindings">
+      <UniqueIdentifier>{03febb4f-c52d-4f73-b79f-961f662166e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Bindings">
+      <UniqueIdentifier>{58ada29d-b79d-4182-9e80-1a8e79ec48b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Layouts">
+      <UniqueIdentifier>{8e90b496-d239-4af1-9f13-2c892d209591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Layouts">
+      <UniqueIdentifier>{25cd728d-1a5f-4994-bf78-4d0811f3cc8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -238,6 +256,18 @@
     <ClInclude Include="include\Lights\SingleLightSpaceUBOs.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
+    <ClInclude Include="include\Materials\material_d.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Bindings\model_b.h">
+      <Filter>Header Files\Bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Layouts\model_l.h">
+      <Filter>Header Files\Layouts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Bindings\light_b.h">
+      <Filter>Header Files\Bindings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CameraHandler.cpp">
@@ -356,6 +386,15 @@
     </ClCompile>
     <ClCompile Include="src\Lights\SingleLightSpaceUBOs.cpp">
       <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bindings\model_b.cpp">
+      <Filter>Source Files\Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Layouts\model_l.cpp">
+      <Filter>Source Files\Layouts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bindings\light_b.cpp">
+      <Filter>Source Files\Bindings</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
