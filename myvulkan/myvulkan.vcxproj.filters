@@ -97,6 +97,18 @@
     <Filter Include="Header Files\Descriptors">
       <UniqueIdentifier>{cfc47b9a-27e8-4c15-a40a-4d31e0cdb65e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Uniforms">
+      <UniqueIdentifier>{68550c11-9edf-4d48-ba1d-46ef7529c75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Uniforms">
+      <UniqueIdentifier>{987a37a5-4ec1-4550-9bb9-266987502f3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Timer">
+      <UniqueIdentifier>{698eabab-fd68-4dcf-af2c-8d0c1ed96772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Timer">
+      <UniqueIdentifier>{2ffd3f7d-1aa8-4c9d-a438-09b5348008d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -220,9 +232,6 @@
     <ClInclude Include="include\Models\ModelPipeline.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="include\Models\ModelUBOs.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="include\Models\ModelVBOs.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
@@ -300,6 +309,12 @@
     </ClInclude>
     <ClInclude Include="include\Descriptors\light_d.h">
       <Filter>Header Files\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Uniforms\uniform.h">
+      <Filter>Header Files\Uniforms</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timer\timer.h">
+      <Filter>Header Files\Timer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -384,9 +399,6 @@
     <ClCompile Include="src\Models\ModelPipeline.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="src\Models\ModelUBOs.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="src\Models\ModelVBOs.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
@@ -446,6 +458,12 @@
     </ClCompile>
     <ClCompile Include="src\DSets\light_ds.cpp">
       <Filter>Source Files\DSets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Uniforms\uniform.cpp">
+      <Filter>Source Files\Uniforms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Timer\timer.cpp">
+      <Filter>Source Files\Timer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

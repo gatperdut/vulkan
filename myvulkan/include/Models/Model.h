@@ -5,8 +5,8 @@
 #include <vulkan/vulkan.h>
 #include <glm/glm.hpp>
 
+#include "Uniforms/uniform.h"
 #include "Models/ModeLMaterials.h"
-#include "Models/ModelUBOs.h"
 #include "Models/ModelVBOs.h"
 #include "Models/ShadowVBOs.h"
 #include "Models/ModelPipeline.h"
@@ -16,9 +16,9 @@
 class Model {
 private:
 	void loadModel();
-	VkDeviceSize verticesSize();
-	VkDeviceSize indicesSize();
-	VkDeviceSize totalSize();
+	size_t verticesSize();
+	size_t indicesSize();
+	size_t totalSize();
 
 public:
 	Model(std::string, std::string, glm::vec3, glm::vec3);
@@ -41,7 +41,7 @@ public:
 	std::string path;
 	std::string filename;
 
-	ModelUBOs* modelUBOs;
+	uniforms::uniform model_u;
 	ModelMaterials* modelMaterials;
 	ModelVBOs* modelVBOs;
 	ShadowVBOs* shadowVBOs;

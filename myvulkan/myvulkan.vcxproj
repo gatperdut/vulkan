@@ -224,7 +224,6 @@
     <ClInclude Include="include\memory_types.h" />
     <ClInclude Include="include\Models\ModelMaterials.h" />
     <ClInclude Include="include\Models\ModelPipeline.h" />
-    <ClInclude Include="include\Models\ModelUBOs.h" />
     <ClInclude Include="include\Models\ModelVBOs.h" />
     <ClInclude Include="include\Models\Model.h" />
     <ClInclude Include="include\Models\model_vertex.h" />
@@ -235,6 +234,8 @@
     <ClInclude Include="include\Shadows\ShadowPipeline.h" />
     <ClInclude Include="include\Shadows\shadow_vertex.h" />
     <ClInclude Include="include\swapchain.h" />
+    <ClInclude Include="include\Timer\timer.h" />
+    <ClInclude Include="include\Uniforms\uniform.h" />
     <ClInclude Include="include\vertex.h" />
     <ClInclude Include="include\Writes\create_w.h" />
     <ClInclude Include="include\Writes\Info\create_wi.h" />
@@ -278,7 +279,6 @@
     <ClCompile Include="src\memory_types.cpp" />
     <ClCompile Include="src\Models\ModelMaterials.cpp" />
     <ClCompile Include="src\Models\ModelPipeline.cpp" />
-    <ClCompile Include="src\Models\ModelUBOs.cpp" />
     <ClCompile Include="src\Models\ModelVBOs.cpp" />
     <ClCompile Include="src\Models\Model.cpp" />
     <ClCompile Include="src\Models\ShadowVBOs.cpp" />
@@ -286,6 +286,8 @@
     <ClCompile Include="src\read_file.cpp" />
     <ClCompile Include="src\Shadows\ShadowPipeline.cpp" />
     <ClCompile Include="src\swapchain.cpp" />
+    <ClCompile Include="src\Timer\timer.cpp" />
+    <ClCompile Include="src\Uniforms\uniform.cpp" />
     <ClCompile Include="src\Writes\create_w.cpp" />
     <ClCompile Include="src\Writes\Info\create_wi.cpp" />
   </ItemGroup>

@@ -4,7 +4,7 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#include "Models/ModelUBOs.h"
+#include "Uniforms/uniform.h"
 #include "Models/ModelMaterials.h"
 
 
@@ -12,9 +12,9 @@ namespace dsets {
 
 	namespace models {
 
-		void PVM_Materials(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, ModelUBOs* modelUBOs, ModelMaterials* modelMaterials);
+		void PVM_Materials(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& model_u, ModelMaterials* modelMaterials);
 
-		void PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, ModelUBOs* modelUBOs);
+		void PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& model_u);
 
 	}
 
