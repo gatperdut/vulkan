@@ -2,7 +2,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Lights/LightModelUBOs.h"
-#include "Lights/light_model_ubo.h"
+#include "Descriptors/light_d.h"
 #include "buffers.h"
 
 LightModelUBOs::LightModelUBOs() {
@@ -23,7 +23,7 @@ void LightModelUBOs::freeResources() {
 
 
 void LightModelUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
-	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightModelUBO);
+	VkDeviceSize size = lightsHandler->lights.size() * sizeof(descriptors::lights::PVM);
 
 	(*buffers).resize(presentation->swapchain.images.size());
 	(*buffersMemories).resize(presentation->swapchain.images.size());
@@ -54,13 +54,13 @@ void LightModelUBOs::createUniformBuffers() {
 void LightModelUBOs::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos) {
 	void* data;
 
-	LightModelUBO ubo = {};
+	descriptors::lights::PVM ubo = {};
 	
-	ubo.model = glm::translate(glm::mat4(1.0), pos);
-	ubo.view = cameraHandler->viewMatrix();
-	ubo.proj = cameraHandler->projMatrix();
+	ubo.M = glm::translate(glm::mat4(1.0), pos);
+	ubo.V = cameraHandler->viewMatrix();
+	ubo.P = cameraHandler->projMatrix();
 
-	ubo.proj[1][1] *= -1;
+	ubo.P[1][1] *= -1;
 
 	vkMapMemory(devicesHandler->device, memories[currentImage], 0, sizeof(ubo), 0, &data);
 	memcpy(data, &ubo, sizeof(ubo));

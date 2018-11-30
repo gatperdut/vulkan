@@ -10,9 +10,9 @@ layout(set = 0, binding = 0) uniform UniformBufferObject {
 } ubo;
 
 layout(set = 1, binding = 0) uniform UBOModelsMatrices {
-	mat4 model;
-	mat4 view;
 	mat4 proj;
+	mat4 view;
+	mat4 model;
 } uboMatrices;
 
 layout(set = 0, location = 0) in vec3 inPosition;

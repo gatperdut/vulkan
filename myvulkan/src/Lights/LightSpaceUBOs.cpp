@@ -2,7 +2,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Lights/LightSpaceUBOs.h"
-#include "Lights/light_space_ubo.h"
+#include "Descriptors/light_d.h"
 #include "buffers.h"
 
 LightSpaceUBOs::LightSpaceUBOs() {
@@ -23,7 +23,7 @@ void LightSpaceUBOs::freeResources() {
 
 
 void LightSpaceUBOs::internalCreateUniformBuffers(std::vector<VkBuffer>* buffers, std::vector<VkDeviceMemory>* buffersMemories) {
-	VkDeviceSize size = lightsHandler->lights.size() * sizeof(LightSpaceUBO);
+	VkDeviceSize size = lightsHandler->lights.size() * sizeof(descriptors::lights::PV);
 
 	(*buffers).resize(presentation->swapchain.images.size());
 	(*buffersMemories).resize(presentation->swapchain.images.size());
@@ -55,15 +55,15 @@ void LightSpaceUBOs::updateUniformBuffer(uint32_t currentImage) {
 	void* data;
 	size_t numLights = lightsHandler->lights.size();
 
-	std::vector<LightSpaceUBO> ubos;
+	std::vector<descriptors::lights::PV> ubos;
 	ubos.resize(numLights);
 
 	for (uint32_t i = 0; i < numLights; i++) {
 		Light* light = lightsHandler->lights[i];
-		ubos[i].projectionView = light->projectionView;
+		ubos[i].PV = light->projectionView;
 	}
 
-	vkMapMemory(devicesHandler->device, memories[currentImage], 0, numLights * sizeof(LightSpaceUBO), 0, &data);
-	memcpy(data, ubos.data(), numLights * sizeof(LightSpaceUBO));
+	vkMapMemory(devicesHandler->device, memories[currentImage], 0, numLights * sizeof(descriptors::lights::PV), 0, &data);
+	memcpy(data, ubos.data(), numLights * sizeof(descriptors::lights::PV));
 	vkUnmapMemory(devicesHandler->device, memories[currentImage]);
 }

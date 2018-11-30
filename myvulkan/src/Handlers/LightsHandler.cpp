@@ -43,7 +43,7 @@ void LightsHandler::add(glm::vec3 pos, glm::vec3 color) {
 
 
 void LightsHandler::createDescriptorSetLayoutData() {
-	layouts::lights::Properties_PV_Depth(&descriptorSetLayoutData, 0, 1, 1, 1, 2, lights.size());
+	layouts::lights::Attrs_PV_Depth(&descriptorSetLayoutData, 0, 1, 1, 1, 2, lights.size());
 }
 
 
@@ -101,8 +101,8 @@ void LightsHandler::updateUBOs(uint32_t index) {
 
 
 void LightsHandler::createDescriptorSetsData() {
-	dsets_Properties_PV_Depth.resize(presentation->swapchain.images.size());
-	dsets::lights::Properties_PV_Depth(dsets_Properties_PV_Depth, &descriptorSetLayoutData, lightDataUBOs, lightSpaceUBOs);
+	dsets_Attrs_PV_Depth.resize(presentation->swapchain.images.size());
+	dsets::lights::Attrs_PV_Depth(dsets_Attrs_PV_Depth, &descriptorSetLayoutData, lightDataUBOs, lightSpaceUBOs);
 }
 
 void LightsHandler::createDescriptorSetsSingleSpace() {

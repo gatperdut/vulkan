@@ -4,7 +4,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Models/ModelUBOs.h"
-#include "Models/model_ubo.h"
+#include "Descriptors/model_d.h"
 #include "buffers.h"
 
 ModelUBOs::ModelUBOs() {
@@ -60,17 +60,17 @@ void ModelUBOs::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos, glm::v
 
 	void* data;
 	
-	ModelUBO ubo = {};
+	descriptors::models::PVM ubo = {};
 	//ubo.model = pos.x == 0.0f ? glm::translate(glm::mat4(1.0), pos) : glm::translate(glm::mat4(1.0), glm::vec3(pos.x, sin(time) * 8.0f + 4.0f, pos.z));
-	ubo.model = glm::translate(glm::mat4(1.0), pos);
+	ubo.M = glm::translate(glm::mat4(1.0), pos);
 	if (pos.x > 0) {
-		ubo.model = glm::rotate(ubo.model, 0.25f * time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		ubo.M = glm::rotate(ubo.M, 0.25f * time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
-	ubo.model = glm::scale(ubo.model, scale);
-	ubo.view = cameraHandler->viewMatrix();
-	ubo.proj = cameraHandler->projMatrix();
+	ubo.M = glm::scale(ubo.M, scale);
+	ubo.V = cameraHandler->viewMatrix();
+	ubo.P = cameraHandler->projMatrix();
 
-	ubo.proj[1][1] *= -1;
+	ubo.P[1][1] *= -1;
 
 	vkMapMemory(devicesHandler->device, memories[currentImage], 0, sizeof(ubo), 0, &data);
 	memcpy(data, &ubo, sizeof(ubo));

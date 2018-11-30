@@ -2,8 +2,8 @@
 
 #include "Models/Model.h"
 #include "Handlers/Handlers.h"
-#include "Models/model_ubo.h"
-#include "Lights/light_model_ubo.h"
+#include "Descriptors/model_d.h"
+#include "Descriptors/light_d.h"
 #include "Layouts/model_l.h"
 #include "Writes/create_w.h"
 #include "Writes/Info/create_wi.h"

@@ -41,7 +41,7 @@ public:
 	VkDescriptorSetLayout descriptorSetLayoutModel;
 	VkDescriptorSetLayout descriptorSetLayoutSpace;
 	VkDescriptorSetLayout descriptorSetLayoutSingleSpace;
-	std::vector<VkDescriptorSet> dsets_Properties_PV_Depth;
+	std::vector<VkDescriptorSet> dsets_Attrs_PV_Depth;
 	std::vector<VkDescriptorSet> dsets_multiPV;
 
 	LightPipeline* lightPipeline;

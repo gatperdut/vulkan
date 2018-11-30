@@ -2,9 +2,9 @@
 #extension GL_ARB_separate_shader_objects : enable
 
 layout(set = 1, binding = 0) uniform UBOModelsMatrices {
-	mat4 model;
-	mat4 view;
 	mat4 proj;
+	mat4 view;
+	mat4 model;
 } ubo;
 
 struct LightSpace {

@@ -2,7 +2,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Handlers/DescriptorsHandler.h"
-#include "Models/model_ubo.h"
+#include "Descriptors/model_d.h"
 
 DescriptorsHandler::DescriptorsHandler() {
 

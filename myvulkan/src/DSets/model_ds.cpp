@@ -6,7 +6,7 @@
 #include "DSets/model_ds.h"
 #include "Writes/create_w.h"
 #include "Writes/Info/create_wi.h"
-#include "Models/model_ubo.h"
+#include "Descriptors/model_d.h"
 
 
 namespace dsets {
@@ -23,7 +23,7 @@ namespace dsets {
 				}
 
 				VkDescriptorBufferInfo bInfo = {};
-				writes::info::buffer(&bInfo, modelUBOs->buffers[i], 0, sizeof(ModelUBO));
+				writes::info::buffer(&bInfo, modelUBOs->buffers[i], 0, sizeof(descriptors::models::PVM));
 
 				std::vector<VkDescriptorImageInfo> iInfos;
 				iInfos.resize(modelMaterials->filepaths.size());
@@ -51,7 +51,7 @@ namespace dsets {
 				}
 
 				VkDescriptorBufferInfo bInfo = {};
-				writes::info::buffer(&bInfo, modelUBOs->buffers[i], 0, sizeof(ModelUBO));
+				writes::info::buffer(&bInfo, modelUBOs->buffers[i], 0, sizeof(descriptors::models::PVM));
 				
 				VkWriteDescriptorSet write = {};
 				writes::buffer(&write, dsets[i], 0, 0, 1, &bInfo);

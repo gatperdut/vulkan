@@ -2,7 +2,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Handlers/CommandBuffersHandler.h"
-#include "Models/model_ubo.h"
+#include "Descriptors/model_d.h"
 
 
 CommandBuffersHandler::CommandBuffersHandler() {
@@ -83,7 +83,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 			vkCmdBindIndexBuffer(commandBuffersRegular[i], model->modelVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 			std::vector<uint32_t> dynamicOffsets = { 0, 0, 0 };
-			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->dsets_Properties_PV_Depth[i], model->dsets_PVM_Materials[i] };
+			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->dsets_Attrs_PV_Depth[i], model->dsets_PVM_Materials[i] };
 			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->modelPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 			vkCmdDrawIndexed(commandBuffersRegular[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);

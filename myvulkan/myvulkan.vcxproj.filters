@@ -94,6 +94,9 @@
     <Filter Include="Header Files\DSets">
       <UniqueIdentifier>{94b798e8-2819-4377-bfad-18855572db1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Descriptors">
+      <UniqueIdentifier>{cfc47b9a-27e8-4c15-a40a-4d31e0cdb65e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -208,9 +211,6 @@
     <ClInclude Include="include\Models\Model.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="include\Models\model_ubo.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="include\Lights\Light.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
@@ -256,15 +256,6 @@
     <ClInclude Include="include\swapchain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lights\light_data_ubo.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Lights\light_model_ubo.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Lights\light_space_ubo.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="include\Lights\LightSpaceUBOs.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
@@ -303,6 +294,12 @@
     </ClInclude>
     <ClInclude Include="include\DSets\light_ds.h">
       <Filter>Header Files\DSets</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Descriptors\model_d.h">
+      <Filter>Header Files\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Descriptors\light_d.h">
+      <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

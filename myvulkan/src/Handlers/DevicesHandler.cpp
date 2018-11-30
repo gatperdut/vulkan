@@ -4,7 +4,7 @@
 #include "Handlers/Handlers.h"
 #include "Handlers/DevicesHandler.h"
 #include "capabilities.h"
-#include "Models/model_ubo.h"
+#include "Descriptors/model_d.h"
 
 DevicesHandler::DevicesHandler() {
 
@@ -18,7 +18,7 @@ DevicesHandler::~DevicesHandler() {
 
 void DevicesHandler::computeUboAlignment() {
 	VkDeviceSize minUboAlignment = properties.limits.minUniformBufferOffsetAlignment;
-	uboAlignment = (VkDeviceSize)sizeof(ModelUBO);
+	uboAlignment = (VkDeviceSize)sizeof(descriptors::models::PVM);
 	if (minUboAlignment > 0) {
 		uboAlignment = (uboAlignment + minUboAlignment - 1) & ~(minUboAlignment - 1);
 	}
