@@ -139,13 +139,13 @@ void Model::createDescriptorSetLayout() {
 
 void Model::createDescriptorSets() {
 	dsets_PVM_Materials.resize(presentation->swapchain.images.size());
-	dsets::model::PVM_Materials(dsets_PVM_Materials, &descriptorSetLayout, modelUBOs, modelMaterials);
+	dsets::models::PVM_Materials(dsets_PVM_Materials, &descriptorSetLayout, modelUBOs, modelMaterials);
 }
 
 
 void Model::createDescriptorSetsMatrices() {
 	dsets_PVM.resize(presentation->swapchain.images.size());
-	dsets::model::PVM(dsets_PVM, &modelsHandler->descriptorSetLayoutMatrices, modelUBOs);
+	dsets::models::PVM(dsets_PVM, &modelsHandler->descriptorSetLayoutMatrices, modelUBOs);
 }
 
 

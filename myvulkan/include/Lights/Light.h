@@ -27,8 +27,8 @@ public:
 
 	glm::vec3 pos;
 	glm::vec3 color;
-	std::vector<VkDescriptorSet> descriptorSetsModel;
-	std::vector<VkDescriptorSet> descriptorSetsSpace;
+	std::vector<VkDescriptorSet> dsets_PVM;
+	std::vector<VkDescriptorSet> dsets_singlePV;
 	LightModelUBOs* lightModelUBOs;
 	SingleLightSpaceUBOs* singleLightSpaceUBOs;
 	LightVBOs* lightVBOs;

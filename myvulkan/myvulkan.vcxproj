@@ -185,6 +185,7 @@
     <ClInclude Include="include\buffer_to_image.h" />
     <ClInclude Include="include\capabilities.h" />
     <ClInclude Include="include\DSets\alloc_ds.h" />
+    <ClInclude Include="include\DSets\light_ds.h" />
     <ClInclude Include="include\DSets\model_ds.h" />
     <ClInclude Include="include\Handlers\CameraHandler.h" />
     <ClInclude Include="include\Handlers\CapabilitiesHandler.h" />
@@ -245,6 +246,7 @@
     <ClCompile Include="src\buffers.cpp" />
     <ClCompile Include="src\buffer_to_image.cpp" />
     <ClCompile Include="src\DSets\alloc_ds.cpp" />
+    <ClCompile Include="src\DSets\light_ds.cpp" />
     <ClCompile Include="src\DSets\model_ds.cpp" />
     <ClCompile Include="src\Handlers\CameraHandler.cpp" />
     <ClCompile Include="src\Handlers\CapabilitiesHandler.cpp" />

@@ -301,6 +301,9 @@
     <ClInclude Include="include\DSets\alloc_ds.h">
       <Filter>Header Files\DSets</Filter>
     </ClInclude>
+    <ClInclude Include="include\DSets\light_ds.h">
+      <Filter>Header Files\DSets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CameraHandler.cpp">
@@ -442,6 +445,9 @@
       <Filter>Source Files\DSets</Filter>
     </ClCompile>
     <ClCompile Include="src\DSets\alloc_ds.cpp">
+      <Filter>Source Files\DSets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DSets\light_ds.cpp">
       <Filter>Source Files\DSets</Filter>
     </ClCompile>
   </ItemGroup>

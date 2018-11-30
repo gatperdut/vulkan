@@ -2,9 +2,8 @@
 #include <tiny_obj_loader.h>
 
 #include "Handlers/Handlers.h"
+#include "DSets/light_ds.h"
 #include "Lights/Light.h"
-#include "Lights/light_model_ubo.h"
-#include "Lights/light_space_ubo.h"
 
 
 Light::Light(glm::vec3 pos, glm::vec3 color) {
@@ -75,71 +74,13 @@ void Light::updateUBOs(uint32_t index) {
 
 
 void Light::createDescriptorSetsModel() {
-	VkDescriptorSetAllocateInfo allocInfo = {};
-	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-	allocInfo.descriptorPool = descriptorsHandler->descriptorPool;
-	allocInfo.descriptorSetCount = 1;
-	allocInfo.pSetLayouts = &lightsHandler->descriptorSetLayoutModel;
-
-	descriptorSetsModel.resize(presentation->swapchain.images.size());
-
-	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
-		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSetsModel[i]) != VK_SUCCESS) {
-			throw std::runtime_error("failed to allocate UB descriptor set!");
-		}
-
-		VkDescriptorBufferInfo bufferInfo = {};
-		bufferInfo.buffer = lightModelUBOs->buffers[i];
-		bufferInfo.offset = 0;
-		bufferInfo.range = sizeof(LightModelUBO);
-
-
-		VkWriteDescriptorSet descriptorWrite = {};
-
-		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWrite.dstSet = descriptorSetsModel[i];
-		descriptorWrite.dstBinding = 0;
-		descriptorWrite.dstArrayElement = 0;
-		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-		descriptorWrite.descriptorCount = 1;
-		descriptorWrite.pBufferInfo = &bufferInfo;
-
-		vkUpdateDescriptorSets(devicesHandler->device, 1, &descriptorWrite, 0, nullptr);
-	}
+	dsets_PVM.resize(presentation->swapchain.images.size());
+	dsets::lights::PVM(dsets_PVM, &lightsHandler->descriptorSetLayoutModel, lightModelUBOs);
 }
 
 void Light::createDescriptorSetsSpace() {
-	VkDescriptorSetAllocateInfo allocInfo = {};
-	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-	allocInfo.descriptorPool = descriptorsHandler->descriptorPool;
-	allocInfo.descriptorSetCount = 1;
-	allocInfo.pSetLayouts = &lightsHandler->descriptorSetLayoutSingleSpace;
-
-	descriptorSetsSpace.resize(presentation->swapchain.images.size());
-
-	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
-		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSetsSpace[i]) != VK_SUCCESS) {
-			throw std::runtime_error("failed to allocate Space descriptor set!");
-		}
-
-		VkDescriptorBufferInfo bufferInfo = {};
-		bufferInfo.buffer = singleLightSpaceUBOs->buffers[i];
-		bufferInfo.offset = 0;
-		bufferInfo.range = sizeof(LightSpaceUBO);
-
-
-		VkWriteDescriptorSet descriptorWrite = {};
-
-		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWrite.dstSet = descriptorSetsSpace[i];
-		descriptorWrite.dstBinding = 0;
-		descriptorWrite.dstArrayElement = 0;
-		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-		descriptorWrite.descriptorCount = 1;
-		descriptorWrite.pBufferInfo = &bufferInfo;
-
-		vkUpdateDescriptorSets(devicesHandler->device, 1, &descriptorWrite, 0, nullptr);
-	}
+	dsets_singlePV.resize(presentation->swapchain.images.size());
+	dsets::lights::singlePV(dsets_singlePV, &lightsHandler->descriptorSetLayoutSingleSpace, singleLightSpaceUBOs);
 }
 
 

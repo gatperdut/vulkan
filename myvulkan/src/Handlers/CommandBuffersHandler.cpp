@@ -63,7 +63,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 			vkCmdBindIndexBuffer(commandBuffersRegular[i], light->lightVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 			std::vector<uint32_t> dynamicOffsets = { 0 };
-			std::vector<VkDescriptorSet> descriptorSets = { light->descriptorSetsModel[i] };
+			std::vector<VkDescriptorSet> descriptorSets = { light->dsets_PVM[i] };
 			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->lightPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 
@@ -162,7 +162,7 @@ void CommandBuffersHandler::createCommandBuffersShadow() {
 				vkCmdBindIndexBuffer(commandBuffersShadow[i], model->shadowVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 				std::vector<uint32_t> dynamicOffsets = { 0, 0 };
-				std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->lights[j]->descriptorSetsSpace[i], model->dsets_PVM[i] };
+				std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->lights[j]->dsets_singlePV[i], model->dsets_PVM[i] };
 				vkCmdBindDescriptorSets(commandBuffersShadow[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->shadowPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 				vkCmdDrawIndexed(commandBuffersShadow[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);

@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <vector>
 #include <vulkan/vulkan.h>
 
 #include "Models/ModelUBOs.h"
@@ -9,7 +10,7 @@
 
 namespace dsets {
 
-	namespace model {
+	namespace models {
 
 		void PVM_Materials(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, ModelUBOs* modelUBOs, ModelMaterials* modelMaterials);
 
