@@ -76,6 +76,24 @@
     <Filter Include="Header Files\Layouts">
       <UniqueIdentifier>{25cd728d-1a5f-4994-bf78-4d0811f3cc8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Writes">
+      <UniqueIdentifier>{5af85243-d7c9-4ff4-9c44-68752b9e0328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Writes">
+      <UniqueIdentifier>{1256a689-627d-44ec-8ad6-559ad06cf948}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Writes\Info">
+      <UniqueIdentifier>{1b43a515-e9b2-4ad9-9d11-ded53bfe34b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Writes\Info">
+      <UniqueIdentifier>{c0d1441d-a533-47db-99a1-e373a8f93c43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DSets">
+      <UniqueIdentifier>{7324e90c-59bb-49ab-8b94-4b012ad37fc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DSets">
+      <UniqueIdentifier>{94b798e8-2819-4377-bfad-18855572db1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -271,6 +289,18 @@
     <ClInclude Include="include\Layouts\light_l.h">
       <Filter>Header Files\Layouts</Filter>
     </ClInclude>
+    <ClInclude Include="include\Writes\Info\create_wi.h">
+      <Filter>Header Files\Writes\Info</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Writes\create_w.h">
+      <Filter>Header Files\Writes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DSets\model_ds.h">
+      <Filter>Header Files\DSets</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DSets\alloc_ds.h">
+      <Filter>Header Files\DSets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CameraHandler.cpp">
@@ -401,6 +431,18 @@
     </ClCompile>
     <ClCompile Include="src\Layouts\light_l.cpp">
       <Filter>Source Files\Layouts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Writes\Info\create_wi.cpp">
+      <Filter>Source Files\Writes\Info</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Writes\create_w.cpp">
+      <Filter>Source Files\Writes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DSets\model_ds.cpp">
+      <Filter>Source Files\DSets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DSets\alloc_ds.cpp">
+      <Filter>Source Files\DSets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

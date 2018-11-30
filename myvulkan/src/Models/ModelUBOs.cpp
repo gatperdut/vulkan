@@ -60,13 +60,6 @@ void ModelUBOs::updateUniformBuffer(uint32_t currentImage, glm::vec3 pos, glm::v
 
 	void* data;
 	
-	glm::mat4 correction = {
-	1.0f,  0.0f, 0.0f, 0.0f,
-	0.0f, -1.0f, 0.0f, 0.0f,
-	0.0f,  0.0f, 0.5f, 0.5f,
-	0.0f,  0.0f, 0.0f, 1.0f
-	};
-
 	ModelUBO ubo = {};
 	//ubo.model = pos.x == 0.0f ? glm::translate(glm::mat4(1.0), pos) : glm::translate(glm::mat4(1.0), glm::vec3(pos.x, sin(time) * 8.0f + 4.0f, pos.z));
 	ubo.model = glm::translate(glm::mat4(1.0), pos);

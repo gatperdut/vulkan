@@ -5,6 +5,9 @@
 #include "Models/model_ubo.h"
 #include "Lights/light_model_ubo.h"
 #include "Layouts/model_l.h"
+#include "Writes/create_w.h"
+#include "Writes/Info/create_wi.h"
+#include "DSets/model_ds.h"
 
 
 Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 scale) {
@@ -135,88 +138,14 @@ void Model::createDescriptorSetLayout() {
 
 
 void Model::createDescriptorSets() {
-	VkDescriptorSetAllocateInfo allocInfo = {};
-	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-	allocInfo.descriptorPool = descriptorsHandler->descriptorPool;
-	allocInfo.descriptorSetCount = 1;
-	allocInfo.pSetLayouts = &descriptorSetLayout;
-
-	descriptorSets.resize(presentation->swapchain.images.size());
-
-	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
-		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSets[i]) != VK_SUCCESS) {
-			throw std::runtime_error("failed to allocate UB descriptor set!");
-		}
-
-		VkDescriptorBufferInfo bufferInfo = {};
-		bufferInfo.buffer = modelUBOs->buffers[i];
-		bufferInfo.offset = 0;
-		bufferInfo.range = sizeof(ModelUBO);
-
-
-		std::vector<VkWriteDescriptorSet> descriptorWrites;
-		descriptorWrites.resize(2);
-
-		descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWrites[0].dstSet = descriptorSets[i];
-		descriptorWrites[0].dstBinding = 0;
-		descriptorWrites[0].dstArrayElement = 0;
-		descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-		descriptorWrites[0].descriptorCount = 1;
-		descriptorWrites[0].pBufferInfo = &bufferInfo;
-
-		std::vector<VkDescriptorImageInfo> imageInfos;
-		imageInfos.resize(modelMaterials->filepaths.size());
-		for (size_t j = 0; j < modelMaterials->filepaths.size(); j++) {
-			imageInfos[j].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-			imageInfos[j].imageView = modelMaterials->imageViews[j];
-			imageInfos[j].sampler = modelMaterials->samplers[j];
-		}
-		descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWrites[1].dstSet = descriptorSets[i];
-		descriptorWrites[1].dstBinding = 1;
-		descriptorWrites[1].dstArrayElement = 0;
-		descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-		descriptorWrites[1].descriptorCount = imageInfos.size();
-		descriptorWrites[1].pImageInfo = imageInfos.data();
-
-		vkUpdateDescriptorSets(devicesHandler->device, descriptorWrites.size(), descriptorWrites.data(), 0, nullptr);
-	}
+	dsets_PVM_Materials.resize(presentation->swapchain.images.size());
+	dsets::model::PVM_Materials(dsets_PVM_Materials, &descriptorSetLayout, modelUBOs, modelMaterials);
 }
 
 
 void Model::createDescriptorSetsMatrices() {
-	VkDescriptorSetAllocateInfo allocInfo = {};
-	allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-	allocInfo.descriptorPool = descriptorsHandler->descriptorPool;
-	allocInfo.descriptorSetCount = 1;
-	allocInfo.pSetLayouts = &modelsHandler->descriptorSetLayoutMatrices;
-
-	descriptorSetsMatrices.resize(presentation->swapchain.images.size());
-
-	for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
-		if (vkAllocateDescriptorSets(devicesHandler->device, &allocInfo, &descriptorSetsMatrices[i]) != VK_SUCCESS) {
-			throw std::runtime_error("failed to allocate UB descriptor set!");
-		}
-
-		VkDescriptorBufferInfo bufferInfo = {};
-		bufferInfo.buffer = modelUBOs->buffers[i];
-		bufferInfo.offset = 0;
-		bufferInfo.range = sizeof(ModelUBO);
-
-
-		VkWriteDescriptorSet descriptorWrite = {};
-
-		descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWrite.dstSet = descriptorSetsMatrices[i];
-		descriptorWrite.dstBinding = 0;
-		descriptorWrite.dstArrayElement = 0;
-		descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-		descriptorWrite.descriptorCount = 1;
-		descriptorWrite.pBufferInfo = &bufferInfo;
-
-		vkUpdateDescriptorSets(devicesHandler->device, 1, &descriptorWrite, 0, nullptr);
-	}
+	dsets_PVM.resize(presentation->swapchain.images.size());
+	dsets::model::PVM(dsets_PVM, &modelsHandler->descriptorSetLayoutMatrices, modelUBOs);
 }
 
 

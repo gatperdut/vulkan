@@ -47,9 +47,9 @@ public:
 	ShadowVBOs* shadowVBOs;
 	ModelPipeline* modelPipeline;
 
-	std::vector<VkDescriptorSet> descriptorSets;
+	std::vector<VkDescriptorSet> dsets_PVM_Materials;
 	VkDescriptorSetLayout descriptorSetLayout;
 
-	std::vector<VkDescriptorSet> descriptorSetsMatrices;
+	std::vector<VkDescriptorSet> dsets_PVM;
 };
 

@@ -184,6 +184,8 @@
     <ClInclude Include="include\buffers.h" />
     <ClInclude Include="include\buffer_to_image.h" />
     <ClInclude Include="include\capabilities.h" />
+    <ClInclude Include="include\DSets\alloc_ds.h" />
+    <ClInclude Include="include\DSets\model_ds.h" />
     <ClInclude Include="include\Handlers\CameraHandler.h" />
     <ClInclude Include="include\Handlers\CapabilitiesHandler.h" />
     <ClInclude Include="include\Handlers\CommandBuffersHandler.h" />
@@ -235,11 +237,15 @@
     <ClInclude Include="include\Shadows\shadow_vertex.h" />
     <ClInclude Include="include\swapchain.h" />
     <ClInclude Include="include\vertex.h" />
+    <ClInclude Include="include\Writes\create_w.h" />
+    <ClInclude Include="include\Writes\Info\create_wi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bindings\bindings.cpp" />
     <ClCompile Include="src\buffers.cpp" />
     <ClCompile Include="src\buffer_to_image.cpp" />
+    <ClCompile Include="src\DSets\alloc_ds.cpp" />
+    <ClCompile Include="src\DSets\model_ds.cpp" />
     <ClCompile Include="src\Handlers\CameraHandler.cpp" />
     <ClCompile Include="src\Handlers\CapabilitiesHandler.cpp" />
     <ClCompile Include="src\Handlers\CommandBuffersHandler.cpp" />
@@ -280,6 +286,8 @@
     <ClCompile Include="src\read_file.cpp" />
     <ClCompile Include="src\Shadows\ShadowPipeline.cpp" />
     <ClCompile Include="src\swapchain.cpp" />
+    <ClCompile Include="src\Writes\create_w.cpp" />
+    <ClCompile Include="src\Writes\Info\create_wi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
