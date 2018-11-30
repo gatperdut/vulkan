@@ -2,43 +2,30 @@
 
 #include "Handlers/Handlers.h"
 
+#include "Layouts/create_l.h"
 #include "Layouts/model_l.h"
-#include "Bindings/model_b.h"
+#include "Bindings/bindings.h"
 
 
 namespace layouts {
 
 	namespace models {
 
-		void PVM_Mats(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N, uint32_t b2I, uint32_t b2N) {
-			VkDescriptorSetLayoutBinding bindingPVM = bindings::models::PVM(b1I, b1N);
-			VkDescriptorSetLayoutBinding bindingMats = bindings::models::materials(b2I, b2N);
+		void PVM_Materials(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N, uint32_t b2I, uint32_t b2N) {
+			VkDescriptorSetLayoutBinding bPVM = bindings::create(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, VK_SHADER_STAGE_VERTEX_BIT, b1I, b1N);
+			VkDescriptorSetLayoutBinding bMaterials = bindings::create(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT, b2I, b2N);
 
-			std::vector<VkDescriptorSetLayoutBinding> bindings = { bindingPVM, bindingMats };
+			std::vector<VkDescriptorSetLayoutBinding> bindings = { bPVM, bMaterials };
 
-			VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-			layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-			layoutInfo.bindingCount = bindings.size();
-			layoutInfo.pBindings = bindings.data();
-
-			if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, dsl) != VK_SUCCESS) {
-				throw std::runtime_error("failed to create CIS descriptor set layout!");
-			}
+			layouts::create(bindings, dsl);
 		}
 
 		void PVM(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N) {
-			VkDescriptorSetLayoutBinding bindingPVM = bindings::models::PVM(b1I, b1N);
+			VkDescriptorSetLayoutBinding bPVM = bindings::create(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, VK_SHADER_STAGE_VERTEX_BIT, b1I, b1N);
 
-			std::vector<VkDescriptorSetLayoutBinding> bindings = { bindingPVM };
+			std::vector<VkDescriptorSetLayoutBinding> bindings = { bPVM };
 
-			VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-			layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-			layoutInfo.bindingCount = bindings.size();
-			layoutInfo.pBindings = bindings.data();
-
-			if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, dsl) != VK_SUCCESS) {
-				throw std::runtime_error("failed to create CIS descriptor set layout!");
-			}
+			layouts::create(bindings, dsl);
 		}
 
 	}

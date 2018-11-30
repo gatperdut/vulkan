@@ -4,7 +4,6 @@
 #include "Handlers/Handlers.h"
 #include "Models/model_ubo.h"
 #include "Lights/light_model_ubo.h"
-#include "Bindings/model_b.h"
 #include "Layouts/model_l.h"
 
 
@@ -131,7 +130,7 @@ VkDeviceSize Model::totalSize() {
 
 
 void Model::createDescriptorSetLayout() {
-	layouts::models::PVM_Mats(&descriptorSetLayout, 0, 1, 1, modelMaterials->filepaths.size());
+	layouts::models::PVM_Materials(&descriptorSetLayout, 0, 1, 1, modelMaterials->filepaths.size());
 }
 
 

@@ -8,7 +8,7 @@ namespace layouts {
 
 	namespace models {
 
-		void PVM_Mats(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N, uint32_t b2I, uint32_t b2N);
+		void PVM_Materials(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N, uint32_t b2I, uint32_t b2N);
 
 		void PVM(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N);
 	}

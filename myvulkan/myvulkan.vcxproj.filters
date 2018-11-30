@@ -259,14 +259,17 @@
     <ClInclude Include="include\Materials\material_d.h">
       <Filter>Header Files\Materials</Filter>
     </ClInclude>
-    <ClInclude Include="include\Bindings\model_b.h">
-      <Filter>Header Files\Bindings</Filter>
-    </ClInclude>
     <ClInclude Include="include\Layouts\model_l.h">
       <Filter>Header Files\Layouts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Bindings\light_b.h">
+    <ClInclude Include="include\Bindings\bindings.h">
       <Filter>Header Files\Bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Layouts\create_l.h">
+      <Filter>Header Files\Layouts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Layouts\light_l.h">
+      <Filter>Header Files\Layouts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,14 +390,17 @@
     <ClCompile Include="src\Lights\SingleLightSpaceUBOs.cpp">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bindings\model_b.cpp">
-      <Filter>Source Files\Bindings</Filter>
-    </ClCompile>
     <ClCompile Include="src\Layouts\model_l.cpp">
       <Filter>Source Files\Layouts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bindings\light_b.cpp">
+    <ClCompile Include="src\Bindings\bindings.cpp">
       <Filter>Source Files\Bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Layouts\create_l.cpp">
+      <Filter>Source Files\Layouts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Layouts\light_l.cpp">
+      <Filter>Source Files\Layouts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,6 +2,8 @@
 #include <math.h>
 
 #include "Handlers/Handlers.h"
+#include "Bindings/bindings.h"
+#include "Layouts/light_l.h"
 #include "Lights/light_data_ubo.h"
 #include "Lights/light_space_ubo.h"
 
@@ -39,95 +41,25 @@ void LightsHandler::add(glm::vec3 pos, glm::vec3 color) {
 }
 
 
-VkDescriptorSetLayoutBinding LightsHandler::createDescriptorSetLayoutModelBinding() {
-	VkDescriptorSetLayoutBinding layoutBinding = {};
-	layoutBinding.binding = 0;
-	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-	layoutBinding.descriptorCount = 1;
-	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-
-	return layoutBinding;
-}
-
-
-VkDescriptorSetLayoutBinding LightsHandler::createDescriptorSetLayoutSpaceBinding(uint32_t binding) {
-	VkDescriptorSetLayoutBinding layoutBinding = {};
-	layoutBinding.binding = binding;
-	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-	layoutBinding.descriptorCount = 1;
-	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-
-	return layoutBinding;
-}
 
 
 void LightsHandler::createDescriptorSetLayoutData() {
-	VkDescriptorSetLayoutBinding layoutBindingUB = lightDataUBOs->createDescriptorSetLayoutBinding();
-	
-	VkDescriptorSetLayoutBinding layoutBindingSpace = createDescriptorSetLayoutSpaceBinding(1);
-
-	VkDescriptorSetLayoutBinding layoutBindingShadow = {};
-	layoutBindingShadow.binding = 2;
-	layoutBindingShadow.descriptorCount = lights.size();
-	layoutBindingShadow.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	layoutBindingShadow.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
-
-	std::vector<VkDescriptorSetLayoutBinding> bindings = { layoutBindingUB, layoutBindingSpace, layoutBindingShadow };
-
-	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = bindings.size();
-	layoutInfo.pBindings = bindings.data();
-
-	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutData) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create light data descriptor set layout!");
-	}
+	layouts::lights::Properties_PV_Depth(&descriptorSetLayoutData, 0, 1, 1, 1, 2, lights.size());
 }
 
 
 void LightsHandler::createDescriptorSetLayoutModel() {
-	VkDescriptorSetLayoutBinding layoutBinding = createDescriptorSetLayoutModelBinding();
-
-	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = 1;
-	layoutInfo.pBindings = &layoutBinding;
-
-	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutModel) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create light model descriptor set layout!");
-	}
+	layouts::lights::Model(&descriptorSetLayoutModel, 0, 1);
 }
 
 
 void LightsHandler::createDescriptorSetLayoutSpace() {
-	VkDescriptorSetLayoutBinding layoutBinding = createDescriptorSetLayoutSpaceBinding(0);
-
-	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = 1;
-	layoutInfo.pBindings = &layoutBinding;
-
-	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutSpace) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create light model descriptor set layout!");
-	}
+	layouts::lights::PV(&descriptorSetLayoutSpace, 0, 1);
 }
 
 
 void LightsHandler::createDescriptorSetLayoutSingleSpace() {
-	VkDescriptorSetLayoutBinding layoutBinding = {};
-	layoutBinding.binding = 0;
-	layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
-	layoutBinding.descriptorCount = 1;
-	layoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-
-	VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = 1;
-	layoutInfo.pBindings = &layoutBinding;
-
-	if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, &descriptorSetLayoutSingleSpace) != VK_SUCCESS) {
-		throw std::runtime_error("failed to create light data descriptor set layout!");
-	}
+	layouts::lights::PV(&descriptorSetLayoutSingleSpace, 0, 1);
 }
 
 

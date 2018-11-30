@@ -21,7 +21,6 @@ public:
 	void add(glm::vec3, glm::vec3);
 	void createPipelines();
 	VkDescriptorSetLayoutBinding createDescriptorSetLayoutModelBinding();
-	VkDescriptorSetLayoutBinding createDescriptorSetLayoutSpaceBinding(uint32_t);
 	void createDescriptorSetLayoutData();
 	void createDescriptorSetLayoutModel();
 	void createDescriptorSetLayoutSpace();

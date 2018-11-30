@@ -180,8 +180,7 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Bindings\light_b.h" />
-    <ClInclude Include="include\Bindings\model_b.h" />
+    <ClInclude Include="include\Bindings\bindings.h" />
     <ClInclude Include="include\buffers.h" />
     <ClInclude Include="include\buffer_to_image.h" />
     <ClInclude Include="include\capabilities.h" />
@@ -204,6 +203,8 @@
     <ClInclude Include="include\Handlers\WindowHandler.h" />
     <ClInclude Include="include\images.h" />
     <ClInclude Include="include\image_views.h" />
+    <ClInclude Include="include\Layouts\create_l.h" />
+    <ClInclude Include="include\Layouts\light_l.h" />
     <ClInclude Include="include\Layouts\model_l.h" />
     <ClInclude Include="include\Lights\Light.h" />
     <ClInclude Include="include\Lights\LightModelUBOs.h" />
@@ -236,8 +237,7 @@
     <ClInclude Include="include\vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Bindings\light_b.cpp" />
-    <ClCompile Include="src\Bindings\model_b.cpp" />
+    <ClCompile Include="src\Bindings\bindings.cpp" />
     <ClCompile Include="src\buffers.cpp" />
     <ClCompile Include="src\buffer_to_image.cpp" />
     <ClCompile Include="src\Handlers\CameraHandler.cpp" />
@@ -258,6 +258,8 @@
     <ClCompile Include="src\Handlers\WindowHandler.cpp" />
     <ClCompile Include="src\images.cpp" />
     <ClCompile Include="src\image_views.cpp" />
+    <ClCompile Include="src\Layouts\create_l.cpp" />
+    <ClCompile Include="src\Layouts\light_l.cpp" />
     <ClCompile Include="src\Layouts\model_l.cpp" />
     <ClCompile Include="src\Lights\Light.cpp" />
     <ClCompile Include="src\Lights\LightModelUBOs.cpp" />

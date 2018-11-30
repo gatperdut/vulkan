@@ -18,8 +18,6 @@ public:
 	void createUniformBuffers();
 	void updateDataUBO(uint32_t);
 
-	VkDescriptorSetLayoutBinding createDescriptorSetLayoutBinding();
-
 	std::vector<VkBuffer> buffers;
 	std::vector<VkDeviceMemory> memories;
 };
