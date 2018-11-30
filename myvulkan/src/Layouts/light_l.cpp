@@ -21,18 +21,18 @@ namespace layouts {
 			layouts::create(bindings, dsl);
 		}
 
-		void PV(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N) {
-			VkDescriptorSetLayoutBinding bPV = bindings::create(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, VK_SHADER_STAGE_VERTEX_BIT, b1I, b1N);
-
-			std::vector<VkDescriptorSetLayoutBinding> bindings = { bPV };
+		void PVM(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N) {
+			VkDescriptorSetLayoutBinding bModel = bindings::create(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, VK_SHADER_STAGE_VERTEX_BIT, b1I, b1N);
+			
+			std::vector<VkDescriptorSetLayoutBinding> bindings = { bModel };
 
 			layouts::create(bindings, dsl);
 		}
 
-		void Model(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N) {
-			VkDescriptorSetLayoutBinding bModel = bindings::create(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, VK_SHADER_STAGE_VERTEX_BIT, b1I, b1N);
-			
-			std::vector<VkDescriptorSetLayoutBinding> bindings = { bModel };
+		void PV(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N) {
+			VkDescriptorSetLayoutBinding bPV = bindings::create(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, VK_SHADER_STAGE_VERTEX_BIT, b1I, b1N);
+
+			std::vector<VkDescriptorSetLayoutBinding> bindings = { bPV };
 
 			layouts::create(bindings, dsl);
 		}

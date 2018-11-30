@@ -12,7 +12,7 @@ namespace layouts {
 
 		void PV(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N);
 
-		void Model(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N);
+		void PVM(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N);
 
 	}
 

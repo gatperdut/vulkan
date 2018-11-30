@@ -6,6 +6,7 @@
 #include "DSets/light_ds.h"
 #include "Writes/create_w.h"
 #include "Writes/Info/create_wi.h"
+#include "Lights/light_data_ubo.h"
 #include "Lights/light_model_ubo.h"
 #include "Lights/light_space_ubo.h"
 
@@ -69,6 +70,41 @@ namespace dsets {
 				writes::buffer(&write, dsets[i], 0, 0, 1, &bInfo);
 
 				vkUpdateDescriptorSets(devicesHandler->device, 1, &write, 0, nullptr);
+			}
+		}
+
+		void Properties_PV_Depth(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, LightDataUBOs* lightDataUBOs, LightSpaceUBOs* lightSpaceUBOs) {
+			VkDescriptorSetAllocateInfo alloc = {};
+			dsets::alloc(&alloc, layout);
+
+			uint32_t nLights = lightsHandler->lights.size();
+
+			for (size_t i = 0; i < presentation->swapchain.images.size(); i++) {
+				if (vkAllocateDescriptorSets(devicesHandler->device, &alloc, &dsets[i]) != VK_SUCCESS) {
+					throw std::runtime_error("failed to allocate UB descriptor set!");
+				}
+
+
+				std::vector<VkWriteDescriptorSet> writes;
+				writes.resize(3);
+
+				VkDescriptorBufferInfo bPropertiesInfo = {};
+				writes::info::buffer(&bPropertiesInfo, lightDataUBOs->buffers[i], 0, nLights * sizeof(LightDataUBO));
+
+				VkDescriptorBufferInfo bPVInfo = {};
+				writes::info::buffer(&bPVInfo, lightSpaceUBOs->buffers[i], 0, nLights * sizeof(LightSpaceUBO));
+
+				std::vector<VkDescriptorImageInfo> iInfos = {};
+				iInfos.resize(nLights);
+				for (size_t j = 0; j < nLights; j++) {
+					writes::info::image(&iInfos[j], VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL, presentation->shadow.imageViews[j], presentation->shadow.samplers[j]);
+				}
+
+				writes::buffer(&writes[0], dsets[i], 0, 0, 1, &bPropertiesInfo);
+				writes::buffer(&writes[1], dsets[i], 1, 0, 1, &bPVInfo);
+				writes::image(&writes[2], dsets[i], 2, 0, iInfos.size(), iInfos.data());
+
+				vkUpdateDescriptorSets(devicesHandler->device, writes.size(), writes.data(), 0, nullptr);
 			}
 		}
 
