@@ -26,7 +26,7 @@ LightsHandler::~LightsHandler() {
 	delete lightPipeline;
 	delete shadowPipeline;
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutData, nullptr);
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutModel, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_Attrs_PVM, nullptr);
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutSpace, nullptr);
 	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutSingleSpace, nullptr);
 }
@@ -41,27 +41,15 @@ void LightsHandler::add(glm::vec3 pos, glm::vec3 color) {
 }
 
 
-
-
-void LightsHandler::createDescriptorSetLayoutData() {
+void LightsHandler::createDSLs() {
 	layouts::lights::Attrs_PV_Depth(&descriptorSetLayoutData, 0, 1, 1, 1, 2, lights.size());
-}
 
+	layouts::lights::Attrs_PVM(&dsl_Attrs_PVM, 0, 1, 1, 1);
 
-void LightsHandler::createDescriptorSetLayoutModel() {
-	layouts::lights::PVM(&descriptorSetLayoutModel, 0, 1);
-}
-
-
-void LightsHandler::createDescriptorSetLayoutSpace() {
 	layouts::lights::PV(&descriptorSetLayoutSpace, 0, 1);
-}
 
-
-void LightsHandler::createDescriptorSetLayoutSingleSpace() {
 	layouts::lights::PV(&descriptorSetLayoutSingleSpace, 0, 1);
 }
-
 
 void LightsHandler::createUBOs() {
 	uniforms::create(Attrs_u, presentation->swapchain.images.size(), lights.size() * sizeof(descriptors::lights::Attrs), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
@@ -113,7 +101,7 @@ void LightsHandler::update_Attrs_u(uint32_t index) {
 }
 
 
-void LightsHandler::createDescriptorSetsData() {
+void LightsHandler::createDS_Attrs_PV_Depth() {
 	dsets_Attrs_PV_Depth.resize(presentation->swapchain.images.size());
 	dsets::lights::Attrs_PV_Depth(dsets_Attrs_PV_Depth, &descriptorSetLayoutData, Attrs_u, lightSpaceUBOs);
 }
@@ -124,7 +112,7 @@ void LightsHandler::createDescriptorSetsSingleSpace() {
 	}
 }
 
-void LightsHandler::createDescriptorSetsSpace() {
+void LightsHandler::createDS_multiPV() {
 	dsets_multiPV.resize(presentation->swapchain.images.size());
 	dsets::lights::multiPV(dsets_multiPV, &descriptorSetLayoutSpace, lightSpaceUBOs);
 }
@@ -137,6 +125,6 @@ void LightsHandler::createDescriptorSetsModel() {
 }
 
 void LightsHandler::createPipelines() {
-	lightPipeline->create(descriptorSetLayoutModel);
+	lightPipeline->create(dsl_Attrs_PVM);
 	shadowPipeline->create();
 }

@@ -13,7 +13,7 @@ namespace dsets {
 
 	namespace lights {
 
-		void PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, LightModelUBOs* lightModelUBOs) {
+		void Attrs_PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform Attrs_u, LightModelUBOs* lightModelUBOs) {
 			VkDescriptorSetAllocateInfo alloc = {};
 			dsets::alloc(&alloc, layout);
 
@@ -22,14 +22,19 @@ namespace dsets {
 					throw std::runtime_error("failed to allocate UB descriptor set!");
 				}
 
-				VkDescriptorBufferInfo bInfo = {};
-				writes::info::buffer(&bInfo, lightModelUBOs->buffers[i], 0, sizeof(descriptors::lights::PVM));
+				VkDescriptorBufferInfo bAttrs = {};
+				writes::info::buffer(&bAttrs, Attrs_u.buffers[i], 0, sizeof(descriptors::lights::Attrs));
 
+				VkDescriptorBufferInfo bPVM = {};
+				writes::info::buffer(&bPVM, lightModelUBOs->buffers[i], 0, sizeof(descriptors::lights::PVM));
 
-				VkWriteDescriptorSet write = {};
-				writes::buffer(&write, dsets[i], 0, 0, 1, &bInfo);
+				std::vector<VkWriteDescriptorSet> writes = {};
+				writes.resize(2);
 
-				vkUpdateDescriptorSets(devicesHandler->device, 1, &write, 0, nullptr);
+				writes::buffer(&writes[0], dsets[i], 0, 0, 1, &bAttrs);
+				writes::buffer(&writes[1], dsets[i], 1, 0, 1, &bPVM);
+
+				vkUpdateDescriptorSets(devicesHandler->device, 2, writes.data(), 0, nullptr);
 			}
 		}
 

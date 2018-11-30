@@ -21,10 +21,12 @@ namespace layouts {
 			layouts::create(bindings, dsl);
 		}
 
-		void PVM(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N) {
-			VkDescriptorSetLayoutBinding bModel = bindings::create(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, VK_SHADER_STAGE_VERTEX_BIT, b1I, b1N);
+		void Attrs_PVM(VkDescriptorSetLayout* dsl, uint32_t b1I, uint32_t b1N, uint32_t b2I, uint32_t b2N) {
+			VkDescriptorSetLayoutBinding bAttrs = bindings::create(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, VK_SHADER_STAGE_FRAGMENT_BIT, b1I, b1N);
+
+			VkDescriptorSetLayoutBinding bPVM = bindings::create(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, VK_SHADER_STAGE_VERTEX_BIT, b2I, b2N);
 			
-			std::vector<VkDescriptorSetLayoutBinding> bindings = { bModel };
+			std::vector<VkDescriptorSetLayoutBinding> bindings = { bAttrs, bPVM };
 
 			layouts::create(bindings, dsl);
 		}

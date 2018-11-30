@@ -9,7 +9,7 @@ public:
 	LightPipeline();
 	~LightPipeline();
 
-	void create(VkDescriptorSetLayout);
+	void create(VkDescriptorSetLayout dsl_Attrs_PVM);
 	void freeResources();
 
 

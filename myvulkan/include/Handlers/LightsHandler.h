@@ -20,14 +20,11 @@ public:
 
 	void add(glm::vec3, glm::vec3);
 	void createPipelines();
-	void createDescriptorSetLayoutData();
-	void createDescriptorSetLayoutModel();
-	void createDescriptorSetLayoutSpace();
-	void createDescriptorSetLayoutSingleSpace();
+	void createDSLs();
 	void createDescriptorSetsSingleSpace();
-	void createDescriptorSetsData();
+	void createDS_Attrs_PV_Depth();
 	void createDescriptorSetsModel();
-	void createDescriptorSetsSpace();
+	void createDS_multiPV();
 	void createUBOs();
 	void updateUBOs(uint32_t);
 	void update_Attrs_u(uint32_t index);
@@ -37,7 +34,7 @@ public:
 	std::vector<Light*> lights;
 
 	VkDescriptorSetLayout descriptorSetLayoutData;
-	VkDescriptorSetLayout descriptorSetLayoutModel;
+	VkDescriptorSetLayout dsl_Attrs_PVM;
 	VkDescriptorSetLayout descriptorSetLayoutSpace;
 	VkDescriptorSetLayout descriptorSetLayoutSingleSpace;
 	std::vector<VkDescriptorSet> dsets_Attrs_PV_Depth;

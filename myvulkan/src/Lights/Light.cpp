@@ -2,6 +2,7 @@
 #include <tiny_obj_loader.h>
 
 #include "Handlers/Handlers.h"
+#include "Descriptors/light_d.h"
 #include "DSets/light_ds.h"
 #include "Lights/Light.h"
 
@@ -18,6 +19,7 @@ Light::Light(glm::vec3 pos, glm::vec3 color) {
 
 
 Light::~Light() {
+	uniforms::destroy(Attrs_u);
 	delete lightModelUBOs;
 	delete singleLightSpaceUBOs;
 	delete lightVBOs;
@@ -63,19 +65,31 @@ void Light::loadModel() {
 
 
 void Light::createUBOs() {
+	uniforms::create(Attrs_u, presentation->swapchain.images.size(), sizeof(descriptors::lights::Attrs), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 	lightModelUBOs->createUniformBuffers();
 	singleLightSpaceUBOs->createUniformBuffers();
 }
 
 void Light::updateUBOs(uint32_t index) {
-	singleLightSpaceUBOs->updateUniformBuffer(index, projectionView);
+	update_Attrs_u(index);
 	lightModelUBOs->updateUniformBuffer(index, pos);
+	singleLightSpaceUBOs->updateUniformBuffer(index, projectionView);
+}
+
+
+void Light::update_Attrs_u(uint32_t index) {
+	descriptors::lights::Attrs Attrs;
+
+	Attrs.pos = glm::vec4(pos, 1.0);
+	Attrs.color = glm::vec4(color, 1.0);
+
+	uniforms::update(Attrs_u, index, sizeof(descriptors::lights::Attrs), &Attrs);
 }
 
 
 void Light::createDescriptorSetsModel() {
-	dsets_PVM.resize(presentation->swapchain.images.size());
-	dsets::lights::PVM(dsets_PVM, &lightsHandler->descriptorSetLayoutModel, lightModelUBOs);
+	dsets_Attrs_PVM.resize(presentation->swapchain.images.size());
+	dsets::lights::Attrs_PVM(dsets_Attrs_PVM, &lightsHandler->dsl_Attrs_PVM, Attrs_u, lightModelUBOs);
 }
 
 void Light::createDescriptorSetsSpace() {

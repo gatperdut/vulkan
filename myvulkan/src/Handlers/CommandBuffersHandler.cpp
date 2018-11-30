@@ -62,8 +62,8 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 			vkCmdBindVertexBuffers(commandBuffersRegular[i], 0, 1, &light->lightVBOs->vertexBuffer, offsets.data());
 			vkCmdBindIndexBuffer(commandBuffersRegular[i], light->lightVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
-			std::vector<uint32_t> dynamicOffsets = { 0 };
-			std::vector<VkDescriptorSet> descriptorSets = { light->dsets_PVM[i] };
+			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
+			std::vector<VkDescriptorSet> descriptorSets = { light->dsets_Attrs_PVM[i] };
 			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->lightPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 
