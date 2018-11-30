@@ -9,9 +9,9 @@
 namespace uniforms {
 
 	struct uniform {
-		size_t count;
 		std::vector<VkBuffer> buffers;
 		std::vector<VkDeviceMemory> memories;
+		size_t count;
 	};
 
 	void create(uniform& uniform, size_t count, size_t size, VkBufferUsageFlags usage, VkMemoryPropertyFlags memprops);

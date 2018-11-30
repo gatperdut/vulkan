@@ -67,7 +67,7 @@ void ModelsHandler::createUBOs() {
 
 void ModelsHandler::updateUBOs(uint32_t index) {
 	for (auto model : models) {
-		model->updateUBO(index);
+		model->update_PVM_u(index);
 	}
 }
 

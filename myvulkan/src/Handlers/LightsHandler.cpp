@@ -2,13 +2,14 @@
 #include <math.h>
 
 #include "Handlers/Handlers.h"
+#include "Descriptors/light_d.h"
 #include "Bindings/bindings.h"
 #include "DSets/light_ds.h"
 #include "Layouts/light_l.h"
+#include "Timer/timer.h"
 
 
 LightsHandler::LightsHandler() {
-	lightDataUBOs = new LightDataUBOs;
 	lightSpaceUBOs = new LightSpaceUBOs;
 	lightPipeline = new LightPipeline;
 	shadowPipeline = new ShadowPipeline;
@@ -20,7 +21,7 @@ LightsHandler::~LightsHandler() {
 		delete light;
 	}
 
-	delete lightDataUBOs;
+	uniforms::destroy(Attrs_u);
 	delete lightSpaceUBOs;
 	delete lightPipeline;
 	delete shadowPipeline;
@@ -63,7 +64,8 @@ void LightsHandler::createDescriptorSetLayoutSingleSpace() {
 
 
 void LightsHandler::createUBOs() {
-	lightDataUBOs->createUniformBuffers();
+	uniforms::create(Attrs_u, presentation->swapchain.images.size(), lights.size() * sizeof(descriptors::lights::Attrs), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+
 	lightSpaceUBOs->createUniformBuffers();
 	for (auto light : lights) {
 		light->createUBOs();
@@ -72,13 +74,11 @@ void LightsHandler::createUBOs() {
 
 
 void LightsHandler::updateUBOs(uint32_t index) {
-	static auto startTime = std::chrono::high_resolution_clock::now();
-	auto currentTime = std::chrono::high_resolution_clock::now();
-	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+	float time = timer::lapse();
 
 	for (size_t i = 0; i < lights.size(); i++) {
 		Light* light = lights[i];
-		float factor = 1.0f;
+		
 		if (i == 0) {
 			light->pos.y = 2.0f + cos(glm::radians(time * 30.0f)) * 5.0f;
 		}
@@ -93,16 +93,29 @@ void LightsHandler::updateUBOs(uint32_t index) {
 
 		light->updateUBOs(index);
 	}
-	for (auto light : lights) {
-	}
-	lightDataUBOs->updateDataUBO(index);
+
+	update_Attrs_u(index);
 	lightSpaceUBOs->updateUniformBuffer(index);
+}
+
+void LightsHandler::update_Attrs_u(uint32_t index) {
+	uint32_t nLights = lights.size();
+
+	std::vector<descriptors::lights::Attrs> Attrs;
+	Attrs.resize(nLights);
+
+	for (uint32_t i = 0; i < nLights; i++) {
+		Attrs[i].pos = glm::vec4(lights[i]->pos, 1.0);
+		Attrs[i].color = glm::vec4(lights[i]->color, 1.0);
+	}
+
+	uniforms::update(Attrs_u, index, nLights * sizeof(descriptors::lights::Attrs), Attrs.data());
 }
 
 
 void LightsHandler::createDescriptorSetsData() {
 	dsets_Attrs_PV_Depth.resize(presentation->swapchain.images.size());
-	dsets::lights::Attrs_PV_Depth(dsets_Attrs_PV_Depth, &descriptorSetLayoutData, lightDataUBOs, lightSpaceUBOs);
+	dsets::lights::Attrs_PV_Depth(dsets_Attrs_PV_Depth, &descriptorSetLayoutData, Attrs_u, lightSpaceUBOs);
 }
 
 void LightsHandler::createDescriptorSetsSingleSpace() {
@@ -113,7 +126,7 @@ void LightsHandler::createDescriptorSetsSingleSpace() {
 
 void LightsHandler::createDescriptorSetsSpace() {
 	dsets_multiPV.resize(presentation->swapchain.images.size());
-	dsets::lights::multiPV(dsets_multiPV, &lightsHandler->descriptorSetLayoutSpace, lightSpaceUBOs);
+	dsets::lights::multiPV(dsets_multiPV, &descriptorSetLayoutSpace, lightSpaceUBOs);
 }
 
 

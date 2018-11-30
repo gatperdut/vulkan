@@ -5,8 +5,8 @@
 #include <glm/glm.hpp>
 #include <vulkan/vulkan.h>
 
+#include "Uniforms/uniform.h"
 #include "Lights/LightPipeline.h"
-#include "Lights/LightDataUBOs.h"
 #include "Lights/LightSpaceUBOs.h"
 #include "Lights/Light.h"
 #include "Shadows/ShadowPipeline.h"
@@ -20,7 +20,6 @@ public:
 
 	void add(glm::vec3, glm::vec3);
 	void createPipelines();
-	VkDescriptorSetLayoutBinding createDescriptorSetLayoutModelBinding();
 	void createDescriptorSetLayoutData();
 	void createDescriptorSetLayoutModel();
 	void createDescriptorSetLayoutSpace();
@@ -31,9 +30,9 @@ public:
 	void createDescriptorSetsSpace();
 	void createUBOs();
 	void updateUBOs(uint32_t);
+	void update_Attrs_u(uint32_t index);
 
-
-	LightDataUBOs* lightDataUBOs;
+	uniforms::uniform Attrs_u;
 	LightSpaceUBOs* lightSpaceUBOs;
 	std::vector<Light*> lights;
 

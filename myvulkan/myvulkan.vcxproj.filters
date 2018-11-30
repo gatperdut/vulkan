@@ -250,9 +250,6 @@
     <ClInclude Include="include\Lights\LightVBOs.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lights\LightDataUBOs.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="include\Shadows\ShadowPipeline.h">
       <Filter>Header Files\Shadows</Filter>
     </ClInclude>
@@ -409,9 +406,6 @@
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
     <ClCompile Include="src\Lights\LightVBOs.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Lights\LightDataUBOs.cpp">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
     <ClCompile Include="src\Shadows\ShadowPipeline.cpp">

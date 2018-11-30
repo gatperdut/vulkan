@@ -25,7 +25,7 @@ public:
 	~Model();
 
 	void createUBOs();
-	void updateUBO(uint32_t);
+	void update_PVM_u(uint32_t);
 	void createDescriptorSetLayout();
 
 	void createDescriptorSets();
@@ -41,7 +41,7 @@ public:
 	std::string path;
 	std::string filename;
 
-	uniforms::uniform model_u;
+	uniforms::uniform PVM_u;
 	ModelMaterials* modelMaterials;
 	ModelVBOs* modelVBOs;
 	ShadowVBOs* shadowVBOs;

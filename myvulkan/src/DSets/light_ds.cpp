@@ -71,7 +71,7 @@ namespace dsets {
 			}
 		}
 
-		void Attrs_PV_Depth(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, LightDataUBOs* lightDataUBOs, LightSpaceUBOs* lightSpaceUBOs) {
+		void Attrs_PV_Depth(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& Attrs_u, LightSpaceUBOs* lightSpaceUBOs) {
 			VkDescriptorSetAllocateInfo alloc = {};
 			dsets::alloc(&alloc, layout);
 
@@ -87,7 +87,7 @@ namespace dsets {
 				writes.resize(3);
 
 				VkDescriptorBufferInfo bAttrsInfo = {};
-				writes::info::buffer(&bAttrsInfo, lightDataUBOs->buffers[i], 0, nLights * sizeof(descriptors::lights::Attrs));
+				writes::info::buffer(&bAttrsInfo, Attrs_u.buffers[i], 0, nLights * sizeof(descriptors::lights::Attrs));
 
 				VkDescriptorBufferInfo bPVInfo = {};
 				writes::info::buffer(&bPVInfo, lightSpaceUBOs->buffers[i], 0, nLights * sizeof(descriptors::lights::PV));

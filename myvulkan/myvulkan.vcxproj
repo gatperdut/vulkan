@@ -214,7 +214,6 @@
     <ClInclude Include="include\Lights\Light.h" />
     <ClInclude Include="include\Lights\LightModelUBOs.h" />
     <ClInclude Include="include\Lights\LightPipeline.h" />
-    <ClInclude Include="include\Lights\LightDataUBOs.h" />
     <ClInclude Include="include\Lights\LightSpaceUBOs.h" />
     <ClInclude Include="include\Lights\LightVBOs.h" />
     <ClInclude Include="include\Lights\light_vertex.h" />
@@ -271,7 +270,6 @@
     <ClCompile Include="src\Lights\Light.cpp" />
     <ClCompile Include="src\Lights\LightModelUBOs.cpp" />
     <ClCompile Include="src\Lights\LightPipeline.cpp" />
-    <ClCompile Include="src\Lights\LightDataUBOs.cpp" />
     <ClCompile Include="src\Lights\LightSpaceUBOs.cpp" />
     <ClCompile Include="src\Lights\LightVBOs.cpp" />
     <ClCompile Include="src\Lights\SingleLightSpaceUBOs.cpp" />
