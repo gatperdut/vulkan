@@ -1,7 +1,7 @@
 #include "Handlers/Handlers.h"
 #include "Models/ModelPipeline.h"
 #include "read_file.h"
-#include "Models/model_vertex.h"
+#include "Vertices/vertex_P_N_C_TXC_TXI.h"
 
 
 ModelPipeline::ModelPipeline() {
@@ -48,8 +48,8 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	auto bindingDescription = ModelVertex::getBindingDescription();
-	auto attributeDescriptions = ModelVertex::getAttributeDescriptions();
+	auto bindingDescription = vertices::V_P_N_C_TXC_TXI::bindings();
+	auto attributeDescriptions = vertices::V_P_N_C_TXC_TXI::descriptions();
 
 	vertexInputInfo.vertexBindingDescriptionCount = 1;
 	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());

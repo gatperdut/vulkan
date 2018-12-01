@@ -6,7 +6,7 @@
 
 #include "Uniforms/uniform.h"
 #include "VBuffers/vbuffer.h"
-#include "Lights/light_vertex.h"
+#include "Vertices/vertex_P.h"
 
 
 class Light {
@@ -17,7 +17,7 @@ public:
 	glm::vec3 pos;
 	glm::vec3 color;
 	void loadModel();
-	std::vector<LightVertex> vertices;
+	std::vector<vertices::V_P> vertices;
 	std::vector<uint32_t> indices;
 
 	void createDS_Attrs_PVM();

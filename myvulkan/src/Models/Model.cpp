@@ -10,7 +10,6 @@
 #include "DSets/model_ds.h"
 #include "Timer/timer.h"
 
-#include "Vertices/vertex_P.h"
 
 Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 scale) {
 	this->filename = filename;
@@ -46,7 +45,7 @@ void Model::loadModel() {
 	}
 
 
-	std::unordered_map<ModelVertex, uint32_t> uniqueVertices = {};
+	std::unordered_map<vertices::V_P_N_C_TXC_TXI, uint32_t> uniqueVertices = {};
 
 	for (auto material : materials) {
 		if (!material.diffuse_texname.empty() && !modelMaterials->hasTexture(path + material.diffuse_texname)) {
@@ -58,8 +57,8 @@ void Model::loadModel() {
 	for (const auto& shape : shapes) {
 		uint32_t indexCount = 0;
 		for (const auto& index : shape.mesh.indices) {
-			ModelVertex vertex = {};
-			ShadowVertex shadowVertex = {};
+			vertices::V_P_N_C_TXC_TXI vertex = {};
+			vertices::V_P shadowVertex = {};
 
 			vertex.pos = {
 				attrib.vertices[3 * index.vertex_index + 0],
@@ -103,8 +102,8 @@ void Model::loadModel() {
 		indexCount = 0;
 	}
 
-	vbuffers::create(vb_P_N_C_TXC_TXI, vertices.data(), vertices.size(), sizeof(ModelVertex), indices);
-	vbuffers::create(vb_P, verticesShadow.data(), verticesShadow.size(), sizeof(ShadowVertex), indices);
+	vbuffers::create(vb_P_N_C_TXC_TXI, vertices.data(), vertices.size(), sizeof(vertices::V_P_N_C_TXC_TXI), indices);
+	vbuffers::create(vb_P, verticesShadow.data(), verticesShadow.size(), sizeof(vertices::V_P), indices);
 }
 
 

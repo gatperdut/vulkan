@@ -213,25 +213,23 @@
     <ClInclude Include="include\Layouts\model_l.h" />
     <ClInclude Include="include\Lights\Light.h" />
     <ClInclude Include="include\Lights\LightPipeline.h" />
-    <ClInclude Include="include\Lights\light_vertex.h" />
     <ClInclude Include="include\Main.h" />
     <ClInclude Include="include\Materials\material_d.h" />
     <ClInclude Include="include\memory_types.h" />
     <ClInclude Include="include\Models\ModelMaterials.h" />
     <ClInclude Include="include\Models\ModelPipeline.h" />
     <ClInclude Include="include\Models\Model.h" />
-    <ClInclude Include="include\Models\model_vertex.h" />
     <ClInclude Include="include\Presentation\Presentation.h" />
     <ClInclude Include="include\read_file.h" />
     <ClInclude Include="include\mesh_ubo.h" />
     <ClInclude Include="include\Shadows\ShadowPipeline.h" />
-    <ClInclude Include="include\Shadows\shadow_vertex.h" />
     <ClInclude Include="include\swapchain.h" />
     <ClInclude Include="include\Timer\timer.h" />
     <ClInclude Include="include\Uniforms\uniform.h" />
     <ClInclude Include="include\VBuffers\vbuffer.h" />
     <ClInclude Include="include\vertex.h" />
     <ClInclude Include="include\Vertices\vertex_P.h" />
+    <ClInclude Include="include\Vertices\vertex_P_N_C_TXC_TXI.h" />
     <ClInclude Include="include\Writes\create_w.h" />
     <ClInclude Include="include\Writes\Info\create_wi.h" />
   </ItemGroup>

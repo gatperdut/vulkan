@@ -9,8 +9,8 @@
 #include "Models/ModelMaterials.h"
 #include "VBuffers/vbuffer.h"
 #include "Models/ModelPipeline.h"
-#include "Models/model_vertex.h"
-#include "Shadows/shadow_vertex.h"
+#include "Vertices/vertex_P_N_C_TXC_TXI.h"
+#include "Vertices/vertex_P.h"
 
 
 class Model {
@@ -24,8 +24,8 @@ public:
 	Model(std::string, std::string, glm::vec3, glm::vec3);
 	~Model();
 
-	std::vector<ModelVertex> vertices;
-	std::vector<ShadowVertex> verticesShadow;
+	std::vector<vertices::V_P_N_C_TXC_TXI> vertices;
+	std::vector<vertices::V_P> verticesShadow;
 	std::vector<uint32_t> indices;
 	glm::vec3 pos;
 	glm::vec3 scale;

@@ -1,7 +1,7 @@
 #include "Handlers/Handlers.h"
 #include "Shadows/ShadowPipeline.h"
 #include "read_file.h"
-#include "Shadows/shadow_vertex.h"
+#include "Vertices/vertex_P.h"
 
 
 ShadowPipeline::ShadowPipeline() {
@@ -47,8 +47,8 @@ void ShadowPipeline::create() {
 
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	auto bindingDescription = ShadowVertex::getBindingDescription();
-	auto attributeDescriptions = ShadowVertex::getAttributeDescriptions();
+	auto bindingDescription = vertices::V_P::bindings();
+	auto attributeDescriptions = vertices::V_P::attributes();
 
 	vertexInputInfo.vertexBindingDescriptionCount = 1;
 	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());

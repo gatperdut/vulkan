@@ -244,16 +244,7 @@
     <ClInclude Include="include\Lights\LightPipeline.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="include\Models\model_vertex.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Lights\light_vertex.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="include\Shadows\ShadowPipeline.h">
-      <Filter>Header Files\Shadows</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Shadows\shadow_vertex.h">
       <Filter>Header Files\Shadows</Filter>
     </ClInclude>
     <ClInclude Include="include\Presentation\Presentation.h">
@@ -308,6 +299,9 @@
       <Filter>Header Files\VBuffers</Filter>
     </ClInclude>
     <ClInclude Include="include\Vertices\vertex_P.h">
+      <Filter>Header Files\Vertices</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vertices\vertex_P_N_C_TXC_TXI.h">
       <Filter>Header Files\Vertices</Filter>
     </ClInclude>
   </ItemGroup>
