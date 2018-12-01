@@ -21,13 +21,12 @@ public:
 	void createPipelines();
 	void destroyPipelines();
 	void createUs();
-	void updateUBOs(uint32_t);
+	void updateUs(uint32_t);
 
 
 	void createDSLs();
-	std::vector<VkDescriptorSetLayout> getDescriptorSetLayouts();
 
-	VkDescriptorSetLayout descriptorSetLayoutMatrices;
+	VkDescriptorSetLayout dsl_PVM;
 
 	std::vector<Model*> models;
 };

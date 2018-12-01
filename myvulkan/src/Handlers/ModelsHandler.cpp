@@ -12,7 +12,7 @@ ModelsHandler::~ModelsHandler() {
 	for (auto model : models) {
 		delete model;
 	}
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutMatrices, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_PVM, nullptr);
 }
 
 
@@ -23,16 +23,6 @@ void ModelsHandler::createDSLs() {
 
 	createDSL_PVM();
 }
-
-
-std::vector<VkDescriptorSetLayout> ModelsHandler::getDescriptorSetLayouts() {
-	std::vector<VkDescriptorSetLayout> result;
-	for (auto model : models) {
-		result.push_back(model->dsl_PVM_Materials);
-	}
-	return result;
-}
-
 
 void ModelsHandler::createDSs() {
 	for (auto model : models) {
@@ -67,7 +57,7 @@ void ModelsHandler::createUs() {
 	}
 }
 
-void ModelsHandler::updateUBOs(uint32_t index) {
+void ModelsHandler::updateUs(uint32_t index) {
 	for (auto model : models) {
 		model->updateU_PVM(index);
 	}
@@ -75,5 +65,5 @@ void ModelsHandler::updateUBOs(uint32_t index) {
 
 
 void ModelsHandler::createDSL_PVM() {
-	layouts::models::PVM(&descriptorSetLayoutMatrices, 0, 1);
+	layouts::models::PVM(&dsl_PVM, 0, 1);
 }

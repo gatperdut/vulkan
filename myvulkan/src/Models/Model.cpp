@@ -158,7 +158,7 @@ void Model::createDS_PVM_Materials() {
 
 void Model::createDS_PVM() {
 	ds_PVM.resize(presentation->swapchain.images.size());
-	dsets::models::PVM(ds_PVM, &modelsHandler->descriptorSetLayoutMatrices, u_PVM);
+	dsets::models::PVM(ds_PVM, &modelsHandler->dsl_PVM, u_PVM);
 }
 
 

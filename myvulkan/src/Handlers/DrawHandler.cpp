@@ -23,7 +23,7 @@ void DrawHandler::drawFrame() {
 	}
 
 	lightsHandler->updateUs(imageIndex);
-	modelsHandler->updateUBOs(imageIndex);
+	modelsHandler->updateUs(imageIndex);
 
 	VkSubmitInfo submitInfoShadow = {};
 	submitInfoShadow.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
