@@ -11,7 +11,6 @@ Light::Light(glm::vec3 pos, glm::vec3 color) {
 	this->pos = pos;
 	this->color = color;
 
-	lightVBOs = new LightVBOs;
 	loadModel();
 }
 
@@ -20,7 +19,7 @@ Light::~Light() {
 	uniforms::destroy(u_Attrs);
 	uniforms::destroy(u_PVM);
 	uniforms::destroy(u_PV);
-	delete lightVBOs;
+	vbuffers::destroy(vb_P);
 }
 
 void Light::loadModel() {
@@ -58,7 +57,7 @@ void Light::loadModel() {
 		indexCount = 0;
 	}
 
-	lightVBOs->createBuffers(vertices, indices);
+	vbuffers::create(vb_P, vertices.data(), vertices.size(), sizeof(LightVertex), indices);
 }
 
 

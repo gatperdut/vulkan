@@ -6,10 +6,10 @@
 #include <glm/glm.hpp>
 
 #include "Uniforms/uniform.h"
-#include "Models/ModeLMaterials.h"
-#include "Models/ModelVBOs.h"
-#include "Models/ShadowVBOs.h"
+#include "Models/ModelMaterials.h"
+#include "VBuffers/vbuffer.h"
 #include "Models/ModelPipeline.h"
+#include "Models/model_vertex.h"
 #include "Shadows/shadow_vertex.h"
 
 
@@ -44,8 +44,8 @@ public:
 
 	uniforms::uniform u_PVM;
 	ModelMaterials* modelMaterials;
-	ModelVBOs* modelVBOs;
-	ShadowVBOs* shadowVBOs;
+	vbuffers::vbuffer vb_P_N_C_TXC_TXI;
+	vbuffers::vbuffer vb_P;
 	ModelPipeline* modelPipeline;
 
 	std::vector<VkDescriptorSet> ds_PVM_Materials;

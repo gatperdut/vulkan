@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 
 #include "Uniforms/uniform.h"
-#include "Lights/LightVBOs.h"
+#include "VBuffers/vbuffer.h"
 #include "Lights/light_vertex.h"
 
 
@@ -32,7 +32,7 @@ public:
 
 	std::vector<VkDescriptorSet> ds_Attrs_PVM;
 	std::vector<VkDescriptorSet> ds_PV;
-	LightVBOs* lightVBOs;
+	vbuffers::vbuffer vb_P;
 
 	uniforms::uniform u_PV;
 	uniforms::uniform u_Attrs;

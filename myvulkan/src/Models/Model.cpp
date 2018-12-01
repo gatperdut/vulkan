@@ -10,6 +10,7 @@
 #include "DSets/model_ds.h"
 #include "Timer/timer.h"
 
+#include "Vertices/vertex_P.h"
 
 Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 scale) {
 	this->filename = filename;
@@ -17,8 +18,6 @@ Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 sc
 	this->pos = pos;
 	this->scale = scale;
 
-	modelVBOs = new ModelVBOs;
-	shadowVBOs = new ShadowVBOs;
 	modelMaterials = new ModelMaterials;
 	modelPipeline = new ModelPipeline;
 	loadModel();
@@ -28,8 +27,8 @@ Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 sc
 Model::~Model() {
 	delete modelMaterials;
 	uniforms::destroy(u_PVM);
-	delete modelVBOs;
-	delete shadowVBOs;
+	vbuffers::destroy(vb_P_N_C_TXC_TXI);
+	vbuffers::destroy(vb_P);
 	delete modelPipeline;
 
 	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_PVM_Materials, nullptr);
@@ -104,8 +103,8 @@ void Model::loadModel() {
 		indexCount = 0;
 	}
 
-	modelVBOs->createBuffers(vertices, indices);
-	shadowVBOs->createBuffers(verticesShadow, indices);
+	vbuffers::create(vb_P_N_C_TXC_TXI, vertices.data(), vertices.size(), sizeof(ModelVertex), indices);
+	vbuffers::create(vb_P, verticesShadow.data(), verticesShadow.size(), sizeof(ShadowVertex), indices);
 }
 
 

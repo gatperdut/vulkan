@@ -59,8 +59,8 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 			light = lightsHandler->lights[j];
 
 			std::vector<VkDeviceSize> offsets = { 0 };
-			vkCmdBindVertexBuffers(commandBuffersRegular[i], 0, 1, &light->lightVBOs->vertexBuffer, offsets.data());
-			vkCmdBindIndexBuffer(commandBuffersRegular[i], light->lightVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+			vkCmdBindVertexBuffers(commandBuffersRegular[i], 0, 1, &light->vb_P.vbuf, offsets.data());
+			vkCmdBindIndexBuffer(commandBuffersRegular[i], light->vb_P.ibuf, 0, VK_INDEX_TYPE_UINT32);
 
 			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
 			std::vector<VkDescriptorSet> descriptorSets = { light->ds_Attrs_PVM[i] };
@@ -79,8 +79,8 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 
 
 			std::vector<VkDeviceSize> offsets = { 0 };
-			vkCmdBindVertexBuffers(commandBuffersRegular[i], 0, 1, &model->modelVBOs->vertexBuffer, offsets.data());
-			vkCmdBindIndexBuffer(commandBuffersRegular[i], model->modelVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+			vkCmdBindVertexBuffers(commandBuffersRegular[i], 0, 1, &model->vb_P_N_C_TXC_TXI.vbuf, offsets.data());
+			vkCmdBindIndexBuffer(commandBuffersRegular[i], model->vb_P_N_C_TXC_TXI.ibuf, 0, VK_INDEX_TYPE_UINT32);
 
 			std::vector<uint32_t> dynamicOffsets = { 0, 0, 0 };
 			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->ds_Attrs_PV_Depth[i], model->ds_PVM_Materials[i] };
@@ -158,8 +158,8 @@ void CommandBuffersHandler::createCommandBuffersShadow() {
 			for (size_t k = 0; k < modelsHandler->models.size(); k++) {
 				model = modelsHandler->models[k];
 				std::vector<VkDeviceSize> offsets = { 0 };
-				vkCmdBindVertexBuffers(commandBuffersShadow[i], 0, 1, &model->shadowVBOs->vertexBuffer, offsets.data());
-				vkCmdBindIndexBuffer(commandBuffersShadow[i], model->shadowVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+				vkCmdBindVertexBuffers(commandBuffersShadow[i], 0, 1, &model->vb_P.vbuf, offsets.data());
+				vkCmdBindIndexBuffer(commandBuffersShadow[i], model->vb_P.ibuf, 0, VK_INDEX_TYPE_UINT32);
 
 				std::vector<uint32_t> dynamicOffsets = { 0, 0 };
 				std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->lights[j]->ds_PV[i], model->ds_PVM[i] };
