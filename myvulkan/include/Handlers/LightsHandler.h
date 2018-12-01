@@ -17,29 +17,32 @@ public:
 	LightsHandler();
 	~LightsHandler();
 
-	void add(glm::vec3, glm::vec3);
-	void createPipelines();
-	void createDSLs();
-	void createDescriptorSetsSingleSpace();
-	void createDS_Attrs_PV_Depth();
-	void createDescriptorSetsModel();
-	void createDS_multiPV();
-	void createUBOs();
-	void updateUBOs(uint32_t);
-	void update_Attrs_u(uint32_t index);
-	void update_PV_u(uint32_t index);
-
-	uniforms::uniform Attrs_u;
-	uniforms::uniform PV_u;
 	std::vector<Light*> lights;
+	void add(glm::vec3, glm::vec3);
 
-	VkDescriptorSetLayout descriptorSetLayoutData;
-	VkDescriptorSetLayout dsl_Attrs_PVM;
-	VkDescriptorSetLayout descriptorSetLayoutSpace;
-	VkDescriptorSetLayout descriptorSetLayoutSingleSpace;
-	std::vector<VkDescriptorSet> dsets_Attrs_PV_Depth;
-	std::vector<VkDescriptorSet> dsets_multiPV;
-
+	void createPipelines();
 	LightPipeline* lightPipeline;
 	ShadowPipeline* shadowPipeline;
+	
+	void createDSLs();
+	VkDescriptorSetLayout dsl_Attrs;
+	VkDescriptorSetLayout dsl_Attrs_PVM;
+	VkDescriptorSetLayout dsl_PVs;
+	VkDescriptorSetLayout dsl_PV;
+
+	void createDSs();
+	void createDS_PV();
+	void createDS_Attrs_PV_Depth();
+	void createDS_PVM();
+	void createDS_PVs();
+	std::vector<VkDescriptorSet> ds_Attrs_PV_Depth;
+	std::vector<VkDescriptorSet> ds_PVs;
+
+
+	void createUs();
+	void updateUs(uint32_t);
+	void updateU_Attrs(uint32_t index);
+	void updateU_PV(uint32_t index);
+	uniforms::uniform u_Attrs;
+	uniforms::uniform u_PV;
 };

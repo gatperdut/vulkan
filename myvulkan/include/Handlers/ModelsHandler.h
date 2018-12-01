@@ -16,15 +16,15 @@ public:
 	~ModelsHandler();
 
 	void load(std::string, std::string, glm::vec3, glm::vec3);
-	void createDescriptorSets();
+	void createDSs();
 	void createDSL_PVM();
 	void createPipelines();
 	void destroyPipelines();
-	void createUBOs();
+	void createUs();
 	void updateUBOs(uint32_t);
 
 
-	void createDescriptorSetLayouts();
+	void createDSLs();
 	std::vector<VkDescriptorSetLayout> getDescriptorSetLayouts();
 
 	VkDescriptorSetLayout descriptorSetLayoutMatrices;

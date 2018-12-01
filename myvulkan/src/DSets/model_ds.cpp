@@ -13,7 +13,7 @@ namespace dsets {
 
 	namespace models {
 
-		void PVM_Materials(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& pvm_u, ModelMaterials* modelMaterials) {
+		void PVM_Materials(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& u_PVM, ModelMaterials* modelMaterials) {
 			VkDescriptorSetAllocateInfo alloc = {};
 			dsets::alloc(&alloc, layout);
 
@@ -23,7 +23,7 @@ namespace dsets {
 				}
 
 				VkDescriptorBufferInfo bInfo = {};
-				writes::info::buffer(&bInfo, pvm_u.buffers[i], 0, sizeof(descriptors::models::PVM));
+				writes::info::buffer(&bInfo, u_PVM.buffers[i], 0, sizeof(descriptors::models::PVM));
 
 				std::vector<VkDescriptorImageInfo> iInfos;
 				iInfos.resize(modelMaterials->filepaths.size());
@@ -41,7 +41,7 @@ namespace dsets {
 			}
 		}
 
-		void PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& model_u) {
+		void PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& u_PVM) {
 			VkDescriptorSetAllocateInfo alloc = {};
 			dsets::alloc(&alloc, layout);
 
@@ -51,7 +51,7 @@ namespace dsets {
 				}
 
 				VkDescriptorBufferInfo bInfo = {};
-				writes::info::buffer(&bInfo, model_u.buffers[i], 0, sizeof(descriptors::models::PVM));
+				writes::info::buffer(&bInfo, u_PVM.buffers[i], 0, sizeof(descriptors::models::PVM));
 				
 				VkWriteDescriptorSet write = {};
 				writes::buffer(&write, dsets[i], 0, 0, 1, &bInfo);

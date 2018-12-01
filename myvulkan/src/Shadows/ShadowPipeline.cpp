@@ -111,7 +111,7 @@ void ShadowPipeline::create() {
 	colorBlending.attachmentCount = 0;
 	colorBlending.pAttachments = &colorBlendAttachment;
 
-	std::vector<VkDescriptorSetLayout> layouts = { lightsHandler->descriptorSetLayoutSingleSpace, modelsHandler->descriptorSetLayoutMatrices };
+	std::vector<VkDescriptorSetLayout> layouts = { lightsHandler->dsl_PV, modelsHandler->descriptorSetLayoutMatrices };
 
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;

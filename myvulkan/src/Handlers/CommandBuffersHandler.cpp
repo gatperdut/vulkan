@@ -63,7 +63,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 			vkCmdBindIndexBuffer(commandBuffersRegular[i], light->lightVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
-			std::vector<VkDescriptorSet> descriptorSets = { light->dsets_Attrs_PVM[i] };
+			std::vector<VkDescriptorSet> descriptorSets = { light->ds_Attrs_PVM[i] };
 			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->lightPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 
@@ -83,7 +83,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 			vkCmdBindIndexBuffer(commandBuffersRegular[i], model->modelVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 			std::vector<uint32_t> dynamicOffsets = { 0, 0, 0 };
-			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->dsets_Attrs_PV_Depth[i], model->dsets_PVM_Materials[i] };
+			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->ds_Attrs_PV_Depth[i], model->ds_PVM_Materials[i] };
 			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->modelPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 			vkCmdDrawIndexed(commandBuffersRegular[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
@@ -162,7 +162,7 @@ void CommandBuffersHandler::createCommandBuffersShadow() {
 				vkCmdBindIndexBuffer(commandBuffersShadow[i], model->shadowVBOs->indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
 				std::vector<uint32_t> dynamicOffsets = { 0, 0 };
-				std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->lights[j]->dsets_singlePV[i], model->dsets_PVM[i] };
+				std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->lights[j]->ds_PV[i], model->ds_PVM[i] };
 				vkCmdBindDescriptorSets(commandBuffersShadow[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->shadowPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 				vkCmdDrawIndexed(commandBuffersShadow[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);

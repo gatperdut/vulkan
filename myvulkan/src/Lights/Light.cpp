@@ -17,9 +17,9 @@ Light::Light(glm::vec3 pos, glm::vec3 color) {
 
 
 Light::~Light() {
-	uniforms::destroy(Attrs_u);
-	uniforms::destroy(PVM_u);
-	uniforms::destroy(PV_u);
+	uniforms::destroy(u_Attrs);
+	uniforms::destroy(u_PVM);
+	uniforms::destroy(u_PV);
 	delete lightVBOs;
 }
 
@@ -62,29 +62,29 @@ void Light::loadModel() {
 }
 
 
-void Light::createUBOs() {
-	uniforms::create(Attrs_u, presentation->swapchain.images.size(), sizeof(descriptors::lights::Attrs), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-	uniforms::create(PVM_u, presentation->swapchain.images.size(), sizeof(descriptors::lights::PVM), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-	uniforms::create(PV_u, presentation->swapchain.images.size(), sizeof(descriptors::lights::PV), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+void Light::createUs() {
+	uniforms::create(u_Attrs, presentation->swapchain.images.size(), sizeof(descriptors::lights::Attrs), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+	uniforms::create(u_PVM, presentation->swapchain.images.size(), sizeof(descriptors::lights::PVM), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+	uniforms::create(u_PV, presentation->swapchain.images.size(), sizeof(descriptors::lights::PV), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-void Light::updateUBOs(uint32_t index) {
-	update_Attrs_u(index);
-	update_PVM_u(index);
-	update_PV_u(index);
+void Light::updateUs(uint32_t index) {
+	updateU_Attrs(index);
+	updateU_PVM(index);
+	updateU_PV(index);
 }
 
 
-void Light::update_Attrs_u(uint32_t index) {
+void Light::updateU_Attrs(uint32_t index) {
 	descriptors::lights::Attrs Attrs;
 
 	Attrs.pos = glm::vec4(pos, 1.0);
 	Attrs.color = glm::vec4(color, 1.0);
 
-	uniforms::update(Attrs_u, index, sizeof(descriptors::lights::Attrs), &Attrs);
+	uniforms::update(u_Attrs, index, sizeof(descriptors::lights::Attrs), &Attrs);
 }
 
-void Light::update_PVM_u(uint32_t index) {
+void Light::updateU_PVM(uint32_t index) {
 	descriptors::lights::PVM PVM = {};
 
 	PVM.P = cameraHandler->projMatrix();
@@ -93,25 +93,25 @@ void Light::update_PVM_u(uint32_t index) {
 
 	PVM.P[1][1] *= -1;
 
-	uniforms::update(PVM_u, index, sizeof(descriptors::lights::PVM), &PVM);
+	uniforms::update(u_PVM, index, sizeof(descriptors::lights::PVM), &PVM);
 }
 
-void Light::update_PV_u(uint32_t index) {
+void Light::updateU_PV(uint32_t index) {
 	descriptors::lights::PV PV;
 
 	PV.PV = projectionView;
 
-	uniforms::update(PV_u, index, sizeof(descriptors::lights::PV), &PV);
+	uniforms::update(u_PV, index, sizeof(descriptors::lights::PV), &PV);
 }
 
-void Light::createDescriptorSetsModel() {
-	dsets_Attrs_PVM.resize(presentation->swapchain.images.size());
-	dsets::lights::Attrs_PVM(dsets_Attrs_PVM, &lightsHandler->dsl_Attrs_PVM, Attrs_u, PVM_u);
+void Light::createDS_Attrs_PVM() {
+	ds_Attrs_PVM.resize(presentation->swapchain.images.size());
+	dsets::lights::Attrs_PVM(ds_Attrs_PVM, &lightsHandler->dsl_Attrs_PVM, u_Attrs, u_PVM);
 }
 
-void Light::createDescriptorSetsSpace() {
-	dsets_singlePV.resize(presentation->swapchain.images.size());
-	dsets::lights::singlePV(dsets_singlePV, &lightsHandler->descriptorSetLayoutSingleSpace, PV_u);
+void Light::createDS_PV() {
+	ds_PV.resize(presentation->swapchain.images.size());
+	dsets::lights::singlePV(ds_PV, &lightsHandler->dsl_PV, u_PV);
 }
 
 

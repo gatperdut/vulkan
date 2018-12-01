@@ -20,14 +20,14 @@ LightsHandler::~LightsHandler() {
 		delete light;
 	}
 
-	uniforms::destroy(Attrs_u);
-	uniforms::destroy(PV_u);
+	uniforms::destroy(u_Attrs);
+	uniforms::destroy(u_PV);
 	delete lightPipeline;
 	delete shadowPipeline;
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutData, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_Attrs, nullptr);
 	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_Attrs_PVM, nullptr);
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutSpace, nullptr);
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayoutSingleSpace, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_PVs, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_PV, nullptr);
 }
 
 
@@ -41,26 +41,26 @@ void LightsHandler::add(glm::vec3 pos, glm::vec3 color) {
 
 
 void LightsHandler::createDSLs() {
-	layouts::lights::Attrs_PV_Depth(&descriptorSetLayoutData, 0, 1, 1, 1, 2, lights.size());
+	layouts::lights::Attrs_PV_Depth(&dsl_Attrs, 0, 1, 1, 1, 2, lights.size());
 
 	layouts::lights::Attrs_PVM(&dsl_Attrs_PVM, 0, 1, 1, 1);
 
-	layouts::lights::PV(&descriptorSetLayoutSpace, 0, 1);
+	layouts::lights::PV(&dsl_PVs, 0, 1);
 
-	layouts::lights::PV(&descriptorSetLayoutSingleSpace, 0, 1);
+	layouts::lights::PV(&dsl_PV, 0, 1);
 }
 
-void LightsHandler::createUBOs() {
-	uniforms::create(Attrs_u, presentation->swapchain.images.size(), lights.size() * sizeof(descriptors::lights::Attrs), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-	uniforms::create(PV_u, presentation->swapchain.images.size(), lights.size() * sizeof(descriptors::lights::PV), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+void LightsHandler::createUs() {
+	uniforms::create(u_Attrs, presentation->swapchain.images.size(), lights.size() * sizeof(descriptors::lights::Attrs), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+	uniforms::create(u_PV, presentation->swapchain.images.size(), lights.size() * sizeof(descriptors::lights::PV), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
 	for (auto light : lights) {
-		light->createUBOs();
+		light->createUs();
 	}
 }
 
 
-void LightsHandler::updateUBOs(uint32_t index) {
+void LightsHandler::updateUs(uint32_t index) {
 	float time = timer::lapse();
 
 	for (size_t i = 0; i < lights.size(); i++) {
@@ -78,14 +78,14 @@ void LightsHandler::updateUBOs(uint32_t index) {
 		
 		light->updateProjectionView();
 
-		light->updateUBOs(index);
+		light->updateUs(index);
 	}
 
-	update_Attrs_u(index);
-	update_PV_u(index);
+	updateU_Attrs(index);
+	updateU_PV(index);
 }
 
-void LightsHandler::update_Attrs_u(uint32_t index) {
+void LightsHandler::updateU_Attrs(uint32_t index) {
 	uint32_t nLights = lights.size();
 
 	std::vector<descriptors::lights::Attrs> Attrs;
@@ -96,10 +96,10 @@ void LightsHandler::update_Attrs_u(uint32_t index) {
 		Attrs[i].color = glm::vec4(lights[i]->color, 1.0);
 	}
 
-	uniforms::update(Attrs_u, index, nLights * sizeof(descriptors::lights::Attrs), Attrs.data());
+	uniforms::update(u_Attrs, index, nLights * sizeof(descriptors::lights::Attrs), Attrs.data());
 }
 
-void LightsHandler::update_PV_u(uint32_t index) {
+void LightsHandler::updateU_PV(uint32_t index) {
 	size_t nLights = lightsHandler->lights.size();
 
 	std::vector<descriptors::lights::PV> PVs;
@@ -109,33 +109,40 @@ void LightsHandler::update_PV_u(uint32_t index) {
 		PVs[i].PV = lights[i]->projectionView;
 	}
 
-	uniforms::update(PV_u, index, nLights * sizeof(descriptors::lights::PV), PVs.data());
-}
-
-void LightsHandler::createDS_Attrs_PV_Depth() {
-	dsets_Attrs_PV_Depth.resize(presentation->swapchain.images.size());
-	dsets::lights::Attrs_PV_Depth(dsets_Attrs_PV_Depth, &descriptorSetLayoutData, Attrs_u, PV_u);
-}
-
-void LightsHandler::createDescriptorSetsSingleSpace() {
-	for (auto light : lights) {
-		light->createDescriptorSetsSpace();
-	}
-}
-
-void LightsHandler::createDS_multiPV() {
-	dsets_multiPV.resize(presentation->swapchain.images.size());
-	dsets::lights::multiPV(dsets_multiPV, &descriptorSetLayoutSpace, PV_u);
-}
-
-
-void LightsHandler::createDescriptorSetsModel() {
-	for (auto light : lights) {
-		light->createDescriptorSetsModel();
-	}
+	uniforms::update(u_PV, index, nLights * sizeof(descriptors::lights::PV), PVs.data());
 }
 
 void LightsHandler::createPipelines() {
 	lightPipeline->create(dsl_Attrs_PVM);
 	shadowPipeline->create();
+}
+
+void LightsHandler::createDSs() {
+	createDS_Attrs_PV_Depth();
+	createDS_PVs();
+	createDS_PV();
+	createDS_PVM();
+}
+
+void LightsHandler::createDS_Attrs_PV_Depth() {
+	ds_Attrs_PV_Depth.resize(presentation->swapchain.images.size());
+	dsets::lights::Attrs_PV_Depth(ds_Attrs_PV_Depth, &dsl_Attrs, u_Attrs, u_PV);
+}
+
+void LightsHandler::createDS_PV() {
+	for (auto light : lights) {
+		light->createDS_PV();
+	}
+}
+
+void LightsHandler::createDS_PVs() {
+	ds_PVs.resize(presentation->swapchain.images.size());
+	dsets::lights::multiPV(ds_PVs, &dsl_PVs, u_PV);
+}
+
+
+void LightsHandler::createDS_PVM() {
+	for (auto light : lights) {
+		light->createDS_Attrs_PVM();
+	}
 }

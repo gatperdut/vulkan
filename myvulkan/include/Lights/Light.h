@@ -14,28 +14,29 @@ public:
 	Light(glm::vec3, glm::vec3);
 	~Light();
 
+	glm::vec3 pos;
+	glm::vec3 color;
 	void loadModel();
-	void createDescriptorSetsModel();
-	void createDescriptorSetsSpace();
-	void createUBOs();
-	void updateUBOs(uint32_t index);
-	void update_Attrs_u(uint32_t index);
-	void update_PVM_u(uint32_t index);
-	void update_PV_u(uint32_t index);
-	void updateProjectionView();
-
 	std::vector<LightVertex> vertices;
 	std::vector<uint32_t> indices;
 
-	glm::vec3 pos;
-	glm::vec3 color;
-	std::vector<VkDescriptorSet> dsets_Attrs_PVM;
-	std::vector<VkDescriptorSet> dsets_singlePV;
+	void createDS_Attrs_PVM();
+	void createDS_PV();
+	void createUs();
+	void updateUs(uint32_t index);
+	void updateU_Attrs(uint32_t index);
+	void updateU_PVM(uint32_t index);
+	void updateU_PV(uint32_t index);
+	void updateProjectionView();
+
+
+	std::vector<VkDescriptorSet> ds_Attrs_PVM;
+	std::vector<VkDescriptorSet> ds_PV;
 	LightVBOs* lightVBOs;
 
-	uniforms::uniform PV_u;
-	uniforms::uniform Attrs_u;
-	uniforms::uniform PVM_u;
+	uniforms::uniform u_PV;
+	uniforms::uniform u_Attrs;
+	uniforms::uniform u_PVM;
 
 	glm::mat4 projectionView;
 };

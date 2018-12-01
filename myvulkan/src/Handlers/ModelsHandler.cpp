@@ -16,26 +16,28 @@ ModelsHandler::~ModelsHandler() {
 }
 
 
-void ModelsHandler::createDescriptorSetLayouts() {
+void ModelsHandler::createDSLs() {
 	for (auto model : models) {
-		model->createDescriptorSetLayout();
+		model->createDSL_PVM_Materials();
 	}
+
+	createDSL_PVM();
 }
 
 
 std::vector<VkDescriptorSetLayout> ModelsHandler::getDescriptorSetLayouts() {
 	std::vector<VkDescriptorSetLayout> result;
 	for (auto model : models) {
-		result.push_back(model->descriptorSetLayout);
+		result.push_back(model->dsl_PVM_Materials);
 	}
 	return result;
 }
 
 
-void ModelsHandler::createDescriptorSets() {
+void ModelsHandler::createDSs() {
 	for (auto model : models) {
-		model->createDescriptorSets();
-		model->createDescriptorSetsMatrices();
+		model->createDS_PVM_Materials();
+		model->createDS_PVM();
 	}
 }
 
@@ -59,15 +61,15 @@ void ModelsHandler::load(std::string path, std::string filename, glm::vec3 pos, 
 }
 
 
-void ModelsHandler::createUBOs() {
+void ModelsHandler::createUs() {
 	for (auto model : models) {
-		model->createUBOs();
+		model->createUs();
 	}
 }
 
 void ModelsHandler::updateUBOs(uint32_t index) {
 	for (auto model : models) {
-		model->update_PVM_u(index);
+		model->updateU_PVM(index);
 	}
 }
 

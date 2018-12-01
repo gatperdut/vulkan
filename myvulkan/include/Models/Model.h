@@ -24,32 +24,33 @@ public:
 	Model(std::string, std::string, glm::vec3, glm::vec3);
 	~Model();
 
-	void createUBOs();
-	void update_PVM_u(uint32_t);
-	void createDescriptorSetLayout();
-
-	void createDescriptorSets();
-	void createDescriptorSetsMatrices();
-	void createPipeline();
-
 	std::vector<ModelVertex> vertices;
 	std::vector<ShadowVertex> verticesShadow;
 	std::vector<uint32_t> indices;
 	glm::vec3 pos;
 	glm::vec3 scale;
 
+	void createUs();
+	void updateU_PVM(uint32_t);
+	void createDSL_PVM_Materials();
+
+	void createDS_PVM_Materials();
+	void createDS_PVM();
+	void createPipeline();
+
+
 	std::string path;
 	std::string filename;
 
-	uniforms::uniform PVM_u;
+	uniforms::uniform u_PVM;
 	ModelMaterials* modelMaterials;
 	ModelVBOs* modelVBOs;
 	ShadowVBOs* shadowVBOs;
 	ModelPipeline* modelPipeline;
 
-	std::vector<VkDescriptorSet> dsets_PVM_Materials;
-	VkDescriptorSetLayout descriptorSetLayout;
+	std::vector<VkDescriptorSet> ds_PVM_Materials;
+	VkDescriptorSetLayout dsl_PVM_Materials;
 
-	std::vector<VkDescriptorSet> dsets_PVM;
+	std::vector<VkDescriptorSet> ds_PVM;
 };
 

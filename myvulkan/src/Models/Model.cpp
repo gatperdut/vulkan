@@ -27,12 +27,12 @@ Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 sc
 
 Model::~Model() {
 	delete modelMaterials;
-	uniforms::destroy(PVM_u);
+	uniforms::destroy(u_PVM);
 	delete modelVBOs;
 	delete shadowVBOs;
 	delete modelPipeline;
 
-	vkDestroyDescriptorSetLayout(devicesHandler->device, descriptorSetLayout, nullptr);
+	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_PVM_Materials, nullptr);
 }
 
 
@@ -109,11 +109,11 @@ void Model::loadModel() {
 }
 
 
-void Model::createUBOs() {
-	uniforms::create(PVM_u, presentation->swapchain.images.size(), totalSize(), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+void Model::createUs() {
+	uniforms::create(u_PVM, presentation->swapchain.images.size(), totalSize(), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 }
 
-void Model::update_PVM_u(uint32_t index) {
+void Model::updateU_PVM(uint32_t index) {
 	float time = timer::lapse();
 
 	descriptors::models::PVM PVM = {};
@@ -127,7 +127,7 @@ void Model::update_PVM_u(uint32_t index) {
 
 	PVM.P[1][1] *= -1;
 
-	uniforms::update(PVM_u, index, sizeof(descriptors::models::PVM), (void*)&PVM);
+	uniforms::update(u_PVM, index, sizeof(descriptors::models::PVM), (void*)&PVM);
 }
 
 
@@ -145,23 +145,23 @@ size_t Model::totalSize() {
 }
 
 
-void Model::createDescriptorSetLayout() {
-	layouts::models::PVM_Materials(&descriptorSetLayout, 0, 1, 1, modelMaterials->filepaths.size());
+void Model::createDSL_PVM_Materials() {
+	layouts::models::PVM_Materials(&dsl_PVM_Materials, 0, 1, 1, modelMaterials->filepaths.size());
 }
 
 
-void Model::createDescriptorSets() {
-	dsets_PVM_Materials.resize(presentation->swapchain.images.size());
-	dsets::models::PVM_Materials(dsets_PVM_Materials, &descriptorSetLayout, PVM_u, modelMaterials);
+void Model::createDS_PVM_Materials() {
+	ds_PVM_Materials.resize(presentation->swapchain.images.size());
+	dsets::models::PVM_Materials(ds_PVM_Materials, &dsl_PVM_Materials, u_PVM, modelMaterials);
 }
 
 
-void Model::createDescriptorSetsMatrices() {
-	dsets_PVM.resize(presentation->swapchain.images.size());
-	dsets::models::PVM(dsets_PVM, &modelsHandler->descriptorSetLayoutMatrices, PVM_u);
+void Model::createDS_PVM() {
+	ds_PVM.resize(presentation->swapchain.images.size());
+	dsets::models::PVM(ds_PVM, &modelsHandler->descriptorSetLayoutMatrices, u_PVM);
 }
 
 
 void Model::createPipeline() {
-	modelPipeline->create(descriptorSetLayout);
+	modelPipeline->create(dsl_PVM_Materials);
 }

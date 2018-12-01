@@ -13,7 +13,7 @@ namespace dsets {
 
 	namespace lights {
 
-		void Attrs_PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform Attrs_u, uniforms::uniform PVM_u) {
+		void Attrs_PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform u_Attrs, uniforms::uniform u_PVM) {
 			VkDescriptorSetAllocateInfo alloc = {};
 			dsets::alloc(&alloc, layout);
 
@@ -23,10 +23,10 @@ namespace dsets {
 				}
 
 				VkDescriptorBufferInfo bAttrs = {};
-				writes::info::buffer(&bAttrs, Attrs_u.buffers[i], 0, sizeof(descriptors::lights::Attrs));
+				writes::info::buffer(&bAttrs, u_Attrs.buffers[i], 0, sizeof(descriptors::lights::Attrs));
 
 				VkDescriptorBufferInfo bPVM = {};
-				writes::info::buffer(&bPVM, PVM_u.buffers[i], 0, sizeof(descriptors::lights::PVM));
+				writes::info::buffer(&bPVM, u_PVM.buffers[i], 0, sizeof(descriptors::lights::PVM));
 
 				std::vector<VkWriteDescriptorSet> writes = {};
 				writes.resize(2);
@@ -38,7 +38,7 @@ namespace dsets {
 			}
 		}
 
-		void singlePV(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform PV_u) {
+		void singlePV(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform u_PV) {
 			VkDescriptorSetAllocateInfo alloc = {};
 			dsets::alloc(&alloc, layout);
 
@@ -48,7 +48,7 @@ namespace dsets {
 				}
 
 				VkDescriptorBufferInfo bInfo = {};
-				writes::info::buffer(&bInfo, PV_u.buffers[i], 0, sizeof(descriptors::lights::PV));
+				writes::info::buffer(&bInfo, u_PV.buffers[i], 0, sizeof(descriptors::lights::PV));
 
 				VkWriteDescriptorSet write = {};
 				writes::buffer(&write, dsets[i], 0, 0, 1, &bInfo);
@@ -57,7 +57,7 @@ namespace dsets {
 			}
 		}
 
-		void multiPV(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform PV_u) {
+		void multiPV(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform u_PV) {
 			VkDescriptorSetAllocateInfo alloc = {};
 			dsets::alloc(&alloc, layout);
 
@@ -67,7 +67,7 @@ namespace dsets {
 				}
 
 				VkDescriptorBufferInfo bInfo = {};
-				writes::info::buffer(&bInfo, PV_u.buffers[i], 0, lightsHandler->lights.size() * sizeof(descriptors::lights::PV));
+				writes::info::buffer(&bInfo, u_PV.buffers[i], 0, lightsHandler->lights.size() * sizeof(descriptors::lights::PV));
 
 				VkWriteDescriptorSet write = {};
 				writes::buffer(&write, dsets[i], 0, 0, 1, &bInfo);
@@ -76,7 +76,7 @@ namespace dsets {
 			}
 		}
 
-		void Attrs_PV_Depth(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& Attrs_u, uniforms::uniform PV_u) {
+		void Attrs_PV_Depth(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& u_Attrs, uniforms::uniform u_PV) {
 			VkDescriptorSetAllocateInfo alloc = {};
 			dsets::alloc(&alloc, layout);
 
@@ -92,10 +92,10 @@ namespace dsets {
 				writes.resize(3);
 
 				VkDescriptorBufferInfo bAttrsInfo = {};
-				writes::info::buffer(&bAttrsInfo, Attrs_u.buffers[i], 0, nLights * sizeof(descriptors::lights::Attrs));
+				writes::info::buffer(&bAttrsInfo, u_Attrs.buffers[i], 0, nLights * sizeof(descriptors::lights::Attrs));
 
 				VkDescriptorBufferInfo bPVInfo = {};
-				writes::info::buffer(&bPVInfo, PV_u.buffers[i], 0, nLights * sizeof(descriptors::lights::PV));
+				writes::info::buffer(&bPVInfo, u_PV.buffers[i], 0, nLights * sizeof(descriptors::lights::PV));
 
 				std::vector<VkDescriptorImageInfo> iInfos = {};
 				iInfos.resize(nLights);

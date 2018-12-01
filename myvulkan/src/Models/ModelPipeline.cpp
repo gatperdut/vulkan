@@ -114,7 +114,7 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	colorBlending.attachmentCount = 1;
 	colorBlending.pAttachments = &colorBlendAttachment;
 
-	std::vector<VkDescriptorSetLayout> layouts = { lightsHandler->descriptorSetLayoutData, descriptorSetLayout };
+	std::vector<VkDescriptorSetLayout> layouts = { lightsHandler->dsl_Attrs, descriptorSetLayout };
 
 	VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 	pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
