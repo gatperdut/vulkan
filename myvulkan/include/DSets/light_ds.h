@@ -4,21 +4,17 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-#include "Lights/LightModelUBOs.h"
-#include "Lights/SingleLightSpaceUBOs.h"
-#include "Lights/LightSpaceUBOs.h"
-
 namespace dsets {
 
 	namespace lights {
 
-		void Attrs_PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform Attrs_u, LightModelUBOs* lightModelUBOs);
+		void Attrs_PVM(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform Attrs_u, uniforms::uniform PVM_u);
 
-		void singlePV(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, SingleLightSpaceUBOs* singleLightSpaceUBOs);
+		void singlePV(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform PV_u);
 
-		void multiPV(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, LightSpaceUBOs* lightSpaceUBOs);
+		void multiPV(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform PV_u);
 	
-		void Attrs_PV_Depth(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& attrs_u, LightSpaceUBOs* lightSpaceUBOs);
+		void Attrs_PV_Depth(std::vector<VkDescriptorSet>& dsets, VkDescriptorSetLayout* layout, uniforms::uniform& Attrs_u, uniforms::uniform PV_u);
 
 	}
 

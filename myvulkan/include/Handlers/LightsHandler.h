@@ -7,7 +7,6 @@
 
 #include "Uniforms/uniform.h"
 #include "Lights/LightPipeline.h"
-#include "Lights/LightSpaceUBOs.h"
 #include "Lights/Light.h"
 #include "Shadows/ShadowPipeline.h"
 
@@ -28,9 +27,10 @@ public:
 	void createUBOs();
 	void updateUBOs(uint32_t);
 	void update_Attrs_u(uint32_t index);
+	void update_PV_u(uint32_t index);
 
 	uniforms::uniform Attrs_u;
-	LightSpaceUBOs* lightSpaceUBOs;
+	uniforms::uniform PV_u;
 	std::vector<Light*> lights;
 
 	VkDescriptorSetLayout descriptorSetLayoutData;

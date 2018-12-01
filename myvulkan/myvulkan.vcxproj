@@ -212,12 +212,9 @@
     <ClInclude Include="include\Layouts\light_l.h" />
     <ClInclude Include="include\Layouts\model_l.h" />
     <ClInclude Include="include\Lights\Light.h" />
-    <ClInclude Include="include\Lights\LightModelUBOs.h" />
     <ClInclude Include="include\Lights\LightPipeline.h" />
-    <ClInclude Include="include\Lights\LightSpaceUBOs.h" />
     <ClInclude Include="include\Lights\LightVBOs.h" />
     <ClInclude Include="include\Lights\light_vertex.h" />
-    <ClInclude Include="include\Lights\SingleLightSpaceUBOs.h" />
     <ClInclude Include="include\Main.h" />
     <ClInclude Include="include\Materials\material_d.h" />
     <ClInclude Include="include\memory_types.h" />
@@ -268,11 +265,8 @@
     <ClCompile Include="src\Layouts\light_l.cpp" />
     <ClCompile Include="src\Layouts\model_l.cpp" />
     <ClCompile Include="src\Lights\Light.cpp" />
-    <ClCompile Include="src\Lights\LightModelUBOs.cpp" />
     <ClCompile Include="src\Lights\LightPipeline.cpp" />
-    <ClCompile Include="src\Lights\LightSpaceUBOs.cpp" />
     <ClCompile Include="src\Lights\LightVBOs.cpp" />
-    <ClCompile Include="src\Lights\SingleLightSpaceUBOs.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\memory_types.cpp" />
     <ClCompile Include="src\Models\ModelMaterials.cpp" />

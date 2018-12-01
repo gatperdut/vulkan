@@ -5,8 +5,6 @@
 #include <glm/glm.hpp>
 
 #include "Uniforms/uniform.h"
-#include "Lights/LightModelUBOs.h"
-#include "Lights/SingleLightSpaceUBOs.h"
 #include "Lights/LightVBOs.h"
 #include "Lights/light_vertex.h"
 
@@ -20,8 +18,10 @@ public:
 	void createDescriptorSetsModel();
 	void createDescriptorSetsSpace();
 	void createUBOs();
-	void updateUBOs(uint32_t);
-	void update_Attrs_u(uint32_t);
+	void updateUBOs(uint32_t index);
+	void update_Attrs_u(uint32_t index);
+	void update_PVM_u(uint32_t index);
+	void update_PV_u(uint32_t index);
 	void updateProjectionView();
 
 	std::vector<LightVertex> vertices;
@@ -31,11 +31,11 @@ public:
 	glm::vec3 color;
 	std::vector<VkDescriptorSet> dsets_Attrs_PVM;
 	std::vector<VkDescriptorSet> dsets_singlePV;
-	LightModelUBOs* lightModelUBOs;
-	SingleLightSpaceUBOs* singleLightSpaceUBOs;
 	LightVBOs* lightVBOs;
 
+	uniforms::uniform PV_u;
 	uniforms::uniform Attrs_u;
+	uniforms::uniform PVM_u;
 
 	glm::mat4 projectionView;
 };

@@ -244,9 +244,6 @@
     <ClInclude Include="include\Lights\light_vertex.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lights\LightModelUBOs.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="include\Lights\LightVBOs.h">
       <Filter>Header Files\Lights</Filter>
     </ClInclude>
@@ -262,14 +259,8 @@
     <ClInclude Include="include\swapchain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lights\LightSpaceUBOs.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="include\Models\ShadowVBOs.h">
       <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Lights\SingleLightSpaceUBOs.h">
-      <Filter>Header Files\Lights</Filter>
     </ClInclude>
     <ClInclude Include="include\Materials\material_d.h">
       <Filter>Header Files\Materials</Filter>
@@ -402,9 +393,6 @@
     <ClCompile Include="src\Lights\LightPipeline.cpp">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
-    <ClCompile Include="src\Lights\LightModelUBOs.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
     <ClCompile Include="src\Lights\LightVBOs.cpp">
       <Filter>Source Files\Lights</Filter>
     </ClCompile>
@@ -417,14 +405,8 @@
     <ClCompile Include="src\swapchain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Lights\LightSpaceUBOs.cpp">
-      <Filter>Source Files\Lights</Filter>
-    </ClCompile>
     <ClCompile Include="src\Models\ShadowVBOs.cpp">
       <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Lights\SingleLightSpaceUBOs.cpp">
-      <Filter>Source Files\Lights</Filter>
     </ClCompile>
     <ClCompile Include="src\Layouts\model_l.cpp">
       <Filter>Source Files\Layouts</Filter>
