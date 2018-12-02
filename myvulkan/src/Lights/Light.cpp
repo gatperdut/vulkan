@@ -3,6 +3,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Descriptors/light_d.h"
+#include "Camera/camera.h"
 #include "DSets/light_ds.h"
 #include "Lights/Light.h"
 #include "Vertices/vertex_P.h"
@@ -86,8 +87,8 @@ void Light::updateU_Attrs(uint32_t index) {
 void Light::updateU_PVM(uint32_t index) {
 	descriptors::lights::PVM PVM = {};
 
-	PVM.P = cameraHandler->projMatrix();
-	PVM.V = cameraHandler->viewMatrix();
+	PVM.P = camera::P();
+	PVM.V = camera::V();
 	PVM.M = glm::translate(glm::mat4(1.0), pos);
 
 	PVM.P[1][1] *= -1;

@@ -11,7 +11,7 @@ namespace instance {
 		VK_KHR_SWAPCHAIN_EXTENSION_NAME
 	};
 
-	extern VkInstance instance;
+	extern VkInstance handle;
 
 	void create();
 

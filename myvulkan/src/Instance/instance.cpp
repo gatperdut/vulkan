@@ -35,7 +35,7 @@ namespace instance {
 			createInfo.enabledLayerCount = 0;
 		}
 
-		if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
+		if (vkCreateInstance(&createInfo, nullptr, &handle) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create instance!");
 		}
 	}
@@ -61,10 +61,10 @@ namespace instance {
 
 	void destroy() {
 		if (debug::enableVLs) {
-			debug::DestroyDebugUtilsMessengerEXT(instance, debug::callback, nullptr);
+			debug::DestroyDebugUtilsMessengerEXT(handle, debug::callback, nullptr);
 		}
 
-		vkDestroyInstance(instance, nullptr);
+		vkDestroyInstance(handle, nullptr);
 	}
 
 }

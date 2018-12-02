@@ -3,6 +3,7 @@
 
 #include "Models/Model.h"
 #include "Handlers/Handlers.h"
+#include "Camera/camera.h"
 #include "Devices/logical.h"
 #include "Descriptors/model_d.h"
 #include "Descriptors/light_d.h"
@@ -122,8 +123,8 @@ void Model::updateU_PVM(uint32_t index) {
 		PVM.M = glm::rotate(PVM.M, 0.25f * time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 	PVM.M = glm::scale(PVM.M, scale);
-	PVM.V = cameraHandler->viewMatrix();
-	PVM.P = cameraHandler->projMatrix();
+	PVM.V = camera::V();
+	PVM.P = camera::P();
 
 	PVM.P[1][1] *= -1;
 

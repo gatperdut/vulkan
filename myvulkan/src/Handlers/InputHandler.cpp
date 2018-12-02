@@ -2,6 +2,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Handlers/InputHandler.h"
+#include "Camera/camera.h"
 #include "buffers.h"
 
 InputHandler::InputHandler() {
@@ -23,17 +24,17 @@ void keyCallbackHelper(GLFWwindow* window, int key, int scancode, int action, in
 }
 
 void InputHandler::processMovement() {
-	if (glfwGetKey(window::window, GLFW_KEY_W) == GLFW_PRESS) {
-		cameraHandler->pos += cameraHandler->speed * cameraHandler->front;
+	if (glfwGetKey(window::handle, GLFW_KEY_W) == GLFW_PRESS) {
+		camera::data.pos += camera::speed * camera::data.front;
 	}
-	if (glfwGetKey(window::window, GLFW_KEY_S) == GLFW_PRESS) {
-		cameraHandler->pos -= cameraHandler->speed * cameraHandler->front;
+	if (glfwGetKey(window::handle, GLFW_KEY_S) == GLFW_PRESS) {
+		camera::data.pos -= camera::speed * camera::data.front;
 	}
-	if (glfwGetKey(window::window, GLFW_KEY_A) == GLFW_PRESS) {
-		cameraHandler->pos -= glm::normalize(glm::cross(cameraHandler->front, cameraHandler->up)) * cameraHandler->speed;
+	if (glfwGetKey(window::handle, GLFW_KEY_A) == GLFW_PRESS) {
+		camera::data.pos -= glm::normalize(glm::cross(camera::data.front, camera::data.up)) * camera::speed;
 	}
-	if (glfwGetKey(window::window, GLFW_KEY_D) == GLFW_PRESS) {
-		cameraHandler->pos += glm::normalize(glm::cross(cameraHandler->front, cameraHandler->up)) * cameraHandler->speed;
+	if (glfwGetKey(window::handle, GLFW_KEY_D) == GLFW_PRESS) {
+		camera::data.pos += glm::normalize(glm::cross(camera::data.front, camera::data.up)) * camera::speed;
 	}
 }
 
@@ -68,18 +69,18 @@ void InputHandler::processMouseMovement(float xpos, float ypos) {
 	lastX = xpos;
 	lastY = ypos;
 
-	xoffset *= cameraHandler->sensitivity;
-	yoffset *= cameraHandler->sensitivity;
+	xoffset *= camera::sensitivity;
+	yoffset *= camera::sensitivity;
 
-	cameraHandler->yaw += xoffset;
-	cameraHandler->pitch += yoffset;
+	camera::data.yaw += xoffset;
+	camera::data.pitch += yoffset;
 
-	if (cameraHandler->pitch > 89.0f) {
-		cameraHandler->pitch = 89.0f;
+	if (camera::data.pitch > 89.0f) {
+		camera::data.pitch = 89.0f;
 	}
-	if (cameraHandler->pitch < -89.0f) {
-		cameraHandler->pitch = -89.0f;
+	if (camera::data.pitch < -89.0f) {
+		camera::data.pitch = -89.0f;
 	}
 
-	cameraHandler->updateCameraVectors();
+	camera::update();
 }

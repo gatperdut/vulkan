@@ -136,6 +136,15 @@
     <Filter Include="Source Files\Window">
       <UniqueIdentifier>{3f0230ca-aef2-4711-96b9-f122b331c071}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Descriptors">
+      <UniqueIdentifier>{ed6d18df-ea15-459a-bd47-0d5f15163ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{f348203f-9570-44e6-8512-9ad0d97521e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{49ec4832-1e9c-4a44-a7a4-f60b2977cb36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -166,9 +175,6 @@
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Handlers\CameraHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
     <ClInclude Include="include\Handlers\CapabilitiesHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
@@ -176,9 +182,6 @@
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\Handlers\CommandsHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Handlers\DescriptorsHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\Handlers\DrawHandler.h">
@@ -328,11 +331,14 @@
     <ClInclude Include="include\Window\window.h">
       <Filter>Header Files\Window</Filter>
     </ClInclude>
+    <ClInclude Include="include\Descriptors\pool.h">
+      <Filter>Header Files\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Camera\camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Handlers\CameraHandler.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
     <ClCompile Include="src\Handlers\CapabilitiesHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
@@ -340,9 +346,6 @@
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\CommandsHandler.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Handlers\DescriptorsHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\DrawHandler.cpp">
@@ -464,6 +467,12 @@
     </ClCompile>
     <ClCompile Include="src\Window\window.cpp">
       <Filter>Source Files\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Descriptors\pool.cpp">
+      <Filter>Source Files\Descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera\camera.cpp">
+      <Filter>Source Files\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

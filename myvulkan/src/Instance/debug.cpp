@@ -19,7 +19,7 @@ namespace instance {
 			createInfo.pfnUserCallback = debugCallback;
 			createInfo.pUserData = nullptr;
 
-			if (CreateDebugUtilsMessengerEXT(instance::instance, &createInfo, nullptr, &callback) != VK_SUCCESS) {
+			if (CreateDebugUtilsMessengerEXT(instance::handle, &createInfo, nullptr, &callback) != VK_SUCCESS) {
 				throw std::runtime_error("failed to set up debug callback!");
 			}
 		}

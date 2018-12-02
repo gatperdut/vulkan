@@ -16,7 +16,7 @@ namespace window {
 
 	void destroy();
 
-	extern GLFWwindow* window;
+	extern GLFWwindow* handle;
 	
 	extern VkSurfaceKHR surface;
 
