@@ -1,4 +1,5 @@
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 #include "Layouts/model_l.h"
 
 
@@ -12,7 +13,7 @@ ModelsHandler::~ModelsHandler() {
 	for (auto model : models) {
 		delete model;
 	}
-	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_PVM, nullptr);
+	vkDestroyDescriptorSetLayout(devices::logical::dev, dsl_PVM, nullptr);
 }
 
 

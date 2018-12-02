@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 #include "Descriptors/light_d.h"
 #include "Bindings/bindings.h"
 #include "DSets/light_ds.h"
@@ -24,10 +25,10 @@ LightsHandler::~LightsHandler() {
 	uniforms::destroy(u_PV);
 	delete lightPipeline;
 	delete shadowPipeline;
-	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_Attrs, nullptr);
-	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_Attrs_PVM, nullptr);
-	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_PVs, nullptr);
-	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_PV, nullptr);
+	vkDestroyDescriptorSetLayout(devices::logical::dev, dsl_Attrs, nullptr);
+	vkDestroyDescriptorSetLayout(devices::logical::dev, dsl_Attrs_PVM, nullptr);
+	vkDestroyDescriptorSetLayout(devices::logical::dev, dsl_PVs, nullptr);
+	vkDestroyDescriptorSetLayout(devices::logical::dev, dsl_PV, nullptr);
 }
 
 

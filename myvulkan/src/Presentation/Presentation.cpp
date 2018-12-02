@@ -2,6 +2,8 @@
 #include <algorithm>
 
 #include "Presentation/Presentation.h"
+#include "Devices/logical.h"
+#include "Devices/physical.h"
 #include "Handlers/Handlers.h"
 #include "images.h"
 #include "image_views.h"
@@ -20,7 +22,7 @@ Presentation::~Presentation() {
 
 
 void Presentation::createSwapchain() {
-	SwapChainSupportDetails swapChainSupport = capabilitiesHandler->querySwapChainSupport(devicesHandler->physicalDevice);
+	SwapChainSupportDetails swapChainSupport = capabilitiesHandler->querySwapChainSupport(devices::physical::dev);
 
 	VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
 	VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
@@ -43,7 +45,7 @@ void Presentation::createSwapchain() {
 	createInfo.imageArrayLayers = 1;
 	createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-	QueueFamilyIndices indices = queuesHandler->findQueueFamilies(devicesHandler->physicalDevice);
+	QueueFamilyIndices indices = queuesHandler->findQueueFamilies(devices::physical::dev);
 	uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
 
 	if (indices.graphicsFamily != indices.presentFamily) {
@@ -63,34 +65,34 @@ void Presentation::createSwapchain() {
 	createInfo.clipped = VK_TRUE;
 	createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-	if (vkCreateSwapchainKHR(devicesHandler->device, &createInfo, nullptr, &swapchain.handle) != VK_SUCCESS) {
+	if (vkCreateSwapchainKHR(devices::logical::dev, &createInfo, nullptr, &swapchain.handle) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create swap chain!");
 	}
 
-	vkGetSwapchainImagesKHR(devicesHandler->device, swapchain.handle, &imageCount, nullptr);
+	vkGetSwapchainImagesKHR(devices::logical::dev, swapchain.handle, &imageCount, nullptr);
 	swapchain.images.resize(imageCount);
-	vkGetSwapchainImagesKHR(devicesHandler->device, swapchain.handle, &imageCount, swapchain.images.data());
+	vkGetSwapchainImagesKHR(devices::logical::dev, swapchain.handle, &imageCount, swapchain.images.data());
 }
 
 void Presentation::cleanupSwapChain() {
-	vkDestroyImageView(devicesHandler->device, depth.imageView, nullptr);
-	vkDestroyImage(devicesHandler->device, depth.image, nullptr);
-	vkFreeMemory(devicesHandler->device, depth.imageMemory, nullptr);
+	vkDestroyImageView(devices::logical::dev, depth.imageView, nullptr);
+	vkDestroyImage(devices::logical::dev, depth.image, nullptr);
+	vkFreeMemory(devices::logical::dev, depth.imageMemory, nullptr);
 
 	for (auto framebuffer : swapchain.framebuffers) {
-		vkDestroyFramebuffer(devicesHandler->device, framebuffer, nullptr);
+		vkDestroyFramebuffer(devices::logical::dev, framebuffer, nullptr);
 	}
 	for (auto imageView : swapchain.imageViews) {
-		vkDestroyImageView(devicesHandler->device, imageView, nullptr);
+		vkDestroyImageView(devices::logical::dev, imageView, nullptr);
 	}
-	vkDestroySwapchainKHR(devicesHandler->device, swapchain.handle, nullptr);
+	vkDestroySwapchainKHR(devices::logical::dev, swapchain.handle, nullptr);
 
 	for (size_t i = 0; i < shadow.framebuffers.size(); i++) {
-		vkDestroyFramebuffer(devicesHandler->device, shadow.framebuffers[i], nullptr);
-		vkDestroyImageView(devicesHandler->device, shadow.imageViews[i], nullptr);
-		vkDestroyImage(devicesHandler->device, shadow.images[i], nullptr);
-		vkFreeMemory(devicesHandler->device, shadow.imageMemories[i], nullptr);
-		vkDestroySampler(devicesHandler->device, shadow.samplers[i], nullptr);
+		vkDestroyFramebuffer(devices::logical::dev, shadow.framebuffers[i], nullptr);
+		vkDestroyImageView(devices::logical::dev, shadow.imageViews[i], nullptr);
+		vkDestroyImage(devices::logical::dev, shadow.images[i], nullptr);
+		vkFreeMemory(devices::logical::dev, shadow.imageMemories[i], nullptr);
+		vkDestroySampler(devices::logical::dev, shadow.samplers[i], nullptr);
 	}
 
 	modelsHandler->destroyPipelines();
@@ -123,7 +125,7 @@ void Presentation::createFramebuffersRegular() {
 		framebufferInfo.height = swapchain.extent.height;
 		framebufferInfo.layers = 1;
 
-		if (vkCreateFramebuffer(devicesHandler->device, &framebufferInfo, nullptr, &swapchain.framebuffers[i]) != VK_SUCCESS) {
+		if (vkCreateFramebuffer(devices::logical::dev, &framebufferInfo, nullptr, &swapchain.framebuffers[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create regular framebuffer!");
 		}
 	}
@@ -152,20 +154,20 @@ void Presentation::createFramebuffersShadow() {
 		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
 		imageCreateInfo.format = VK_FORMAT_D32_SFLOAT;
 		imageCreateInfo.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
-		if (vkCreateImage(devicesHandler->device, &imageCreateInfo, nullptr, &shadow.images[i]) != VK_SUCCESS) {
+		if (vkCreateImage(devices::logical::dev, &imageCreateInfo, nullptr, &shadow.images[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create shadow image!");
 		}
 
 		VkMemoryAllocateInfo memoryAllocInfo = {};
 		memoryAllocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;;
 		VkMemoryRequirements memReqs;
-		vkGetImageMemoryRequirements(devicesHandler->device, shadow.images[i], &memReqs);
+		vkGetImageMemoryRequirements(devices::logical::dev, shadow.images[i], &memReqs);
 		memoryAllocInfo.allocationSize = memReqs.size;
 		memoryAllocInfo.memoryTypeIndex = findMemoryType(memReqs.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-		if (vkAllocateMemory(devicesHandler->device, &memoryAllocInfo, nullptr, &shadow.imageMemories[i]) != VK_SUCCESS) {
+		if (vkAllocateMemory(devices::logical::dev, &memoryAllocInfo, nullptr, &shadow.imageMemories[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to allocate memory for shadow map!");
 		}
-		if (vkBindImageMemory(devicesHandler->device, shadow.images[i], shadow.imageMemories[i], 0) != VK_SUCCESS) {
+		if (vkBindImageMemory(devices::logical::dev, shadow.images[i], shadow.imageMemories[i], 0) != VK_SUCCESS) {
 			throw std::runtime_error("failed to bind shadow map!");
 		}
 
@@ -180,7 +182,7 @@ void Presentation::createFramebuffersShadow() {
 		depthStencilView.subresourceRange.baseArrayLayer = 0;
 		depthStencilView.subresourceRange.layerCount = 1;
 		depthStencilView.image = shadow.images[i];
-		if (vkCreateImageView(devicesHandler->device, &depthStencilView, nullptr, &shadow.imageViews[i]) != VK_SUCCESS) {
+		if (vkCreateImageView(devices::logical::dev, &depthStencilView, nullptr, &shadow.imageViews[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create shadow image view!");
 		}
 
@@ -197,7 +199,7 @@ void Presentation::createFramebuffersShadow() {
 		sampler.minLod = 0.0f;
 		sampler.maxLod = 1.0f;
 		sampler.borderColor = VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
-		if (vkCreateSampler(devicesHandler->device, &sampler, nullptr, &shadow.samplers[i]) != VK_SUCCESS) {
+		if (vkCreateSampler(devices::logical::dev, &sampler, nullptr, &shadow.samplers[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create shadow sampler!");
 		}
 		// Create framebuffer
@@ -210,7 +212,7 @@ void Presentation::createFramebuffersShadow() {
 		shadowFramebufferCreateInfo.height = 1024;
 		shadowFramebufferCreateInfo.layers = 1;
 
-		if (vkCreateFramebuffer(devicesHandler->device, &shadowFramebufferCreateInfo, nullptr, &shadow.framebuffers[i]) != VK_SUCCESS) {
+		if (vkCreateFramebuffer(devices::logical::dev, &shadowFramebufferCreateInfo, nullptr, &shadow.framebuffers[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create shadow framebuffer!");
 		}
 	}
@@ -228,7 +230,7 @@ void Presentation::createDepthResources() {
 
 VkFormat Presentation::findDepthFormat() {
 	return findSupportedFormat(
-		devicesHandler->physicalDevice,
+		devices::physical::dev,
 		{ VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
 		VK_IMAGE_TILING_OPTIMAL,
 		VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT

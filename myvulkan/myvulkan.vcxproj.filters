@@ -118,6 +118,12 @@
     <Filter Include="Header Files\Vertices">
       <UniqueIdentifier>{bb4d8f33-1544-4a8d-abb3-7c6c0018789a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Devices">
+      <UniqueIdentifier>{c3459742-3dee-4fd1-87ed-f4b2dec5c6e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Devices">
+      <UniqueIdentifier>{79e68b57-d82f-4af7-b34a-7b8c166ed372}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -161,9 +167,6 @@
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\Handlers\DescriptorsHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Handlers\DevicesHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\Handlers\DrawHandler.h">
@@ -304,6 +307,12 @@
     <ClInclude Include="include\Vertices\vertex_P_N_C_TXC_TXI.h">
       <Filter>Header Files\Vertices</Filter>
     </ClInclude>
+    <ClInclude Include="include\Devices\logical.h">
+      <Filter>Header Files\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Devices\physical.h">
+      <Filter>Header Files\Devices</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CameraHandler.cpp">
@@ -319,9 +328,6 @@
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\DescriptorsHandler.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Handlers\DevicesHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\DrawHandler.cpp">
@@ -434,6 +440,12 @@
     </ClCompile>
     <ClCompile Include="src\VBuffers\vbuffer.cpp">
       <Filter>Source Files\VBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Devices\logical.cpp">
+      <Filter>Source Files\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Devices\physical.cpp">
+      <Filter>Source Files\Devices</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

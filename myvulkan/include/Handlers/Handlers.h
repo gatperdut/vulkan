@@ -3,7 +3,6 @@
 
 #include "InstanceHandler.h"
 #include "windowHandler.h"
-#include "DevicesHandler.h"
 #include "QueuesHandler.h"
 #include "CapabilitiesHandler.h"
 #include "Presentation/Presentation.h"
@@ -21,7 +20,6 @@
 
 extern InstanceHandler* instanceHandler;
 extern WindowHandler* windowHandler;
-extern DevicesHandler* devicesHandler;
 extern QueuesHandler* queuesHandler;
 extern CapabilitiesHandler* capabilitiesHandler;
 extern Presentation* presentation;

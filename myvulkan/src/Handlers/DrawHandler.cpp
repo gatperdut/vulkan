@@ -1,4 +1,5 @@
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 #include "Handlers/DrawHandler.h"
 
 
@@ -13,10 +14,10 @@ DrawHandler::~DrawHandler() {
 
 
 void DrawHandler::drawFrame() {
-	vkWaitForFences(devicesHandler->device, 1, &synchrosHandler->inFlightFences[currentFrame], VK_TRUE, std::numeric_limits<uint64_t>::max());
+	vkWaitForFences(devices::logical::dev, 1, &synchrosHandler->inFlightFences[currentFrame], VK_TRUE, std::numeric_limits<uint64_t>::max());
 
 	uint32_t imageIndex;
-	VkResult result = vkAcquireNextImageKHR(devicesHandler->device, presentation->swapchain.handle, std::numeric_limits<uint64_t>::max(), synchrosHandler->imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
+	VkResult result = vkAcquireNextImageKHR(devices::logical::dev, presentation->swapchain.handle, std::numeric_limits<uint64_t>::max(), synchrosHandler->imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
 
 	if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
 		throw std::runtime_error("failed to acquire swap chain image!");
@@ -37,7 +38,7 @@ void DrawHandler::drawFrame() {
 	submitInfoShadow.pWaitDstStageMask = waitStagesShadow;
 	submitInfoShadow.commandBufferCount = 1;
 	submitInfoShadow.pCommandBuffers = &commandBuffersHandler->commandBuffersShadow[imageIndex];
-	vkResetFences(devicesHandler->device, 1, &synchrosHandler->inFlightFences[currentFrame]);
+	vkResetFences(devices::logical::dev, 1, &synchrosHandler->inFlightFences[currentFrame]);
 	VkResult resu = vkQueueSubmit(queuesHandler->graphicsQueue, 1, &submitInfoShadow, synchrosHandler->inFlightFences[currentFrame]);
 	if (resu != VK_SUCCESS) {
 		throw std::runtime_error("failed to submit shadow draw command buffer!");

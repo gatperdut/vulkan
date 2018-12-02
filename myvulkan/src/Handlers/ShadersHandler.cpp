@@ -1,5 +1,5 @@
 #include "Handlers/Handlers.h"
-#include "Handlers/ShadersHandler.h"
+#include "Devices/logical.h"
 
 
 ShadersHandler::ShadersHandler() {
@@ -20,7 +20,7 @@ VkShaderModule ShadersHandler::createShaderModule(const std::vector<char>& code)
 	createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
 	VkShaderModule shaderModule;
-	if (vkCreateShaderModule(devicesHandler->device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
+	if (vkCreateShaderModule(devices::logical::dev, &createInfo, nullptr, &shaderModule) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create shader module!");
 	}
 

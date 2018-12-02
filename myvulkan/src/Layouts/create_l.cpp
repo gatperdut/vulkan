@@ -1,5 +1,5 @@
 #include "Handlers/Handlers.h"
-
+#include "Devices/logical.h"
 #include "Layouts/create_l.h"
 
 
@@ -11,7 +11,7 @@ namespace layouts {
 		layoutInfo.bindingCount = bindings.size();
 		layoutInfo.pBindings = bindings.data();
 
-		if (vkCreateDescriptorSetLayout(devicesHandler->device, &layoutInfo, nullptr, dsl) != VK_SUCCESS) {
+		if (vkCreateDescriptorSetLayout(devices::logical::dev, &layoutInfo, nullptr, dsl) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create descriptor set layout!");
 		}
 	}

@@ -3,6 +3,7 @@
 
 #include "Handlers/QueuesHandler.h"
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 
 
 QueuesHandler::QueuesHandler() {

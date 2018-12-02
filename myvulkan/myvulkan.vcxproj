@@ -186,6 +186,8 @@
     <ClInclude Include="include\capabilities.h" />
     <ClInclude Include="include\Descriptors\light_d.h" />
     <ClInclude Include="include\Descriptors\model_d.h" />
+    <ClInclude Include="include\Devices\logical.h" />
+    <ClInclude Include="include\Devices\physical.h" />
     <ClInclude Include="include\DSets\alloc_ds.h" />
     <ClInclude Include="include\DSets\light_ds.h" />
     <ClInclude Include="include\DSets\model_ds.h" />
@@ -194,7 +196,6 @@
     <ClInclude Include="include\Handlers\CommandBuffersHandler.h" />
     <ClInclude Include="include\Handlers\CommandsHandler.h" />
     <ClInclude Include="include\Handlers\DescriptorsHandler.h" />
-    <ClInclude Include="include\Handlers\DevicesHandler.h" />
     <ClInclude Include="include\Handlers\DrawHandler.h" />
     <ClInclude Include="include\Handlers\Handlers.h" />
     <ClInclude Include="include\Handlers\InputHandler.h" />
@@ -237,6 +238,8 @@
     <ClCompile Include="src\Bindings\bindings.cpp" />
     <ClCompile Include="src\buffers.cpp" />
     <ClCompile Include="src\buffer_to_image.cpp" />
+    <ClCompile Include="src\Devices\logical.cpp" />
+    <ClCompile Include="src\Devices\physical.cpp" />
     <ClCompile Include="src\DSets\alloc_ds.cpp" />
     <ClCompile Include="src\DSets\light_ds.cpp" />
     <ClCompile Include="src\DSets\model_ds.cpp" />
@@ -245,7 +248,6 @@
     <ClCompile Include="src\Handlers\CommandBuffersHandler.cpp" />
     <ClCompile Include="src\Handlers\CommandsHandler.cpp" />
     <ClCompile Include="src\Handlers\DescriptorsHandler.cpp" />
-    <ClCompile Include="src\Handlers\DevicesHandler.cpp" />
     <ClCompile Include="src\Handlers\DrawHandler.cpp" />
     <ClCompile Include="src\Handlers\InputHandler.cpp" />
     <ClCompile Include="src\Handlers\InstanceHandler.cpp" />

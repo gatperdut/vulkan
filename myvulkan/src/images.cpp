@@ -1,4 +1,5 @@
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 #include "images.h"
 #include "memory_types.h"
 
@@ -18,23 +19,23 @@ void createImage(uint32_t width, uint32_t height, uint32_t mipLevels, VkFormat f
 	imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
 	imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-	if (vkCreateImage(devicesHandler->device, &imageInfo, nullptr, &image) != VK_SUCCESS) {
+	if (vkCreateImage(devices::logical::dev, &imageInfo, nullptr, &image) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create image!");
 	}
 
 	VkMemoryRequirements memRequirements;
-	vkGetImageMemoryRequirements(devicesHandler->device, image, &memRequirements);
+	vkGetImageMemoryRequirements(devices::logical::dev, image, &memRequirements);
 
 	VkMemoryAllocateInfo allocInfo = {};
 	allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 	allocInfo.allocationSize = memRequirements.size;
 	allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
-	if (vkAllocateMemory(devicesHandler->device, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) {
+	if (vkAllocateMemory(devices::logical::dev, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) {
 		throw std::runtime_error("failed to allocate image memory!");
 	}
 
-	vkBindImageMemory(devicesHandler->device, image, imageMemory, 0);
+	vkBindImageMemory(devices::logical::dev, image, imageMemory, 0);
 }
 
 void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout, uint32_t mipLevels) {

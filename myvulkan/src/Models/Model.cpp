@@ -2,6 +2,7 @@
 
 #include "Models/Model.h"
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 #include "Descriptors/model_d.h"
 #include "Descriptors/light_d.h"
 #include "Layouts/model_l.h"
@@ -30,7 +31,7 @@ Model::~Model() {
 	vbuffers::destroy(vb_P);
 	delete modelPipeline;
 
-	vkDestroyDescriptorSetLayout(devicesHandler->device, dsl_PVM_Materials, nullptr);
+	vkDestroyDescriptorSetLayout(devices::logical::dev, dsl_PVM_Materials, nullptr);
 }
 
 

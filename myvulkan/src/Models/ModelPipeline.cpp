@@ -1,4 +1,5 @@
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 #include "Models/ModelPipeline.h"
 #include "read_file.h"
 #include "Vertices/vertex_P_N_C_TXC_TXI.h"
@@ -15,8 +16,8 @@ ModelPipeline::~ModelPipeline() {
 
 
 void ModelPipeline::freeResources() {
-	vkDestroyPipeline(devicesHandler->device, pipeline, nullptr);
-	vkDestroyPipelineLayout(devicesHandler->device, layout, nullptr);
+	vkDestroyPipeline(devices::logical::dev, pipeline, nullptr);
+	vkDestroyPipelineLayout(devices::logical::dev, layout, nullptr);
 }
 
 
@@ -123,7 +124,7 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	pipelineLayoutInfo.pushConstantRangeCount = 0; // Optional
 	pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
 
-	if (vkCreatePipelineLayout(devicesHandler->device, &pipelineLayoutInfo, nullptr, &layout) != VK_SUCCESS) {
+	if (vkCreatePipelineLayout(devices::logical::dev, &pipelineLayoutInfo, nullptr, &layout) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create pipeline layout!");
 	}
 
@@ -143,10 +144,10 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 	pipelineInfo.subpass = 0;
 	pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-	if (vkCreateGraphicsPipelines(devicesHandler->device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline) != VK_SUCCESS) {
+	if (vkCreateGraphicsPipelines(devices::logical::dev, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create models pipeline!");
 	}
 
-	vkDestroyShaderModule(devicesHandler->device, fragShaderModule, nullptr);
-	vkDestroyShaderModule(devicesHandler->device, vertShaderModule, nullptr);
+	vkDestroyShaderModule(devices::logical::dev, fragShaderModule, nullptr);
+	vkDestroyShaderModule(devices::logical::dev, vertShaderModule, nullptr);
 }

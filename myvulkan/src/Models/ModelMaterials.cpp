@@ -3,6 +3,8 @@
 #include <algorithm>
 
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
+#include "Devices/physical.h"
 #include "Models/ModeLMaterials.h"
 #include "buffers.h"
 #include "images.h"
@@ -17,16 +19,16 @@ ModelMaterials::ModelMaterials() {
 
 ModelMaterials::~ModelMaterials() {
 	for (auto sampler : samplers) {
-		vkDestroySampler(devicesHandler->device, sampler, nullptr);
+		vkDestroySampler(devices::logical::dev, sampler, nullptr);
 	}
 	for (auto imageView : imageViews) {
-		vkDestroyImageView(devicesHandler->device, imageView, nullptr);
+		vkDestroyImageView(devices::logical::dev, imageView, nullptr);
 	}
 	for (auto image : images) {
-		vkDestroyImage(devicesHandler->device, image, nullptr);
+		vkDestroyImage(devices::logical::dev, image, nullptr);
 	}
 	for (auto imageMemory : imageMemories) {
-		vkFreeMemory(devicesHandler->device, imageMemory, nullptr);
+		vkFreeMemory(devices::logical::dev, imageMemory, nullptr);
 	}
 }
 
@@ -72,9 +74,9 @@ void ModelMaterials::addImage(std::string filepath) {
 	createBuffer(imageSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory);
 
 	void* data;
-	vkMapMemory(devicesHandler->device, stagingBufferMemory, 0, imageSize, 0, &data);
+	vkMapMemory(devices::logical::dev, stagingBufferMemory, 0, imageSize, 0, &data);
 	memcpy(data, pixels, static_cast<size_t>(imageSize));
-	vkUnmapMemory(devicesHandler->device, stagingBufferMemory);
+	vkUnmapMemory(devices::logical::dev, stagingBufferMemory);
 
 	stbi_image_free(pixels);
 
@@ -89,8 +91,8 @@ void ModelMaterials::addImage(std::string filepath) {
 	//transitionImageLayout(textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, mipLevels);
 	addMipmaps(image, format, texWidth, texHeight, currentMipLevels);
 
-	vkDestroyBuffer(devicesHandler->device, stagingBuffer, nullptr);
-	vkFreeMemory(devicesHandler->device, stagingBufferMemory, nullptr);
+	vkDestroyBuffer(devices::logical::dev, stagingBuffer, nullptr);
+	vkFreeMemory(devices::logical::dev, stagingBufferMemory, nullptr);
 
 	images.push_back(image);
 	imageMemories.push_back(imageMemory);
@@ -98,7 +100,7 @@ void ModelMaterials::addImage(std::string filepath) {
 
 void ModelMaterials::addMipmaps(VkImage image, VkFormat imageFormat, int32_t texWidth, int32_t texHeight, uint32_t mipLevels) {
 	VkFormatProperties formatProperties;
-	vkGetPhysicalDeviceFormatProperties(devicesHandler->physicalDevice, imageFormat, &formatProperties);
+	vkGetPhysicalDeviceFormatProperties(devices::physical::dev, imageFormat, &formatProperties);
 
 	if (!(formatProperties.optimalTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
 		throw std::runtime_error("texture image format does not support linear blitting!");
@@ -224,7 +226,7 @@ void ModelMaterials::addSampler() {
 
 	VkSampler sampler;
 
-	if (vkCreateSampler(devicesHandler->device, &samplerInfo, nullptr, &sampler) != VK_SUCCESS) {
+	if (vkCreateSampler(devices::logical::dev, &samplerInfo, nullptr, &sampler) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create texture sampler!");
 	}
 

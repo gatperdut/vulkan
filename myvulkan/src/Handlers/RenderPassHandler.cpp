@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 #include "image_views.h"
 #include "images.h"
 
@@ -12,8 +13,8 @@ RenderPassHandler::RenderPassHandler() {
 
 
 RenderPassHandler::~RenderPassHandler() {
-	vkDestroyRenderPass(devicesHandler->device, renderPassHandler->renderPassRegular, nullptr);
-	vkDestroyRenderPass(devicesHandler->device, renderPassHandler->renderPassShadow, nullptr);
+	vkDestroyRenderPass(devices::logical::dev, renderPassHandler->renderPassRegular, nullptr);
+	vkDestroyRenderPass(devices::logical::dev, renderPassHandler->renderPassShadow, nullptr);
 }
 
 
@@ -70,7 +71,7 @@ void RenderPassHandler::createRenderPassRegular() {
 	renderPassInfo.pDependencies = &dependency;
 
 
-	if (vkCreateRenderPass(devicesHandler->device, &renderPassInfo, nullptr, &renderPassRegular) != VK_SUCCESS) {
+	if (vkCreateRenderPass(devices::logical::dev, &renderPassInfo, nullptr, &renderPassRegular) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create regular render pass!");
 	}
 }
@@ -124,7 +125,7 @@ void RenderPassHandler::createRenderPassShadow() {
 	renderPassInfo.dependencyCount = static_cast<uint32_t>(dependencies.size());
 	renderPassInfo.pDependencies = dependencies.data();
 
-	if (vkCreateRenderPass(devicesHandler->device, &renderPassInfo, nullptr, &renderPassShadow) != VK_SUCCESS) {
+	if (vkCreateRenderPass(devices::logical::dev, &renderPassInfo, nullptr, &renderPassShadow) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create shadow render pass!");
 	}
 }

@@ -1,4 +1,6 @@
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
+#include "Devices/physical.h"
 #include "Handlers/CommandsHandler.h"
 
 
@@ -8,19 +10,19 @@ CommandsHandler::CommandsHandler() {
 
 
 CommandsHandler::~CommandsHandler() {
-	vkDestroyCommandPool(devicesHandler->device, commandPool, nullptr);
+	vkDestroyCommandPool(devices::logical::dev, commandPool, nullptr);
 }
 
 
 void CommandsHandler::createCommandPool() {
-	QueueFamilyIndices queueFamilyIndices = queuesHandler->findQueueFamilies(devicesHandler->physicalDevice);
+	QueueFamilyIndices queueFamilyIndices = queuesHandler->findQueueFamilies(devices::physical::dev);
 
 	VkCommandPoolCreateInfo poolInfo = {};
 	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
 	poolInfo.flags = 0;
 
-	if (vkCreateCommandPool(devicesHandler->device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
+	if (vkCreateCommandPool(devices::logical::dev, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create command pool!");
 	}
 }
@@ -34,7 +36,7 @@ VkCommandBuffer CommandsHandler::beginSingleTimeCommands() {
 	allocInfo.commandBufferCount = 1;
 
 	VkCommandBuffer commandBuffer;
-	vkAllocateCommandBuffers(devicesHandler->device, &allocInfo, &commandBuffer);
+	vkAllocateCommandBuffers(devices::logical::dev, &allocInfo, &commandBuffer);
 
 	VkCommandBufferBeginInfo beginInfo = {};
 	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -57,5 +59,5 @@ void CommandsHandler::endSingleTimeCommands(VkCommandBuffer commandBuffer) {
 	vkQueueSubmit(queuesHandler->graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
 	vkQueueWaitIdle(queuesHandler->graphicsQueue);
 
-	vkFreeCommandBuffers(devicesHandler->device, commandPool, 1, &commandBuffer);
+	vkFreeCommandBuffers(devices::logical::dev, commandPool, 1, &commandBuffer);
 }

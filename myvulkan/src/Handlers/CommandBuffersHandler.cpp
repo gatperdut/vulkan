@@ -1,6 +1,7 @@
 #include <array>
 
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 #include "Handlers/CommandBuffersHandler.h"
 #include "Descriptors/model_d.h"
 
@@ -11,7 +12,7 @@ CommandBuffersHandler::CommandBuffersHandler() {
 
 
 CommandBuffersHandler::~CommandBuffersHandler() {
-	vkFreeCommandBuffers(devicesHandler->device, commandsHandler->commandPool, static_cast<uint32_t>(commandBuffersRegular.size()), commandBuffersRegular.data());
+	vkFreeCommandBuffers(devices::logical::dev, commandsHandler->commandPool, static_cast<uint32_t>(commandBuffersRegular.size()), commandBuffersRegular.data());
 }
 
 
@@ -24,7 +25,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	allocInfo.commandBufferCount = (uint32_t)commandBuffersRegular.size();
 
-	if (vkAllocateCommandBuffers(devicesHandler->device, &allocInfo, commandBuffersRegular.data()) != VK_SUCCESS) {
+	if (vkAllocateCommandBuffers(devices::logical::dev, &allocInfo, commandBuffersRegular.data()) != VK_SUCCESS) {
 		throw std::runtime_error("failed to allocate regular command buffers!");
 	}
 
@@ -105,7 +106,7 @@ void CommandBuffersHandler::createCommandBuffersShadow() {
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	allocInfo.commandBufferCount = (uint32_t)commandBuffersShadow.size();
 
-	if (vkAllocateCommandBuffers(devicesHandler->device, &allocInfo, commandBuffersShadow.data()) != VK_SUCCESS) {
+	if (vkAllocateCommandBuffers(devices::logical::dev, &allocInfo, commandBuffersShadow.data()) != VK_SUCCESS) {
 		throw std::runtime_error("failed to allocate shadow command buffers!");
 	}
 

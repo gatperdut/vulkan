@@ -1,5 +1,5 @@
 #include "Handlers/Handlers.h"
-#include "Handlers/SynchrosHandler.h"
+#include "Devices/logical.h"
 
 
 SynchrosHandler::SynchrosHandler() {
@@ -9,10 +9,10 @@ SynchrosHandler::SynchrosHandler() {
 
 SynchrosHandler::~SynchrosHandler() {
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-		vkDestroySemaphore(devicesHandler->device, renderFinishedSemaphores[i], nullptr);
-		vkDestroySemaphore(devicesHandler->device, imageAvailableSemaphores[i], nullptr);
-		vkDestroySemaphore(devicesHandler->device, shadowSemaphores[i], nullptr);
-		vkDestroyFence(devicesHandler->device, inFlightFences[i], nullptr);
+		vkDestroySemaphore(devices::logical::dev, renderFinishedSemaphores[i], nullptr);
+		vkDestroySemaphore(devices::logical::dev, imageAvailableSemaphores[i], nullptr);
+		vkDestroySemaphore(devices::logical::dev, shadowSemaphores[i], nullptr);
+		vkDestroyFence(devices::logical::dev, inFlightFences[i], nullptr);
 	}
 }
 
@@ -30,10 +30,10 @@ void SynchrosHandler::createSyncObjects() {
 	fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-		if (vkCreateSemaphore(devicesHandler->device, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
-			vkCreateSemaphore(devicesHandler->device, &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS ||
-			vkCreateSemaphore(devicesHandler->device, &semaphoreInfo, nullptr, &shadowSemaphores[i]) != VK_SUCCESS ||
-			vkCreateFence(devicesHandler->device, &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS) {
+		if (vkCreateSemaphore(devices::logical::dev, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
+			vkCreateSemaphore(devices::logical::dev, &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS ||
+			vkCreateSemaphore(devices::logical::dev, &semaphoreInfo, nullptr, &shadowSemaphores[i]) != VK_SUCCESS ||
+			vkCreateFence(devices::logical::dev, &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create synchronization objects for a frame!");
 		}
 	}

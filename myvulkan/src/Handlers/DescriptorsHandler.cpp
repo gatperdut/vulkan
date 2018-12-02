@@ -1,6 +1,7 @@
 #include <array>
 
 #include "Handlers/Handlers.h"
+#include "Devices/logical.h"
 #include "Handlers/DescriptorsHandler.h"
 #include "Descriptors/model_d.h"
 
@@ -10,7 +11,7 @@ DescriptorsHandler::DescriptorsHandler() {
 
 
 DescriptorsHandler::~DescriptorsHandler() {
-	vkDestroyDescriptorPool(devicesHandler->device, descriptorPool, nullptr);
+	vkDestroyDescriptorPool(devices::logical::dev, descriptorPool, nullptr);
 }
 
 
@@ -27,11 +28,11 @@ void DescriptorsHandler::createDescriptorPool() {
 	poolInfo.pPoolSizes = poolSizes.data();
 	poolInfo.maxSets = static_cast<uint32_t>(presentation->swapchain.images.size() * modelsHandler->models.size() * 2 + 30);
 
-	if (vkCreateDescriptorPool(devicesHandler->device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
+	if (vkCreateDescriptorPool(devices::logical::dev, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create descriptor pool!");
 	}
 }
 
 void DescriptorsHandler::resetDescriptorPool() {
-	vkResetDescriptorPool(devicesHandler->device, descriptorPool, 0);
+	vkResetDescriptorPool(devices::logical::dev, descriptorPool, 0);
 }
