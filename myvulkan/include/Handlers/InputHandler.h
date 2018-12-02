@@ -1,13 +1,15 @@
 #pragma once
-#include "windowHandler.h"
+
+
+#include "Window/window.h"
 
 void mouseCallbackHelper(GLFWwindow*, double, double);
 void keyCallbackHelper(GLFWwindow*, int, int, int, int);
 
 class InputHandler {
 private:
-	float lastX = WIDTH / 2.0f;
-	float lastY = HEIGHT / 2.0f;
+	float lastX = window::WIDTH / 2.0f;
+	float lastY = window::HEIGHT / 2.0f;
 
 public:
 	InputHandler();

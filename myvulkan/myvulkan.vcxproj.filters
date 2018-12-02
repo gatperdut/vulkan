@@ -130,6 +130,12 @@
     <Filter Include="Source Files\Instance">
       <UniqueIdentifier>{53b46cc8-4ab7-4d18-b4a0-3c4c26daa92f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Window">
+      <UniqueIdentifier>{7ea8ab3b-53ab-4695-805e-0ef2d4a7cf02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Window">
+      <UniqueIdentifier>{3f0230ca-aef2-4711-96b9-f122b331c071}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -197,9 +203,6 @@
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\Handlers\SynchrosHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Handlers\WindowHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\buffer_to_image.h">
@@ -322,6 +325,9 @@
     <ClInclude Include="include\Instance\debug.h">
       <Filter>Header Files\Instance</Filter>
     </ClInclude>
+    <ClInclude Include="include\Window\window.h">
+      <Filter>Header Files\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CameraHandler.cpp">
@@ -358,9 +364,6 @@
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\SynchrosHandler.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Handlers\WindowHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\buffer_to_image.cpp">
@@ -458,6 +461,9 @@
     </ClCompile>
     <ClCompile Include="src\Instance\debug.cpp">
       <Filter>Source Files\Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Window\window.cpp">
+      <Filter>Source Files\Window</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

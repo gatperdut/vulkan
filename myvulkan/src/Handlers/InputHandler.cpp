@@ -23,16 +23,16 @@ void keyCallbackHelper(GLFWwindow* window, int key, int scancode, int action, in
 }
 
 void InputHandler::processMovement() {
-	if (glfwGetKey(windowHandler->window, GLFW_KEY_W) == GLFW_PRESS) {
+	if (glfwGetKey(window::window, GLFW_KEY_W) == GLFW_PRESS) {
 		cameraHandler->pos += cameraHandler->speed * cameraHandler->front;
 	}
-	if (glfwGetKey(windowHandler->window, GLFW_KEY_S) == GLFW_PRESS) {
+	if (glfwGetKey(window::window, GLFW_KEY_S) == GLFW_PRESS) {
 		cameraHandler->pos -= cameraHandler->speed * cameraHandler->front;
 	}
-	if (glfwGetKey(windowHandler->window, GLFW_KEY_A) == GLFW_PRESS) {
+	if (glfwGetKey(window::window, GLFW_KEY_A) == GLFW_PRESS) {
 		cameraHandler->pos -= glm::normalize(glm::cross(cameraHandler->front, cameraHandler->up)) * cameraHandler->speed;
 	}
-	if (glfwGetKey(windowHandler->window, GLFW_KEY_D) == GLFW_PRESS) {
+	if (glfwGetKey(window::window, GLFW_KEY_D) == GLFW_PRESS) {
 		cameraHandler->pos += glm::normalize(glm::cross(cameraHandler->front, cameraHandler->up)) * cameraHandler->speed;
 	}
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 
-#include "windowHandler.h"
 #include "QueuesHandler.h"
 #include "CapabilitiesHandler.h"
 #include "Presentation/Presentation.h"
@@ -17,7 +16,6 @@
 #include "InputHandler.h"
 #include "CameraHandler.h"
 
-extern WindowHandler* windowHandler;
 extern QueuesHandler* queuesHandler;
 extern CapabilitiesHandler* capabilitiesHandler;
 extern Presentation* presentation;

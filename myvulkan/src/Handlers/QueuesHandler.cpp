@@ -32,7 +32,7 @@ QueueFamilyIndices QueuesHandler::findQueueFamilies(VkPhysicalDevice device) {
 		}
 
 		VkBool32 presentSupport = false;
-		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, windowHandler->surface, &presentSupport);
+		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, window::surface, &presentSupport);
 
 		if (queueFamily.queueCount > 0 && presentSupport) {
 			indices.presentFamily = i;

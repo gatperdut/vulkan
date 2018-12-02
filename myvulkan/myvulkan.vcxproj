@@ -205,7 +205,6 @@
     <ClInclude Include="include\Handlers\RenderPassHandler.h" />
     <ClInclude Include="include\Handlers\ShadersHandler.h" />
     <ClInclude Include="include\Handlers\SynchrosHandler.h" />
-    <ClInclude Include="include\Handlers\WindowHandler.h" />
     <ClInclude Include="include\images.h" />
     <ClInclude Include="include\image_views.h" />
     <ClInclude Include="include\Instance\debug.h" />
@@ -232,6 +231,7 @@
     <ClInclude Include="include\vertex.h" />
     <ClInclude Include="include\Vertices\vertex_P.h" />
     <ClInclude Include="include\Vertices\vertex_P_N_C_TXC_TXI.h" />
+    <ClInclude Include="include\Window\window.h" />
     <ClInclude Include="include\Writes\create_w.h" />
     <ClInclude Include="include\Writes\Info\create_wi.h" />
   </ItemGroup>
@@ -257,7 +257,6 @@
     <ClCompile Include="src\Handlers\RenderPassHandler.cpp" />
     <ClCompile Include="src\Handlers\ShadersHandler.cpp" />
     <ClCompile Include="src\Handlers\SynchrosHandler.cpp" />
-    <ClCompile Include="src\Handlers\WindowHandler.cpp" />
     <ClCompile Include="src\images.cpp" />
     <ClCompile Include="src\image_views.cpp" />
     <ClCompile Include="src\Instance\debug.cpp" />
@@ -279,6 +278,7 @@
     <ClCompile Include="src\Timer\timer.cpp" />
     <ClCompile Include="src\Uniforms\uniform.cpp" />
     <ClCompile Include="src\VBuffers\vbuffer.cpp" />
+    <ClCompile Include="src\Window\window.cpp" />
     <ClCompile Include="src\Writes\create_w.cpp" />
     <ClCompile Include="src\Writes\Info\create_wi.cpp" />
   </ItemGroup>

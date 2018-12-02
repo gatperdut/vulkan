@@ -26,7 +26,7 @@ void Presentation::createSwapchain() {
 
 	VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
 	VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
-	swapchain.extent = chooseSwapExtent(windowHandler->window, swapChainSupport.capabilities);
+	swapchain.extent = chooseSwapExtent(window::window, swapChainSupport.capabilities);
 
 	swapchain.format = surfaceFormat.format;
 
@@ -37,7 +37,7 @@ void Presentation::createSwapchain() {
 
 	VkSwapchainCreateInfoKHR createInfo = {};
 	createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-	createInfo.surface = windowHandler->surface;
+	createInfo.surface = window::surface;
 	createInfo.minImageCount = imageCount;
 	createInfo.imageFormat = surfaceFormat.format;
 	createInfo.imageColorSpace = surfaceFormat.colorSpace;
