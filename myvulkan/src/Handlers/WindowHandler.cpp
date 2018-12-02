@@ -1,5 +1,5 @@
 #include "Handlers/Handlers.h"
-
+#include "Instance/instance.h"
 
 
 WindowHandler::WindowHandler() {
@@ -8,7 +8,7 @@ WindowHandler::WindowHandler() {
 
 
 WindowHandler::~WindowHandler() {
-	vkDestroySurfaceKHR(instanceHandler->instance, surface, nullptr);
+	vkDestroySurfaceKHR(instance::instance, surface, nullptr);
 	glfwDestroyWindow(window);
 	glfwTerminate();
 }
@@ -29,7 +29,7 @@ void WindowHandler::createWindow() {
 
 
 void WindowHandler::createSurface() {
-	if (glfwCreateWindowSurface(instanceHandler->instance, window, nullptr, &surface) != VK_SUCCESS) {
+	if (glfwCreateWindowSurface(instance::instance, window, nullptr, &surface) != VK_SUCCESS) {
 		throw std::runtime_error("failed to create window surface!");
 	}
 }

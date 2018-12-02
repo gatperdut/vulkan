@@ -2,8 +2,10 @@
 #include <vector>
 
 #include "Handlers/Handlers.h"
-#include <Devices/logical.h>
-#include <Devices/physical.h>
+#include "Instance/instance.h"
+#include "Instance/debug.h"
+#include "Devices/logical.h"
+#include "Devices/physical.h"
 
 
 namespace devices {
@@ -37,12 +39,12 @@ namespace devices {
 
 			createInfo.pEnabledFeatures = &deviceFeatures;
 
-			createInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
-			createInfo.ppEnabledExtensionNames = deviceExtensions.data();
+			createInfo.enabledExtensionCount = static_cast<uint32_t>(instance::extensions.size());
+			createInfo.ppEnabledExtensionNames = instance::extensions.data();
 
-			if (enableValidationLayers) {
-				createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
-				createInfo.ppEnabledLayerNames = validationLayers.data();
+			if (instance::debug::enableVLs) {
+				createInfo.enabledLayerCount = static_cast<uint32_t>(instance::debug::VLs.size());
+				createInfo.ppEnabledLayerNames = instance::debug::VLs.data();
 			}
 			else {
 				createInfo.enabledLayerCount = 0;

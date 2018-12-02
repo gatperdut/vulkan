@@ -199,7 +199,6 @@
     <ClInclude Include="include\Handlers\DrawHandler.h" />
     <ClInclude Include="include\Handlers\Handlers.h" />
     <ClInclude Include="include\Handlers\InputHandler.h" />
-    <ClInclude Include="include\Handlers\InstanceHandler.h" />
     <ClInclude Include="include\Handlers\LightsHandler.h" />
     <ClInclude Include="include\Handlers\ModelsHandler.h" />
     <ClInclude Include="include\Handlers\QueuesHandler.h" />
@@ -209,6 +208,8 @@
     <ClInclude Include="include\Handlers\WindowHandler.h" />
     <ClInclude Include="include\images.h" />
     <ClInclude Include="include\image_views.h" />
+    <ClInclude Include="include\Instance\debug.h" />
+    <ClInclude Include="include\Instance\instance.h" />
     <ClInclude Include="include\Layouts\create_l.h" />
     <ClInclude Include="include\Layouts\light_l.h" />
     <ClInclude Include="include\Layouts\model_l.h" />
@@ -250,7 +251,6 @@
     <ClCompile Include="src\Handlers\DescriptorsHandler.cpp" />
     <ClCompile Include="src\Handlers\DrawHandler.cpp" />
     <ClCompile Include="src\Handlers\InputHandler.cpp" />
-    <ClCompile Include="src\Handlers\InstanceHandler.cpp" />
     <ClCompile Include="src\Handlers\LightsHandler.cpp" />
     <ClCompile Include="src\Handlers\ModelsHandler.cpp" />
     <ClCompile Include="src\Handlers\QueuesHandler.cpp" />
@@ -260,6 +260,8 @@
     <ClCompile Include="src\Handlers\WindowHandler.cpp" />
     <ClCompile Include="src\images.cpp" />
     <ClCompile Include="src\image_views.cpp" />
+    <ClCompile Include="src\Instance\debug.cpp" />
+    <ClCompile Include="src\Instance\instance.cpp" />
     <ClCompile Include="src\Layouts\create_l.cpp" />
     <ClCompile Include="src\Layouts\light_l.cpp" />
     <ClCompile Include="src\Layouts\model_l.cpp" />

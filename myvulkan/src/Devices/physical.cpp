@@ -1,4 +1,5 @@
 #include "Handlers/Handlers.h"
+#include "Instance/instance.h"
 #include "Devices/physical.h"
 
 
@@ -8,14 +9,14 @@ namespace devices {
 
 		void pick() {
 			uint32_t deviceCount = 0;
-			vkEnumeratePhysicalDevices(instanceHandler->instance, &deviceCount, nullptr);
+			vkEnumeratePhysicalDevices(instance::instance, &deviceCount, nullptr);
 
 			if (deviceCount == 0) {
 				throw std::runtime_error("failed to find GPUs with Vulkan support!");
 			}
 
 			std::vector<VkPhysicalDevice> devices(deviceCount);
-			vkEnumeratePhysicalDevices(instanceHandler->instance, &deviceCount, devices.data());
+			vkEnumeratePhysicalDevices(instance::instance, &deviceCount, devices.data());
 			for (const auto& device : devices) {
 				if (isSuitable(device)) {
 					dev = device;
@@ -52,7 +53,7 @@ namespace devices {
 			std::vector<VkExtensionProperties> availableExtensions(extensionCount);
 			vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data());
 
-			std::set<std::string> requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
+			std::set<std::string> requiredExtensions(instance::extensions.begin(), instance::extensions.end());
 
 			for (const auto& extension : availableExtensions) {
 				requiredExtensions.erase(extension.extensionName);

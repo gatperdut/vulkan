@@ -1,3 +1,4 @@
+#include <iostream>
 #include <tiny_obj_loader.h>
 
 #include "Models/Model.h"

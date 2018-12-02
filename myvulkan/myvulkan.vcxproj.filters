@@ -124,6 +124,12 @@
     <Filter Include="Source Files\Devices">
       <UniqueIdentifier>{79e68b57-d82f-4af7-b34a-7b8c166ed372}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Instance">
+      <UniqueIdentifier>{06821fa1-3420-4478-aa37-0b445b875890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Instance">
+      <UniqueIdentifier>{53b46cc8-4ab7-4d18-b4a0-3c4c26daa92f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -176,9 +182,6 @@
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\Handlers\InputHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Handlers\InstanceHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="include\Handlers\ModelsHandler.h">
@@ -313,6 +316,12 @@
     <ClInclude Include="include\Devices\physical.h">
       <Filter>Header Files\Devices</Filter>
     </ClInclude>
+    <ClInclude Include="include\Instance\instance.h">
+      <Filter>Header Files\Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Instance\debug.h">
+      <Filter>Header Files\Instance</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CameraHandler.cpp">
@@ -334,9 +343,6 @@
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\InputHandler.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Handlers\InstanceHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\ModelsHandler.cpp">
@@ -446,6 +452,12 @@
     </ClCompile>
     <ClCompile Include="src\Devices\physical.cpp">
       <Filter>Source Files\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Instance\instance.cpp">
+      <Filter>Source Files\Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Instance\debug.cpp">
+      <Filter>Source Files\Instance</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
