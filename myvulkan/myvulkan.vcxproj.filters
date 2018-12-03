@@ -145,6 +145,21 @@
     <Filter Include="Source Files\Camera">
       <UniqueIdentifier>{49ec4832-1e9c-4a44-a7a4-f60b2977cb36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Pipelines">
+      <UniqueIdentifier>{671ac41e-e1c0-4b13-b957-d8ccb7cfed57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pipelines\Parts">
+      <UniqueIdentifier>{8f6feceb-1a19-4a3b-bc9e-a02cafd810a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pipelines">
+      <UniqueIdentifier>{bd773e5a-6fd6-412f-86ac-7c089248cd67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pipelines\Parts">
+      <UniqueIdentifier>{407622f9-f00c-4bee-ada1-1843eaffd348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Vertices">
+      <UniqueIdentifier>{8da68259-c0b9-4ce3-a498-77cdc66ab8b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -310,12 +325,6 @@
     <ClInclude Include="include\VBuffers\vbuffer.h">
       <Filter>Header Files\VBuffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Vertices\vertex_P.h">
-      <Filter>Header Files\Vertices</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Vertices\vertex_P_N_C_TXC_TXI.h">
-      <Filter>Header Files\Vertices</Filter>
-    </ClInclude>
     <ClInclude Include="include\Devices\logical.h">
       <Filter>Header Files\Devices</Filter>
     </ClInclude>
@@ -336,6 +345,18 @@
     </ClInclude>
     <ClInclude Include="include\Camera\camera.h">
       <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\vertex_input.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vertices\description_v.h">
+      <Filter>Header Files\Vertices</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vertices\P_v.h">
+      <Filter>Header Files\Vertices</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vertices\P_N_C_TXC_TXI_v.h">
+      <Filter>Header Files\Vertices</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -473,6 +494,15 @@
     </ClCompile>
     <ClCompile Include="src\Camera\camera.cpp">
       <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\vertex_input.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vertices\P_N_C_TXC_TXI_v.cpp">
+      <Filter>Source Files\Vertices</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vertices\P_v.cpp">
+      <Filter>Source Files\Vertices</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

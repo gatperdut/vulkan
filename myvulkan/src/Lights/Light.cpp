@@ -6,7 +6,7 @@
 #include "Camera/camera.h"
 #include "DSets/light_ds.h"
 #include "Lights/Light.h"
-#include "Vertices/vertex_P.h"
+#include "Vertices/P_v.h"
 
 Light::Light(glm::vec3 pos, glm::vec3 color) {
 	this->pos = pos;
@@ -33,12 +33,12 @@ void Light::loadModel() {
 		throw std::runtime_error(err);
 	}
 
-	std::unordered_map<vertices::V_P, uint32_t> uniqueVertices = {};
+	std::unordered_map<vertices::V_P::Data, uint32_t> uniqueVertices = {};
 
 	for (const auto& shape : shapes) {
 		uint32_t indexCount = 0;
 		for (const auto& index : shape.mesh.indices) {
-			vertices::V_P vertex = {};
+			vertices::V_P::Data vertex = {};
 
 			vertex.pos = {
 				attrib.vertices[3 * index.vertex_index + 0],
@@ -58,7 +58,7 @@ void Light::loadModel() {
 		indexCount = 0;
 	}
 
-	vbuffers::create(vb_P, vertices.data(), vertices.size(), sizeof(vertices::V_P), indices);
+	vbuffers::create(vb_P, vertices.data(), vertices.size(), sizeof(vertices::V_P::Data), indices);
 }
 
 

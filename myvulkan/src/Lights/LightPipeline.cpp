@@ -1,4 +1,5 @@
 #include "Handlers/Handlers.h"
+#include "Pipelines/Parts/vertex_input.h"
 #include "Devices/logical.h"
 #include "Lights/LightPipeline.h"
 #include "read_file.h"
@@ -45,15 +46,7 @@ void LightPipeline::create(VkDescriptorSetLayout dsl_Attrs_PVM) {
 
 	VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo, fragShaderStageInfo };
 
-	VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
-	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	auto bindingDescription = vertices::V_P::bindings();
-	auto attributeDescriptions = vertices::V_P::attributes();
-
-	vertexInputInfo.vertexBindingDescriptionCount = 1;
-	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
-	vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
-	vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
+	VkPipelineVertexInputStateCreateInfo vertexInputInfo = pipelines::parts::vertex_input::create(1, &vertices::V_P::description.binding, vertices::V_P::description.attributes.size(), vertices::V_P::description.attributes.data());
 
 	VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
 	inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;

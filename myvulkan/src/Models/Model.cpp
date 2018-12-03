@@ -48,7 +48,7 @@ void Model::loadModel() {
 	}
 
 
-	std::unordered_map<vertices::V_P_N_C_TXC_TXI, uint32_t> uniqueVertices = {};
+	std::unordered_map<vertices::V_P_N_C_TXC_TXI::Data, uint32_t> uniqueVertices = {};
 
 	for (auto material : materials) {
 		if (!material.diffuse_texname.empty() && !modelMaterials->hasTexture(path + material.diffuse_texname)) {
@@ -60,8 +60,8 @@ void Model::loadModel() {
 	for (const auto& shape : shapes) {
 		uint32_t indexCount = 0;
 		for (const auto& index : shape.mesh.indices) {
-			vertices::V_P_N_C_TXC_TXI vertex = {};
-			vertices::V_P shadowVertex = {};
+			vertices::V_P_N_C_TXC_TXI::Data vertex = {};
+			vertices::V_P::Data shadowVertex = {};
 
 			vertex.pos = {
 				attrib.vertices[3 * index.vertex_index + 0],
@@ -105,8 +105,8 @@ void Model::loadModel() {
 		indexCount = 0;
 	}
 
-	vbuffers::create(vb_P_N_C_TXC_TXI, vertices.data(), vertices.size(), sizeof(vertices::V_P_N_C_TXC_TXI), indices);
-	vbuffers::create(vb_P, verticesShadow.data(), verticesShadow.size(), sizeof(vertices::V_P), indices);
+	vbuffers::create(vb_P_N_C_TXC_TXI, vertices.data(), vertices.size(), sizeof(vertices::V_P_N_C_TXC_TXI::Data), indices);
+	vbuffers::create(vb_P, verticesShadow.data(), verticesShadow.size(), sizeof(vertices::V_P::Data), indices);
 }
 
 

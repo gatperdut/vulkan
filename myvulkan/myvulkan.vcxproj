@@ -220,6 +220,7 @@
     <ClInclude Include="include\Models\ModelMaterials.h" />
     <ClInclude Include="include\Models\ModelPipeline.h" />
     <ClInclude Include="include\Models\Model.h" />
+    <ClInclude Include="include\Pipelines\Parts\vertex_input.h" />
     <ClInclude Include="include\Presentation\Presentation.h" />
     <ClInclude Include="include\read_file.h" />
     <ClInclude Include="include\mesh_ubo.h" />
@@ -229,8 +230,9 @@
     <ClInclude Include="include\Uniforms\uniform.h" />
     <ClInclude Include="include\VBuffers\vbuffer.h" />
     <ClInclude Include="include\vertex.h" />
-    <ClInclude Include="include\Vertices\vertex_P.h" />
-    <ClInclude Include="include\Vertices\vertex_P_N_C_TXC_TXI.h" />
+    <ClInclude Include="include\Vertices\description_v.h" />
+    <ClInclude Include="include\Vertices\P_v.h" />
+    <ClInclude Include="include\Vertices\P_N_C_TXC_TXI_v.h" />
     <ClInclude Include="include\Window\window.h" />
     <ClInclude Include="include\Writes\create_w.h" />
     <ClInclude Include="include\Writes\Info\create_wi.h" />
@@ -271,6 +273,7 @@
     <ClCompile Include="src\Models\ModelMaterials.cpp" />
     <ClCompile Include="src\Models\ModelPipeline.cpp" />
     <ClCompile Include="src\Models\Model.cpp" />
+    <ClCompile Include="src\Pipelines\Parts\vertex_input.cpp" />
     <ClCompile Include="src\Presentation\Presentation.cpp" />
     <ClCompile Include="src\read_file.cpp" />
     <ClCompile Include="src\Shadows\ShadowPipeline.cpp" />
@@ -278,6 +281,8 @@
     <ClCompile Include="src\Timer\timer.cpp" />
     <ClCompile Include="src\Uniforms\uniform.cpp" />
     <ClCompile Include="src\VBuffers\vbuffer.cpp" />
+    <ClCompile Include="src\Vertices\P_v.cpp" />
+    <ClCompile Include="src\Vertices\P_N_C_TXC_TXI_v.cpp" />
     <ClCompile Include="src\Window\window.cpp" />
     <ClCompile Include="src\Writes\create_w.cpp" />
     <ClCompile Include="src\Writes\Info\create_wi.cpp" />
