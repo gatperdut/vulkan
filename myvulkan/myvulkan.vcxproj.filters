@@ -373,6 +373,21 @@
     <ClInclude Include="include\Pipelines\Parts\extent_p.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\rasterizer_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\multisampling_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\depth_stencil_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\color_blend_attachment_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\color_blend_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CapabilitiesHandler.cpp">
@@ -532,6 +547,21 @@
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
     <ClCompile Include="src\Pipelines\Parts\extent_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\rasterizer_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\multisampling_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\depth_stencil.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\color_blend_attachment_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\color_blend_p.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
   </ItemGroup>
