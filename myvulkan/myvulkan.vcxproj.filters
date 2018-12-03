@@ -217,9 +217,6 @@
     <ClInclude Include="include\Handlers\RenderPassHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Handlers\ShadersHandler.h">
-      <Filter>Header Files\Handlers</Filter>
-    </ClInclude>
     <ClInclude Include="include\Handlers\SynchrosHandler.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
@@ -388,6 +385,12 @@
     <ClInclude Include="include\Pipelines\Parts\color_blend_p.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\shader_stage_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\layout_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Handlers\CapabilitiesHandler.cpp">
@@ -412,9 +415,6 @@
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\RenderPassHandler.cpp">
-      <Filter>Source Files\Handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Handlers\ShadersHandler.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\Handlers\SynchrosHandler.cpp">
@@ -562,6 +562,12 @@
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
     <ClCompile Include="src\Pipelines\Parts\color_blend_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\shader_stage_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\layout_p.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
   </ItemGroup>

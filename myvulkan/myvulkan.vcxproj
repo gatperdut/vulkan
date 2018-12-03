@@ -203,7 +203,6 @@
     <ClInclude Include="include\Handlers\ModelsHandler.h" />
     <ClInclude Include="include\Handlers\QueuesHandler.h" />
     <ClInclude Include="include\Handlers\RenderPassHandler.h" />
-    <ClInclude Include="include\Handlers\ShadersHandler.h" />
     <ClInclude Include="include\Handlers\SynchrosHandler.h" />
     <ClInclude Include="include\images.h" />
     <ClInclude Include="include\image_views.h" />
@@ -225,9 +224,11 @@
     <ClInclude Include="include\Pipelines\Parts\depth_stencil_p.h" />
     <ClInclude Include="include\Pipelines\Parts\extent_p.h" />
     <ClInclude Include="include\Pipelines\Parts\input_assembly_p.h" />
+    <ClInclude Include="include\Pipelines\Parts\layout_p.h" />
     <ClInclude Include="include\Pipelines\Parts\multisampling_p.h" />
     <ClInclude Include="include\Pipelines\Parts\rasterizer_p.h" />
     <ClInclude Include="include\Pipelines\Parts\rect_p.h" />
+    <ClInclude Include="include\Pipelines\Parts\shader_stage_p.h" />
     <ClInclude Include="include\Pipelines\Parts\vertex_input_p.h" />
     <ClInclude Include="include\Pipelines\Parts\viewport_p.h" />
     <ClInclude Include="include\Pipelines\Parts\viewport_state_p.h" />
@@ -267,7 +268,6 @@
     <ClCompile Include="src\Handlers\ModelsHandler.cpp" />
     <ClCompile Include="src\Handlers\QueuesHandler.cpp" />
     <ClCompile Include="src\Handlers\RenderPassHandler.cpp" />
-    <ClCompile Include="src\Handlers\ShadersHandler.cpp" />
     <ClCompile Include="src\Handlers\SynchrosHandler.cpp" />
     <ClCompile Include="src\images.cpp" />
     <ClCompile Include="src\image_views.cpp" />
@@ -288,9 +288,11 @@
     <ClCompile Include="src\Pipelines\Parts\depth_stencil.cpp" />
     <ClCompile Include="src\Pipelines\Parts\extent_p.cpp" />
     <ClCompile Include="src\Pipelines\Parts\input_assembly_p.cpp" />
+    <ClCompile Include="src\Pipelines\Parts\layout_p.cpp" />
     <ClCompile Include="src\Pipelines\Parts\multisampling_p.cpp" />
     <ClCompile Include="src\Pipelines\Parts\rasterizer_p.cpp" />
     <ClCompile Include="src\Pipelines\Parts\rect_p.cpp" />
+    <ClCompile Include="src\Pipelines\Parts\shader_stage_p.cpp" />
     <ClCompile Include="src\Pipelines\Parts\vertex_input_p.cpp" />
     <ClCompile Include="src\Pipelines\Parts\viewport_p.cpp" />
     <ClCompile Include="src\Pipelines\Parts\viewport_state_p.cpp" />
