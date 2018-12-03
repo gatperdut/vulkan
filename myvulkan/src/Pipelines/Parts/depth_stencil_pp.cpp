@@ -1,4 +1,4 @@
-#include "Pipelines/Parts/depth_stencil_p.h"
+#include "Pipelines/Parts/depth_stencil_pp.h"
 
 
 namespace pipelines {

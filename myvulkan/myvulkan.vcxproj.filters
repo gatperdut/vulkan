@@ -160,6 +160,12 @@
     <Filter Include="Source Files\Vertices">
       <UniqueIdentifier>{8da68259-c0b9-4ce3-a498-77cdc66ab8b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Pipelines\Types">
+      <UniqueIdentifier>{fcf794e4-620b-4856-a958-48ddead13ae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pipelines\Types">
+      <UniqueIdentifier>{cab8de0f-0bdb-457f-af78-f82b40a4b86a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compile.bat">
@@ -262,12 +268,6 @@
     <ClInclude Include="include\Models\ModelMaterials.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="include\Models\ModelPipeline.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Lights\LightPipeline.h">
-      <Filter>Header Files\Lights</Filter>
-    </ClInclude>
     <ClInclude Include="include\Shadows\ShadowPipeline.h">
       <Filter>Header Files\Shadows</Filter>
     </ClInclude>
@@ -352,44 +352,53 @@
     <ClInclude Include="include\Vertices\P_N_C_TXC_TXI_v.h">
       <Filter>Header Files\Vertices</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\input_assembly_p.h">
+    <ClInclude Include="include\Pipelines\pipeline_p.h">
+      <Filter>Header Files\Pipelines</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Types\model_pt.h">
+      <Filter>Header Files\Pipelines\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\color_blend_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\vertex_input_p.h">
+    <ClInclude Include="include\Pipelines\Parts\color_blend_attachment_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\viewport_p.h">
+    <ClInclude Include="include\Pipelines\Parts\depth_stencil_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\rect_p.h">
+    <ClInclude Include="include\Pipelines\Parts\extent_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\viewport_state_p.h">
+    <ClInclude Include="include\Pipelines\Parts\input_assembly_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\extent_p.h">
+    <ClInclude Include="include\Pipelines\Parts\layout_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\rasterizer_p.h">
+    <ClInclude Include="include\Pipelines\Parts\multisampling_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\multisampling_p.h">
+    <ClInclude Include="include\Pipelines\Parts\rasterizer_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\depth_stencil_p.h">
+    <ClInclude Include="include\Pipelines\Parts\rect_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\color_blend_attachment_p.h">
+    <ClInclude Include="include\Pipelines\Parts\shader_stage_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\color_blend_p.h">
+    <ClInclude Include="include\Pipelines\Parts\vertex_input_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\shader_stage_p.h">
+    <ClInclude Include="include\Pipelines\Parts\viewport_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\layout_p.h">
+    <ClInclude Include="include\Pipelines\Parts\viewport_state_pp.h">
       <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Types\light_pt.h">
+      <Filter>Header Files\Pipelines\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -452,12 +461,6 @@
     </ClCompile>
     <ClCompile Include="src\Models\ModelMaterials.cpp">
       <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Models\ModelPipeline.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Lights\LightPipeline.cpp">
-      <Filter>Source Files\Lights</Filter>
     </ClCompile>
     <ClCompile Include="src\Shadows\ShadowPipeline.cpp">
       <Filter>Source Files\Shadows</Filter>
@@ -531,44 +534,53 @@
     <ClCompile Include="src\Vertices\P_v.cpp">
       <Filter>Source Files\Vertices</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\input_assembly_p.cpp">
+    <ClCompile Include="src\Pipelines\pipeline_p.cpp">
+      <Filter>Source Files\Pipelines</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Types\model_pt.cpp">
+      <Filter>Source Files\Pipelines\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\color_blend_attachment_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\vertex_input_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\color_blend_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\viewport_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\depth_stencil_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\rect_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\extent_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\viewport_state_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\input_assembly_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\extent_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\layout_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\rasterizer_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\multisampling_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\multisampling_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\rasterizer_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\depth_stencil.cpp">
+    <ClCompile Include="src\Pipelines\Parts\rect_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\color_blend_attachment_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\shader_stage_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\color_blend_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\vertex_input_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\shader_stage_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\viewport_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\layout_p.cpp">
+    <ClCompile Include="src\Pipelines\Parts\viewport_state_pp.cpp">
       <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Types\light_pt.cpp">
+      <Filter>Source Files\Pipelines\Types</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

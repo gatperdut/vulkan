@@ -8,7 +8,7 @@
 #include "Uniforms/uniform.h"
 #include "Models/ModelMaterials.h"
 #include "VBuffers/vbuffer.h"
-#include "Models/ModelPipeline.h"
+#include "Pipelines/pipeline_p.h"
 #include "Vertices/P_N_C_TXC_TXI_v.h"
 #include "Vertices/P_v.h"
 
@@ -46,7 +46,7 @@ public:
 	ModelMaterials* modelMaterials;
 	vbuffers::vbuffer vb_P_N_C_TXC_TXI;
 	vbuffers::vbuffer vb_P;
-	ModelPipeline* modelPipeline;
+	pipelines::Pipeline pipeline;
 
 	std::vector<VkDescriptorSet> ds_PVM_Materials;
 	VkDescriptorSetLayout dsl_PVM_Materials;

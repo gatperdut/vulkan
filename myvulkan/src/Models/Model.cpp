@@ -3,6 +3,7 @@
 
 #include "Models/Model.h"
 #include "Handlers/Handlers.h"
+#include "Pipelines/Types/model_pt.h"
 #include "Camera/camera.h"
 #include "Devices/logical.h"
 #include "Descriptors/model_d.h"
@@ -21,7 +22,6 @@ Model::Model(std::string path, std::string filename, glm::vec3 pos, glm::vec3 sc
 	this->scale = scale;
 
 	modelMaterials = new ModelMaterials;
-	modelPipeline = new ModelPipeline;
 	loadModel();
 }
 
@@ -31,7 +31,7 @@ Model::~Model() {
 	uniforms::destroy(u_PVM);
 	vbuffers::destroy(vb_P_N_C_TXC_TXI);
 	vbuffers::destroy(vb_P);
-	delete modelPipeline;
+	pipelines::destroy(pipeline);
 
 	vkDestroyDescriptorSetLayout(devices::logical::dev, dsl_PVM_Materials, nullptr);
 }
@@ -164,5 +164,5 @@ void Model::createDS_PVM() {
 
 
 void Model::createPipeline() {
-	modelPipeline->create(dsl_PVM_Materials);
+	pipelines::types::model::create(pipeline, dsl_PVM_Materials);
 }

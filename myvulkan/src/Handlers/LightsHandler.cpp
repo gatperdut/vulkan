@@ -4,6 +4,7 @@
 
 #include "Handlers/Handlers.h"
 #include "Devices/logical.h"
+#include "Pipelines/Types/light_pt.h"
 #include "Descriptors/light_d.h"
 #include "Bindings/bindings.h"
 #include "DSets/light_ds.h"
@@ -12,7 +13,6 @@
 
 
 LightsHandler::LightsHandler() {
-	lightPipeline = new LightPipeline;
 	shadowPipeline = new ShadowPipeline;
 }
 
@@ -24,7 +24,7 @@ LightsHandler::~LightsHandler() {
 
 	uniforms::destroy(u_Attrs);
 	uniforms::destroy(u_PV);
-	delete lightPipeline;
+	pipelines::destroy(pipeline);
 	delete shadowPipeline;
 	vkDestroyDescriptorSetLayout(devices::logical::dev, dsl_Attrs, nullptr);
 	vkDestroyDescriptorSetLayout(devices::logical::dev, dsl_Attrs_PVM, nullptr);
@@ -115,7 +115,7 @@ void LightsHandler::updateU_PV(uint32_t index) {
 }
 
 void LightsHandler::createPipelines() {
-	lightPipeline->create(dsl_Attrs_PVM);
+	pipelines::types::light::create(pipeline, dsl_Attrs_PVM);
 	shadowPipeline->create();
 }
 

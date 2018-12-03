@@ -1,4 +1,4 @@
-#include <Pipelines/Parts/input_assembly_p.h>
+#include "Pipelines/Parts/input_assembly_pp.h"
 
 
 namespace pipelines {

@@ -6,7 +6,7 @@
 #include <vulkan/vulkan.h>
 
 #include "Uniforms/uniform.h"
-#include "Lights/LightPipeline.h"
+#include "Pipelines/pipeline_p.h"
 #include "Lights/Light.h"
 #include "Shadows/ShadowPipeline.h"
 
@@ -21,7 +21,7 @@ public:
 	void add(glm::vec3, glm::vec3);
 
 	void createPipelines();
-	LightPipeline* lightPipeline;
+	pipelines::Pipeline pipeline;
 	ShadowPipeline* shadowPipeline;
 	
 	void createDSLs();

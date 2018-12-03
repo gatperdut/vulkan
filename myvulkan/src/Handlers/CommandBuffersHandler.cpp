@@ -55,7 +55,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 		vkCmdBeginRenderPass(commandBuffersRegular[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
 		Light* light;
-		vkCmdBindPipeline(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->lightPipeline->pipeline);
+		vkCmdBindPipeline(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->pipeline.handle);
 		for (size_t j = 0; j < lightsHandler->lights.size(); j++) {
 			light = lightsHandler->lights[j];
 
@@ -65,7 +65,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 
 			std::vector<uint32_t> dynamicOffsets = { 0, 0 };
 			std::vector<VkDescriptorSet> descriptorSets = { light->ds_Attrs_PVM[i] };
-			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->lightPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
+			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lightsHandler->pipeline.layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 
 
@@ -76,7 +76,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 		for (size_t j = 0; j < modelsHandler->models.size(); j++) {
 			model = modelsHandler->models[j];
 
-			vkCmdBindPipeline(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->modelPipeline->pipeline);
+			vkCmdBindPipeline(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->pipeline.handle);
 
 
 			std::vector<VkDeviceSize> offsets = { 0 };
@@ -85,7 +85,7 @@ void CommandBuffersHandler::createCommandBuffersRegular() {
 
 			std::vector<uint32_t> dynamicOffsets = { 0, 0, 0 };
 			std::vector<VkDescriptorSet> descriptorSets = { lightsHandler->ds_Attrs_PV_Depth[i], model->ds_PVM_Materials[i] };
-			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->modelPipeline->layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
+			vkCmdBindDescriptorSets(commandBuffersRegular[i], VK_PIPELINE_BIND_POINT_GRAPHICS, model->pipeline.layout, 0, descriptorSets.size(), descriptorSets.data(), dynamicOffsets.size(), dynamicOffsets.data());
 
 			vkCmdDrawIndexed(commandBuffersRegular[i], static_cast<uint32_t>(model->indices.size()), 1, 0, 0, 0);
 		}
