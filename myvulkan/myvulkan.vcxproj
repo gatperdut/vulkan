@@ -220,7 +220,12 @@
     <ClInclude Include="include\Models\ModelMaterials.h" />
     <ClInclude Include="include\Models\ModelPipeline.h" />
     <ClInclude Include="include\Models\Model.h" />
-    <ClInclude Include="include\Pipelines\Parts\vertex_input.h" />
+    <ClInclude Include="include\Pipelines\Parts\extent_p.h" />
+    <ClInclude Include="include\Pipelines\Parts\input_assembly_p.h" />
+    <ClInclude Include="include\Pipelines\Parts\rect_p.h" />
+    <ClInclude Include="include\Pipelines\Parts\vertex_input_p.h" />
+    <ClInclude Include="include\Pipelines\Parts\viewport_p.h" />
+    <ClInclude Include="include\Pipelines\Parts\viewport_state_p.h" />
     <ClInclude Include="include\Presentation\Presentation.h" />
     <ClInclude Include="include\read_file.h" />
     <ClInclude Include="include\mesh_ubo.h" />
@@ -273,7 +278,12 @@
     <ClCompile Include="src\Models\ModelMaterials.cpp" />
     <ClCompile Include="src\Models\ModelPipeline.cpp" />
     <ClCompile Include="src\Models\Model.cpp" />
-    <ClCompile Include="src\Pipelines\Parts\vertex_input.cpp" />
+    <ClCompile Include="src\Pipelines\Parts\extent_p.cpp" />
+    <ClCompile Include="src\Pipelines\Parts\input_assembly_p.cpp" />
+    <ClCompile Include="src\Pipelines\Parts\rect_p.cpp" />
+    <ClCompile Include="src\Pipelines\Parts\vertex_input_p.cpp" />
+    <ClCompile Include="src\Pipelines\Parts\viewport_p.cpp" />
+    <ClCompile Include="src\Pipelines\Parts\viewport_state_p.cpp" />
     <ClCompile Include="src\Presentation\Presentation.cpp" />
     <ClCompile Include="src\read_file.cpp" />
     <ClCompile Include="src\Shadows\ShadowPipeline.cpp" />

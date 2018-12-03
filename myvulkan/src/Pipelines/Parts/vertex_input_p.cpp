@@ -1,4 +1,4 @@
-#include <Pipelines/Parts/vertex_input.h>
+#include <Pipelines/Parts/vertex_input_p.h>
 
 
 namespace pipelines {

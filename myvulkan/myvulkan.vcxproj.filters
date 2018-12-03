@@ -346,9 +346,6 @@
     <ClInclude Include="include\Camera\camera.h">
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="include\Pipelines\Parts\vertex_input.h">
-      <Filter>Header Files\Pipelines\Parts</Filter>
-    </ClInclude>
     <ClInclude Include="include\Vertices\description_v.h">
       <Filter>Header Files\Vertices</Filter>
     </ClInclude>
@@ -357,6 +354,24 @@
     </ClInclude>
     <ClInclude Include="include\Vertices\P_N_C_TXC_TXI_v.h">
       <Filter>Header Files\Vertices</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\input_assembly_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\vertex_input_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\viewport_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\rect_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\viewport_state_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pipelines\Parts\extent_p.h">
+      <Filter>Header Files\Pipelines\Parts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -495,14 +510,29 @@
     <ClCompile Include="src\Camera\camera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pipelines\Parts\vertex_input.cpp">
-      <Filter>Source Files\Pipelines\Parts</Filter>
-    </ClCompile>
     <ClCompile Include="src\Vertices\P_N_C_TXC_TXI_v.cpp">
       <Filter>Source Files\Vertices</Filter>
     </ClCompile>
     <ClCompile Include="src\Vertices\P_v.cpp">
       <Filter>Source Files\Vertices</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\input_assembly_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\vertex_input_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\viewport_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\rect_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\viewport_state_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pipelines\Parts\extent_p.cpp">
+      <Filter>Source Files\Pipelines\Parts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

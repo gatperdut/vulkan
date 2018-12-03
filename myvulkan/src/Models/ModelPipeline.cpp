@@ -1,7 +1,12 @@
 #include "Handlers/Handlers.h"
 #include "Devices/logical.h"
 #include "Models/ModelPipeline.h"
-#include "Pipelines/Parts/vertex_input.h"
+#include "Pipelines/Parts/vertex_input_p.h"
+#include "Pipelines/Parts/input_assembly_p.h"
+#include "Pipelines/Parts/extent_p.h"
+#include "Pipelines/Parts/viewport_p.h"
+#include "Pipelines/Parts/rect_p.h"
+#include "Pipelines/Parts/viewport_state_p.h"
 #include "read_file.h"
 #include "Vertices/P_N_C_TXC_TXI_v.h"
 
@@ -50,29 +55,11 @@ void ModelPipeline::create(VkDescriptorSetLayout descriptorSetLayout) {
 
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo = pipelines::parts::vertex_input::create(1, &vertices::V_P_N_C_TXC_TXI::description.binding, vertices::V_P_N_C_TXC_TXI::description.attributes.size(), vertices::V_P_N_C_TXC_TXI::description.attributes.data());
 
-	VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
-	inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-	inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-	inputAssembly.primitiveRestartEnable = VK_FALSE;
+	VkPipelineInputAssemblyStateCreateInfo inputAssembly = pipelines::parts::input_assembly::create();
 
-	VkViewport viewport = {};
-	viewport.x = 0.0f;
-	viewport.y = 0.0f;
-	viewport.width = (float)presentation->swapchain.extent.width;
-	viewport.height = (float)presentation->swapchain.extent.height;
-	viewport.minDepth = 0.0f;
-	viewport.maxDepth = 1.0f;
-
-	VkRect2D scissor = {};
-	scissor.offset = { 0, 0 };
-	scissor.extent = presentation->swapchain.extent;
-
-	VkPipelineViewportStateCreateInfo viewportState = {};
-	viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-	viewportState.viewportCount = 1;
-	viewportState.pViewports = &viewport;
-	viewportState.scissorCount = 1;
-	viewportState.pScissors = &scissor;
+	VkViewport viewport = pipelines::parts::viewport::create((float)presentation->swapchain.extent.width, (float)presentation->swapchain.extent.height);
+	VkRect2D scissor = pipelines::parts::rect::create(presentation->swapchain.extent);
+	VkPipelineViewportStateCreateInfo viewportState = pipelines::parts::viewport_state::create(&viewport, &scissor);
 
 	VkPipelineRasterizationStateCreateInfo rasterizer = {};
 	rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
